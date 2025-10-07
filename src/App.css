@@ -1,0 +1,44 @@
+.App {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 24px;
+  gap: 24px;
+  background-color: var(--B2);
+  border-radius: 14px;
+}
+
+.inGlassBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 24px;
+  gap: 24px;
+}
+
+.glassBox {
+  width: 948px;
+}
+
+.divv {
+  width: 900px;
+}
+
+.backgrond {
+  position: fixed; /* یا absolute */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* پشت همه قرار بگیره */
+  pointer-events: none; /* تا کلیک‌پذیر نباشه */
+}
