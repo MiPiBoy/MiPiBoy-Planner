@@ -1,19 +1,19 @@
 .card-spotlight {
-  position: relative;
+  /* position: relative; */
+  overflow: hidden;
   --mouse-x: 50%;
   --mouse-y: 50%;
   --spotlight-color: rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-  width: -webkit-fill-available;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 24px;
-  gap: 24px;
-  background-color: #ffffff11;
-  border-radius: 14px;
-  border: 1px solid #ffffff56;
-  backdrop-filter: blur(10.5px);
+  /* width: -webkit-fill-available; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: flex-end; */
+  /* padding: 24px; */
+  /* gap: 24px; */
+  /* background-color: #ffffff11; */
+  /* border-radius: 14px; */
+  /* border: 1px solid #ffffff56; */
+  /* backdrop-filter: blur(10.5px); */
 }
 
 .card-spotlight::before {

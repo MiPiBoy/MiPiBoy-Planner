@@ -203,7 +203,8 @@ const TextPressure = ({
           userSelect: 'none',
           whiteSpace: 'nowrap',
           fontWeight: 100,
-          width: '97vw'
+          width: '88vw',
+          height: '100%'
         }}
       >
         {chars.map((char, i) => (
