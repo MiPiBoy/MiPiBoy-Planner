@@ -22,12 +22,13 @@
   width: auto;
   height: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   padding: 0px;
   border-radius: inherit;
   position: relative;
   z-index: 1;
+  gap: 12px;
 }
 
 .glass-surface--svg {

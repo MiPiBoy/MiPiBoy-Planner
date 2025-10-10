@@ -39,7 +39,6 @@
 .parent {
     width: 100%;
     margin: 24px;
-    margin-right: 104px;
     display: grid;
     grid-template-columns: repeat(11, 1fr);
     grid-template-rows: repeat(1, 1fr);
@@ -81,6 +80,7 @@
 }
 
 .inliner {
+  padding-top: 100px;
   display: flex;
   flex-direction: row-reverse;
 }
@@ -100,7 +100,6 @@
 }
 
 .navItemSection {
-  box-sizing: border-box;
   top: 0;
   right: 0;
   border-radius: 0;
@@ -109,8 +108,7 @@
   border-right: 0;
   border-left: 1px solid #ffffff56;
   height: 100vh;
-  width: 80px;
-  flex-shrink: 0;
+  width: fit-content;
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -119,8 +117,64 @@
   gap: 24px;
   background-color: #ffffff11;
   backdrop-filter: blur(10.5px);
+  z-index: 999;
 }
 
-.fotter {
-  margin-right: 104px;
+.appHeader {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: fixed;
+  align-items: center;
+  z-index: 100;
+}
+
+.headerSection {
+    padding: 24px;
+    width: 100vw;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.headeritem {
+  padding-inline: 24px;
+  padding-block: 12px;
+  gap: 24px;
+}
+
+.logotype {
+  font-family: "Compressa VF";
+  font-size: 25px;
+  font-style: italic;
+
+}
+@font-face {
+  font-family: 'Compressa VF';
+  src: url('https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2');
+  font-style: italic;
+}
+
+.navHeaderItem {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 14px;
+}
+
+
+
+.text-pressure-title {
+  width: 97vw;
+}
+
+.inliner.nav-active {
+  padding-right: 231px;
+  padding-top: 0px;
+}
+
+.text-pressure-title.nav-active {
+  width: calc(97vw - 230px);
 }

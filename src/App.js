@@ -3,28 +3,46 @@ import './App.css';
 import DarkVeil from './Components/DarkVeil';
 import { Dashboard } from './Pages/Dashboard';
 import TextPressure from './Components/TextPressure';
-import { Tube } from 'ogl';
 import Nav from './Components/Nav';
+import { useState } from 'react';
+import AppHeader from './Components/AppHeader';
 
 function App() {
+  const [showNav, setShowNav] = useState(false);
+  const [hideMenuSection, setHideMenuSection] = useState(false);
+
+  const toggleNav = () => setShowNav(prev => !prev);
+  
+  const openNav = () => {
+    setHideMenuSection(true);
+    toggleNav();
+  };
+
+  const closeNav = () => {
+    setShowNav(false);
+    setHideMenuSection(false);
+  };
 
   return (
     <div className="App">
       <BrowserRouter>
         <div className='mainSection'>
-          <div className='inliner'>
             <div className='backgrond'>
               <DarkVeil />
             </div>
-            <Nav />
+            <header className='appHeader'>
+              <AppHeader handleClick={openNav} hideMenuSection={hideMenuSection}/>
+            </header>
+            {showNav && <Nav onClose={closeNav}/>}
+          <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<div>Not Fuond</div>} />
           </Routes>
           </div>
         </div>
-          <div className='fotter'>
             <TextPressure
+              showNav={showNav}
               text="MIPIBOY"
               flex={true}
               alpha={false}
@@ -36,7 +54,6 @@ function App() {
               strokeColor="#6528F7"
               minFontSize={28}
             />
-          </div>
       </BrowserRouter>
     </div>
   );

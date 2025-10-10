@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 const TextPressure = ({
+  showNav,
   text = 'Compressa',
   fontFamily = 'Compressa VF',
   // This font is just an example, you should not use it in commercial projects.
@@ -190,7 +191,7 @@ const TextPressure = ({
 
       <h1
         ref={titleRef}
-        className={`text-pressure-title ${dynamicClassName}`}
+        className={`text-pressure-title ${dynamicClassName} ${showNav ? 'nav-active' : ''}`}
         style={{
           fontFamily,
           textTransform: 'uppercase',
@@ -203,7 +204,7 @@ const TextPressure = ({
           userSelect: 'none',
           whiteSpace: 'nowrap',
           fontWeight: 100,
-          width: '88vw',
+          // width: '97vw',
           height: '100%'
         }}
       >
