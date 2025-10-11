@@ -1,20 +1,20 @@
-import SpotlightCard from './SpotlightCard';
+
+import DataTime from './Widgets/DataTime';
 
 const ContentsSections = () => {
     return (
-        
         <div className="parent">
             <div className="contents contents-300">
-                <SpotlightCard className='box'>300</SpotlightCard>
+                <div className='box'><DataTime/></div>
             </div>
             <div className="contents contents-100-1">
-                <SpotlightCard className='box'>100</SpotlightCard>
+                <div className='box'>100</div>
             </div>
             <div className="contents contents-100-2">
-                <SpotlightCard className='box'>100</SpotlightCard>
+                <div className='box'>100</div>
             </div>
             <div className="contents contents-400">
-                <SpotlightCard className='box'>400</SpotlightCard>
+                <div className='box'>400</div>
             </div>
         </div>
         );

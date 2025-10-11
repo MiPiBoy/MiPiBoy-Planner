@@ -80,7 +80,7 @@
 }
 
 .inliner {
-  padding-top: 100px;
+  padding-top: 60px;
   display: flex;
   flex-direction: row-reverse;
 }
@@ -99,29 +99,8 @@
   backdrop-filter: blur(10.5px);
 }
 
-.navItemSection {
-  top: 0;
-  right: 0;
-  border-radius: 0;
-  border-top: 0;
-  border-bottom: 0;
-  border-right: 0;
-  border-left: 1px solid #ffffff56;
-  height: 100vh;
-  width: fit-content;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 24px;
-  gap: 24px;
-  background-color: #ffffff11;
-  backdrop-filter: blur(10.5px);
-  z-index: 999;
-}
-
 .appHeader {
-  height: 100px;
+  height: fit-content;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -133,6 +112,8 @@
 
 .headerSection {
     padding: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     width: 100vw;
     display: flex;
     flex-direction: row-reverse;
@@ -151,30 +132,111 @@
   font-style: italic;
 
 }
-@font-face {
-  font-family: 'Compressa VF';
-  src: url('https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2');
-  font-style: italic;
-}
-
-.navHeaderItem {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 14px;
-}
-
-
 
 .text-pressure-title {
   width: 97vw;
 }
 
 .inliner.nav-active {
-  padding-right: 231px;
+  padding-right: 225px;
   padding-top: 0px;
 }
 
 .text-pressure-title.nav-active {
-  width: calc(97vw - 230px);
+  width: calc(97vw - 225px);
+}
+
+.clock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 24px;
+}
+
+.dateSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.digital-clock {
+  font-family: 'Digital-7-Mono', monospace;
+  letter-spacing: 4px;
+  font-size: 34px;
+}
+
+.dateDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dateSection p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.navItemSection {
+  top: 0;
+  right: 0;
+  border-radius: 0;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+  border-left: 1px solid #ffffff56;
+  height: 100vh;
+  width: fit-content;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0px;
+  gap: 0px;
+  background-color: #ffffff11;
+  backdrop-filter: blur(10.5px);
+  z-index: 999;
+}
+
+.navHeade {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.navHeaderItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 200px;
+  height: 54px;
+  gap: 14px;
+}
+
+.navItem {
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px 12px 0px 12px;
+gap: 10px;
+width: 200px;
+height: 54px;
+}
+.enableItem, .navItem:hover {
+  background: #ffffff11;
+}
+
+.navItem p {
+  font-size: 16px;
+}
+
+ .navItemSection a {
+  color: var(--W1); /* رنگ پیش‌فرض لینک */
+  text-decoration: none; /* حذف زیرخط */
+}
+
+ .navItemSection a:visited {
+  color: var(--W1); /* رنگ لینک بعد از کلیک */
 }

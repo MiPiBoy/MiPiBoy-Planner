@@ -77,6 +77,27 @@
   font-weight: 900;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Digital-7';
+  src: url('fonts/digital-7.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Digital-7-Italic';
+  src: url('fonts/digital-7-italic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Digital-7-Mono';
+  src: url('fonts/digital-7-mono.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Digital-7-Mono-Italic';
+  src: url('fonts/digital-7-mono-italic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Compressa VF';
+  src: url('https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2');
+  font-style: italic;
+}
 
 ::-webkit-scrollbar {
   width: 14px;

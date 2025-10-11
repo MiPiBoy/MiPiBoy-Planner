@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import DarkVeil from './Components/DarkVeil';
+import DarkVeil from './Components/ReadyToUse/DarkVeil';
 import { Dashboard } from './Pages/Dashboard';
-import TextPressure from './Components/TextPressure';
+import TextPressure from './Components/ReadyToUse/TextPressure';
 import Nav from './Components/Nav';
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 
 function App() {
-  const [showNav, setShowNav] = useState(false);
-  const [hideMenuSection, setHideMenuSection] = useState(false);
+  const [showNav, setShowNav] = useState(true);
+  const [hideMenuSection, setHideMenuSection] = useState(true);
 
   const toggleNav = () => setShowNav(prev => !prev);
   
@@ -36,7 +36,7 @@ function App() {
             {showNav && <Nav onClose={closeNav}/>}
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<div>Not Fuond</div>} />
           </Routes>
           </div>
