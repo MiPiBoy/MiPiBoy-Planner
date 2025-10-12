@@ -35,8 +35,8 @@ const Data = () => {
     return (
     <div className="dateDisplay">
         <div className='dateSection'>
-            <p>{dateInfo.persianWeekday} {dateInfo.persianDay} {dateInfo.persianMonth}</p>
             <p>{dateInfo.persianFull}</p>
+            <p>{dateInfo.persianWeekday} {dateInfo.persianDay} {dateInfo.persianMonth}</p>
         </div>
         <div className='dateSection'>
             <p>{dateInfo.gregorianWeekday} {dateInfo.gregorianDay} {dateInfo.gregorianMonth}</p>

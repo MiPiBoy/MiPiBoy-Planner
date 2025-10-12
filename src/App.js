@@ -8,8 +8,8 @@ import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 
 function App() {
-  const [showNav, setShowNav] = useState(true);
-  const [hideMenuSection, setHideMenuSection] = useState(true);
+  const [showNav, setShowNav] = useState(false);
+  const [hideMenuSection, setHideMenuSection] = useState(false);
 
   const toggleNav = () => setShowNav(prev => !prev);
   

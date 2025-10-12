@@ -111,19 +111,30 @@
 }
 
 .headerSection {
-    padding: 24px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    width: 100vw;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
+  padding: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
 }
 
 .headeritem {
-  padding-inline: 24px;
-  padding-block: 12px;
-  gap: 24px;
+  display: flex;
+  padding: 0px;
+  align-items: center;
+}
+.navOpenIcon{
+  width: 135px;
+  display: flex;
+  justify-content: flex-end;
+}
+.logoSection{
+  width: 135px;
+  display: flex;
+  gap: 12px;
+
 }
 
 .logotype {
@@ -239,4 +250,107 @@ height: 54px;
 
  .navItemSection a:visited {
   color: var(--W1); /* رنگ لینک بعد از کلیک */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.input-wrapper {
+  width: 100%;
+  height: 40px;
+  padding: 5px;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  width: 40px;
+  margin-left: 8px;
+  transition: all 0.3s;
+}
+.input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding-left: 15px;
+  background-color: #00000000;
+  color: white;
+  font-size: 1em;
+}
+.input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #292524 inset;
+  -webkit-text-fill-color: #ffffff;
+}
+.Subscribe-btn {
+  height: 100%;
+  width: 50px;
+  border: none;
+  border-radius: 15px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: #ffffff00;
+  font-weight: 500;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s;
+}
+.arrow {
+  /* display: none; */
+  position: absolute;
+  margin-right: 150px;
+  transition: all 0.3s;
+  fill: #ffffff;
+}
+.input-wrapper:active .icon {
+  transform: scale(2) translateY(7px) translateX(-5px) rotateZ(30deg);
+}
+.Subscribe-btn:hover {
+  color: #ffffff00;
+}
+.Subscribe-btn:hover .arrow {
+  margin-right: 0;
+  animation: jello-vertical 0.9s both;
+  transform-origin: right;
+}
+
+@keyframes jello-vertical {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  40% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  50% {
+    transform: scale3d(0.85, 1.15, 1);
+  }
+  65% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  75% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+.Subscribe-btn:active {
+  transform: scale(0.9);
 }
