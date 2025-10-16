@@ -6,6 +6,15 @@
   align-items: center;
 }
 
+p {
+  color: var(--w1);
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+
 .inGlassBox {
   display: flex;
   flex-direction: column;
@@ -353,4 +362,81 @@ height: 54px;
 }
 .Subscribe-btn:active {
   transform: scale(0.9);
+}
+
+
+
+.title {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.subtitle {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--w5);
+  font-weight: 200;
+}
+
+.titleDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.sortCuts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0px;
+}
+
+.shortCut {
+  box-sizing:border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding-block: 7px;
+  /* padding-inline: 7px; */
+  padding-inline: 24px;
+}
+
+.shortCut:hover {
+  background: #ffffff11;
+}
+
+.shortCutPhoto {
+  width: 35px;
+  height: 35px;
+}
+
+.shortCutTitle{
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.shortCutSubtitle{
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  color: var(--w5);
+  font-weight: 200;
+}
+
+.editButtonDiv {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }

@@ -1,0 +1,265 @@
+/*
+    ButtonMipiboy
+Size
+    Large
+    Medium
+    Small
+borderRadius
+    Br0
+    Br4
+    Br8
+    Br16
+    Pill
+Type
+    Primary
+    Secondary
+    Outline
+
+<div className='ButtonMipiboy, Medium, Pill, Primary' >
+    <svg></svg>
+    <span>ویرایش</span>
+    <svg></svg>
+</div>
+*/
+
+
+:root {
+    --primary: #501BCE;
+    --primary2: #270D67;
+    --primary3: #3C2A8F;
+    --secondary: #DBCDFD;
+    --secondary2: #F0EAFF;
+    --background: #FFFFFF;
+    --border: #FFFFFF;
+    --font: #FFFFFF;
+    --disable: #ADADAD;
+
+    --b10: #38383888;
+    --b5: #27272788;
+}
+.ButtonMipiboy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.ButtonMipiboy span {
+    font-family: 'YekanBakh';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+}
+.ButtonMipiboy svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Size */
+.Large{
+    padding: 14px 32px;
+}
+.Medium{
+    padding: 10px 24px;
+}
+.Small{
+    padding: 6px 16px;
+}
+
+/* borderRadius */
+.Br0{
+    border-radius: 0px;
+}
+.Br4{
+    border-radius: 4px;
+}
+.Br8{
+    border-radius: 8px;
+}
+.Br16{
+    border-radius: 16px;
+}
+.Pill{
+    border-radius: 9999px;
+}
+
+/* Type = Primary, State */
+.Primary svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Primary span {
+    color: var(--font);
+}
+.Primary{
+    background: var(--primary);
+}
+.Primary:hover svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Primary:hover span {
+    color: var(--font);
+}
+.Primary:hover{
+    background: var(--primary2);
+}
+.Primary:focus svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Primary:focus span {
+    color: var(--font);
+}
+.Primary:focus{
+    background: var(--primary);
+    border: 2px solid var(--border);
+    box-shadow: 0px 0px 0px 2px var(--primary3);
+}
+.Primary:disabled svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Primary:disabled span {
+    color: var(--font);
+}
+.Primary:disabled{
+    background: var(--disable);
+}
+
+/* Type = Secondary, State */
+.Secondary svg {
+    fill: var(--primary);
+    stroke: var(--primary);
+}
+.Secondary span {
+    color: var(--primary);
+}
+.Secondary{
+    background: var(--secondary);
+}
+.Secondary:hover svg {
+    fill: var(--primary2);
+    stroke: var(--primary2);
+}
+.Secondary:hover span {
+    color: var(--primary2);
+}
+.Secondary:hover{
+    background: var(--secondary2);
+}
+.Secondary:focus svg {
+    fill: var(--primary);
+    stroke: var(--primary);
+}
+.Secondary:focus span {
+    color: var(--primary);
+}
+.Secondary:focus{
+    background: var(--secondary);
+    border: 2px solid var(--border);
+    box-shadow: 0px 0px 0px 2px var(--primary3);
+}
+.Secondary:disabled svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Secondary:disabled span {
+    color: var(--font);
+}
+.Secondary:disabled{
+    background: var(--disable);
+}
+
+/* Type = Outline, State */
+.Outline svg {
+    fill: var(--primary);
+    stroke: var(--primary);
+}
+.Outline span {
+    color: var(--primary);
+}
+.Outline{
+    background: #00000000;
+    border: 2px solid var(--primary);
+}
+.Outline:hover svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Outline:hover span {
+    color: var(--font);
+}
+.Outline:hover{
+    background: var(--primary);
+}
+.Outline:focus svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Outline:focus span {
+    color: var(--font);
+}
+.Outline:focus{
+    background: var(--primary);
+    border: 2px solid var(--border);
+    box-shadow: 0px 0px 0px 2px var(--primary3);
+}
+.Outline:disabled svg {
+    fill: var(--disable);
+    stroke: var(--disable);
+}
+.Outline:disabled span {
+    color: var(--disable);
+}
+.Outline:disabled{
+    background: #00000000;
+    border: 2px solid var(--disable);
+}
+
+/* Type = Gray, State */
+.Gray svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Gray span {
+    color: var(--font);
+}
+.Gray{
+    background: var(--b10);
+}
+.Gray:hover svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Gray:hover span {
+    color: var(--font);
+}
+.Gray:hover{
+    background: var(--b5);
+}
+.Gray:focus svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Gray:focus span {
+    color: var(--font);
+}
+.Gray:focus{
+    background: var(--b10);
+    border: 2px solid var(--border);
+    box-shadow: 0px 0px 0px 2px var(--b10);
+}
+.Gray:disabled svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.Gray:disabled span {
+    color: var(--font);
+}
+.Gray:disabled{
+    background: var(--disable);
+}

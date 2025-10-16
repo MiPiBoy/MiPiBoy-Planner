@@ -1,5 +1,7 @@
-
 import DataTime from './Widgets/DataTime';
+import DayChart from './Widgets/DayChart';
+import SiteShortcut from './Widgets/SiteShortcut';
+
 
 const ContentsSections = () => {
     return (
@@ -8,10 +10,12 @@ const ContentsSections = () => {
                 <div className='box'><DataTime/></div>
             </div>
             <div className="contents contents-100-1">
-                <div className='box'>100</div>
+                <div style={{paddingInline:0}} className='box'><SiteShortcut/></div>
             </div>
             <div className="contents contents-100-2">
-                <div className='box'>100</div>
+                <div className='box'>
+                    <DayChart/>
+                </div>
             </div>
             <div className="contents contents-400">
                 <div className='box'>400</div>

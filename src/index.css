@@ -120,11 +120,6 @@
   color: var(--B2);
 }
 
-h1,h2,h3,h4,h5,h6 {
-  margin-block-start: 0px;
-  margin-block-end: 0px;
-}
-
 body {
   background-color: var(--B1);
   margin: 0;
@@ -140,4 +135,37 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+p,h1,h2,h3,h4,h5,h6 {
+  color: var(--w1);
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  appearance: auto;
+  text-rendering: auto;
+  color: var(--w1);
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: center;
+  cursor: default;
+  box-sizing: border-box;
+  background-color: var(--p1);
+  margin: 0em 0em 0em 0em;
+  padding-block: 0px;
+  padding-inline: 0px;
+  border-width: 0px;
+  border-radius: 16px;
+  border-style: inset;
+  border-color: var(--p1);
+  border-image: initial;
 }
