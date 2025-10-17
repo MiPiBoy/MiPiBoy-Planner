@@ -27,6 +27,23 @@
   --p3: #7D49F8;
   --p4: #B89CFC;
   --p5: #DBCDFD;
+  --p6: #0F061D;
+  --p7: #200c4a;
+  --p8: #280f60;
+  --p9: #301176;
+  --p10: #4016A2;
+
+
+  --primary: #501BCE;
+  --primary2: #270D67;
+  --primary3: #3C2A8F;
+  --secondary: #DBCDFD;
+  --secondary2: #F0EAFF;
+  --background: #FFFFFF;
+  --border: #FFFFFF;
+  --font: #FFFFFF;
+  --disable: #ADADAD;
+
 }
 
 @font-face {
@@ -139,7 +156,7 @@ code {
 
 p,h1,h2,h3,h4,h5,h6 {
   color: var(--w1);
-  direction: rtl;
+  /* direction: rtl; */
   text-align: right;
   margin: 0;
   padding: 0;
@@ -157,7 +174,7 @@ button {
   text-shadow: none;
   display: inline-block;
   text-align: center;
-  cursor: default;
+  cursor: pointer;
   box-sizing: border-box;
   background-color: var(--p1);
   margin: 0em 0em 0em 0em;
@@ -165,7 +182,7 @@ button {
   padding-inline: 0px;
   border-width: 0px;
   border-radius: 16px;
-  border-style: inset;
+  border-style: solid;
   border-color: var(--p1);
   border-image: initial;
 }

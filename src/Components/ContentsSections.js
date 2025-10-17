@@ -1,3 +1,5 @@
+import AddTaskForm from './AddTaskForm';
+import SubmitForm from './SubmitForm';
 import DataTime from './Widgets/DataTime';
 import DayChart from './Widgets/DayChart';
 import SiteShortcut from './Widgets/SiteShortcut';
@@ -18,7 +20,9 @@ const ContentsSections = () => {
                 </div>
             </div>
             <div className="contents contents-400">
-                <div className='box'>400</div>
+                <div className='box'>
+                    <SubmitForm/>
+                </div>
             </div>
         </div>
         );

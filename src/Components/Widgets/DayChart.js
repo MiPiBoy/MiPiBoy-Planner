@@ -6,12 +6,11 @@ const DayChart = () => {
             <p className='title'>وظایف روز</p>
             <p className='subtitle'>دید کلی از نمودار وظایف امروزت، فقط انجامش بده.</p>
         </div>
-
-    <div className='editButtonDiv'>
-        <div className='Gray Medium Pill ButtonMipiboy' style={{width: "100%", boxSizing: "border-box"}} >
+    
+        <button className='Gray Medium Pill ButtonMipiboy' style={{width: "100%", boxSizing: "border-box"}} >
             <span>ویرایش</span>    
-        </div>
-    </div>
+        </button>
+    
     </div>
 );
 }

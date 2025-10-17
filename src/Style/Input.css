@@ -1,0 +1,31 @@
+.formInput {
+  background-image: url('/src/assets/logo.svg');
+}
+
+.formInput[type=text] {
+  background: #00000000;
+  border: 0px;
+  padding: 10px;
+  text-align: right;
+  direction: rtl;
+  color: var(--w1);
+  font-family: 'YekanBakh';
+  border-bottom: solid 2px var(--B10);
+  background-position: 7.5px 7.5px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+}
+.formInput:focus{
+  outline-offset: 10px;
+  border: 0px;
+  border-bottom: solid 2px greenyellow;
+  outline: none;
+}
+
+.formInput:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #00000000 inset !important;
+  -webkit-text-fill-color: white !important;
+  border-bottom: solid 2px white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
