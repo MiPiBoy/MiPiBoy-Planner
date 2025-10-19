@@ -38,6 +38,7 @@ Type
     --b5: #27272788;
 }
 .ButtonMipiboy {
+    user-select: none;
     display: flex;
     flex-direction: row;
     align-items: center;

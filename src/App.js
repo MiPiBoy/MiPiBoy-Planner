@@ -6,6 +6,7 @@ import TextPressure from './Components/ReadyToUse/TextPressure';
 import Nav from './Components/Nav';
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
+import { NotFound } from './Pages/NotFound';
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -37,7 +38,7 @@ function App() {
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="*" element={<div>Not Fuond</div>} />
+            <Route path="*" element={<NotFound/>} />
           </Routes>
           </div>
         </div>

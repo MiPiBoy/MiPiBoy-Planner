@@ -1,0 +1,72 @@
+.customCheckBoxInput {
+    display: none;
+}
+
+.CheckButtonSize{
+    padding: 8.5px 16px;
+}
+
+.CheckButtonMipiboy {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.CheckButtonMipiboy span, .CheckButtonMipiboy{
+    font-family: 'YekanBakh';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+}
+.CheckButtonMipiboy svg {
+    width: 16px;
+    height: 16px;
+}
+
+.CheckButton svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.CheckButton span, .CheckButton{
+    color: var(--font);
+}
+.CheckButton{
+    background: var(--b5);
+}
+.CheckButton:hover svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.CheckButton:hover span, .CheckButton:hover{
+    color: var(--font);
+}
+.CheckButton:hover{
+    background: var(--b5);
+}
+.customCheckBoxInput:checked + .CheckButton svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.customCheckBoxInput:checked + .CheckButton span,.customCheckBoxInput:checked +  .CheckButton{
+    color: var(--font);
+}
+.customCheckBoxInput:checked + .CheckButton{
+    background: var(--b5);
+    border: 2px dotted var(--border);
+    box-shadow: 0px 0px 0px 2px var(--b5);
+}
+.CheckButton:disabled svg {
+    fill: var(--font);
+    stroke: var(--font);
+}
+.CheckButton:disabled span, .CheckButton:disabled{
+    color: var(--font);
+}
+.CheckButton:disabled{
+    background: var(--disable);
+}
