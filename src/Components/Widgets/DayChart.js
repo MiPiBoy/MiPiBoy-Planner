@@ -1,7 +1,7 @@
 const DayChart = () => {
 
   return (
-    <div style={{gap: "24px",display: "flex",flexDirection: "column"}}>
+    <div style={{gap: "24px",display: "flex",flexDirection: "column", width: "100%"}}>
         <div className='titleDiv'>
             <p className='title'>وظایف روز</p>
             <p className='subtitle'>دید کلی از نمودار وظایف امروزت، فقط انجامش بده.</p>

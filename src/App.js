@@ -37,7 +37,7 @@ function App() {
             {showNav && <Nav onClose={closeNav}/>}
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard showNav={showNav} />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
           </div>

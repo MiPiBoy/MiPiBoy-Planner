@@ -7,7 +7,7 @@ import shortCutPhoto4 from '../../assets/shortCutPhoto4.png';
 const SiteShortcut = () => {
 
   return (
-    <div style={{gap: "24px",display: "flex",flexDirection: "column"}}>
+    <div style={{gap: "24px",display: "flex",flexDirection: "column",width:"100%"}}>
     <div className='titleDiv' style={{paddingInline: "24px"}}>
         <p className='title'>سایت و برنامه ها</p>
         <p className='subtitle'>میانبری به سایت های پر استفاده</p>

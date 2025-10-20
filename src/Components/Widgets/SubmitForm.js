@@ -1,5 +1,6 @@
-import "../Style/SwitchButton.css"
-import "../Style/CheckButton.css"
+import "../../Style/SwitchButton.css"
+import "../../Style/CheckButton.css"
+import "../../Style/Input.css"
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

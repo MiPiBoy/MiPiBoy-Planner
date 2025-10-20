@@ -1,25 +1,24 @@
-import AddTaskForm from './AddTaskForm';
-import SubmitForm from './SubmitForm';
+import SubmitForm from './Widgets/SubmitForm';
 import DataTime from './Widgets/DataTime';
 import DayChart from './Widgets/DayChart';
 import SiteShortcut from './Widgets/SiteShortcut';
 
 
-const ContentsSections = () => {
+const ContentsSections = ({showNav}) => {
     return (
-        <div className="parent">
-            <div className="contents contents-300">
+        <div className={`parent ${showNav ? 'nav-active' : ''}`}>
+            <div className={`contents contents-300 ${showNav ? 'nav-active' : ''}`}>
                 <div className='box'><DataTime/></div>
             </div>
-            <div className="contents contents-100-1">
+            <div className={`contents contents-100-1 ${showNav ? 'nav-active' : ''}`}>
                 <div style={{paddingInline:0}} className='box'><SiteShortcut/></div>
             </div>
-            <div className="contents contents-100-2">
+            <div className={`contents contents-100-2 ${showNav ? 'nav-active' : ''}`}>
                 <div className='box'>
                     <DayChart/>
                 </div>
             </div>
-            <div className="contents contents-400">
+            <div className={`contents contents-400 ${showNav ? 'nav-active' : ''}`}>
                 <div className='box'>
                     <SubmitForm/>
                 </div>
