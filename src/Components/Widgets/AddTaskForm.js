@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { supabase } from '../../utils/supabase'
 
 const dateRegex = new RegExp(
   `^(` +
@@ -17,7 +18,7 @@ const dateRegex = new RegExp(
 
 const timeRegex = /^$|^([01]?[0-9]|2[0-3])(:[0-5]?[0-9])?$/;
 
-const SubmitForm = () => {
+const AddTaskForm = () => {
 
   const schema = yup.object().shape({
     name : yup.string().required("فیلد نام اجباری است"),
@@ -56,20 +57,30 @@ const SubmitForm = () => {
   setToggleState(!toggleState);
   };
 
-  const { register, handleSubmit, setValue, reset, formState:{errors} } = useForm({resolver: yupResolver(schema)});
+  const { register, handleSubmit, setValue, reset, formState:{errors} } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {repeatDays: ['0', '1', '2', '3', '4', '5', '6']}
+  });
 
-  const onFormSubmit = (data) => {
-    console.log(data);
-    console.log(`تسک ${data.name} افزوده شد`)
-    alert(`تسک ${data.name} افزوده شد`)
-    reset({
-      name: "",
-      description: "",
-      data: "",
-      taData: "",
-      time: "",
-      repeatDays: []
-    })
+
+  const onFormSubmit = async (data) => {
+    const { data: insertedData, error } = await supabase
+      .from('Tasks')
+      .insert([data]);
+    if (error) {
+      console.error("❌ خطا در ثبت تسک:", error.message);
+    } else {
+      console.log(`✅ تسک ${data.name} ثبت شد:`, data);
+      alert(`تسک ${data.name} افزوده شد`)
+      reset({
+        name: "",
+        description: "",
+        data: "",
+        taData: "",
+        time: "",
+        repeatDays: []
+      })
+    }
   };
   return (
     <div style={{width: "100%", gap: "24px",display: "flex",flexDirection: "column"}}>
@@ -105,7 +116,7 @@ const SubmitForm = () => {
       </div>
 
       <input style={{display: dataDisplay}} className="formInput" type="text" placeholder="تا تاریخ" {...register("taData")} />
-      {errors.taData && (<style>{`.formInput[type="text"] {border-bottom: solid 2px #rrrrrr;}`}</style>,<p style={{fontSize: 10, padding: "8px"}}>{errors.data.message}</p>)}
+      {errors.taData && (<style>{`.formInput[type="text"] {border-bottom: solid 2px #rrrrrr;}`}</style>,<p style={{fontSize: 10, padding: "8px"}}>{errors.taData.message}</p>)}
 
       <div style={{display: datalableDisplay2}} className="formLable">
         <span>تاریخ</span>
@@ -164,4 +175,4 @@ const SubmitForm = () => {
     </div>
   );
 };
-export default SubmitForm;
+export default AddTaskForm;

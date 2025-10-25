@@ -1,4 +1,5 @@
-import SubmitForm from './Widgets/SubmitForm';
+import DaysTaskChekbox from './Widgets/DaysTaskChekbox';
+import AddTaskForm from './Widgets/AddTaskForm';
 import DataTime from './Widgets/DataTime';
 import DayChart from './Widgets/DayChart';
 import SiteShortcut from './Widgets/SiteShortcut';
@@ -20,7 +21,10 @@ const ContentsSections = ({showNav}) => {
             </div>
             <div className={`contents contents-400 ${showNav ? 'nav-active' : ''}`}>
                 <div className='box'>
-                    <SubmitForm/>
+                    <DaysTaskChekbox/>
+                </div>
+                <div className='box'>
+                    <AddTaskForm/>
                 </div>
             </div>
         </div>
