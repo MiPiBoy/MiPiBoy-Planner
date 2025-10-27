@@ -1,10 +1,11 @@
 import "../../Style/SwitchButton.css"
 import "../../Style/CheckButton.css"
 import "../../Style/Input.css"
+import jalaali from 'jalaali-js';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from '../../utils/supabase'
 
 const dateRegex = new RegExp(
@@ -63,14 +64,75 @@ const AddTaskForm = () => {
   });
 
 
+  const [dateInfo, setDateInfo] = useState({});
+
+  useEffect(() => {
+    const now = new Date();
+
+    const { jy, jm, jd } = jalaali.toJalaali(now);
+    const persianNow = `${jy}/${jm}/${jd}`;
+    const persianDay = `${jy}/${jm}/${jd}`;
+    const persianMonth = `/${jm}/${jy}`;
+    const persianYear = `/${jy}`;
+
+    setDateInfo({
+      persianNow,
+      persianDay,
+      persianMonth,
+      persianYear,
+    });
+  }, []);
+
   const onFormSubmit = async (data) => {
+
+      let finalDate = data.data;
+
+      if (data.data !== '') {
+        const parts = data.data.split('/');
+
+        if (parts.length === 1) {
+          finalDate = `${data.data}${dateInfo.persianMonth}`;
+        } else if (parts.length === 2) {
+          finalDate = `${data.data}${dateInfo.persianYear}`;
+        }
+      }
+
+      let finalTaDate = data.taData;
+
+      if (data.taData !== '') {
+        const parts = data.taData.split('/');
+
+        if (parts.length === 1) {
+          finalTaDate = `${data.taData}${dateInfo.persianMonth}`;
+        } else if (parts.length === 2) {
+          finalTaDate = `${data.taData}${dateInfo.persianYear}`;
+        }
+      }
+
+    let finalTime = data.time;
+
+      if (data.time !== '') {
+        const parts = data.time.split(':');
+
+        if (parts.length === 1) {
+          finalTime = `${data.time}:00`;
+        }
+      }
+
+    const payload = {
+      ...data,
+      time: finalTime,
+      data: finalDate,
+      taData: finalTaDate
+    };
+
     const { data: insertedData, error } = await supabase
       .from('Tasks')
-      .insert([data]);
+      .insert([payload]);
     if (error) {
-      console.error("❌ خطا در ثبت تسک:", error.message);
+      console.error("خطا در ثبت تسک:", error.message);
     } else {
-      console.log(`✅ تسک ${data.name} ثبت شد:`, data);
+      console.log(`تسک ${data.name} ثبت شد:`, data);
       alert(`تسک ${data.name} افزوده شد`)
       reset({
         name: "",
@@ -78,7 +140,7 @@ const AddTaskForm = () => {
         data: "",
         taData: "",
         time: "",
-        repeatDays: []
+        repeatDays: ['0', '1', '2', '3', '4', '5', '6']
       })
     }
   };
