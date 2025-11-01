@@ -557,3 +557,26 @@ height: 54px;
   gap: 8px;
   margin-top: 12px;
 }
+
+
+
+
+
+
+
+
+
+
+.erert {
+  position: absolute;
+  display: flex;
+  width: 310px; 
+  height: 100%;
+}
+
+
+.liquid-glass-root {
+  display: block !important;
+  width: 100%;
+  /* یا هر اندازه‌ای که می‌خواهی */
+}

@@ -7,6 +7,7 @@ import Nav from './Components/Nav';
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
+import { Tasks } from './Pages/Tasks';
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -38,6 +39,7 @@ function App() {
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard showNav={showNav} />} />
+            <Route path="/tasks" element={<Tasks/>} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
           </div>

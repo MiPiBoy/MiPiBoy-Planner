@@ -1,67 +1,74 @@
-import "../../Style/Task.css"
+
 import jalaali from 'jalaali-js';
-import { useEffect, useState } from 'react';
-import { fetchTasks } from '../../API/fetchTasks';
 
 
-const DaysTaskChekbox = () => {
 
-  const [dateInfo, setDateInfo] = useState({});
 
-  useEffect(() => {
-    const now = new Date();
 
-    const { jy, jm, jd } = jalaali.toJalaali(now);
-    const persianNow = `${jd}/${jm}/${jy}`;
-    const persianWeekday = now.toLocaleString('fa-IR', { weekday: 'long' });
-    const persianDay = `${jd}`;
-    const persianMonth = `${jm}`;
-    const persianYear = `/${jy}`;
+const DaystasksChekbox = ({ tasks = [] }) => {
 
-    setDateInfo({
-      persianWeekday,
-      persianNow,
-      persianDay,
-      persianMonth,
-      persianYear,
-    });
-  }, []);
 
-  const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      const result = await fetchTasks();
-      setTasks(result);
-    };
 
-    loadTasks();
-  }, []);
+const generateJalaliDays = (startOffset = 0, count = 10) => {
+  const days = [];
+  const today = new Date();
+
+  for (let i = startOffset; i < startOffset + count; i++) {
+    const future = new Date(today);
+    future.setDate(today.getDate() + i);
+
+    const { jy, jm, jd } = jalaali.toJalaali(future);
+    const formatted = `${jd}/${jm}/${jy}`;
+    days.push(formatted);
+  }
+
+  return days;
+};
+
+const days = generateJalaliDays();
+
+
+
+
+const shouldShowtasksForDate = (tasks, day) => {
+  const tasksData = tasks.data;
+  const tasksTaData = tasks.taData;
+
+  // اگر هر دو خالی باشن → نمایش بده
+  if (!tasksData && !tasksTaData) return true;
+
+  // اگر data برابر با روز باشه → نمایش بده
+  if (tasksData === day) return true;
+
+  // اگر taData بزرگ‌تر از روز باشه → نمایش بده
+  if (tasksTaData >= day) return true;
+
+  // در غیر این صورت → نمایش نده
+  return false;
+};
+
+
+
 
   return (
-    <div className="checkList" style={{width: "100%"}}>
-      <p className='title'>لیست وظایف</p>
-      {tasks.map((task, index) => (
-        <div className="tasksList">
-          <div className='showTask' key={index}>
-            <div className="taskName">
-              <p for={task.code}>{task.name}</p>
-              <input value={task.code} type="checkbox" id={task.code}/>
+    <div>
+      {days.map((day, index) => (
+        <div key={index} className="day-box">
+          <h3>روز {index + 1} - {day}</h3>
+          {tasks.filter(tasks => shouldShowtasksForDate(tasks, day)).map((tasks, i) => (
+            <div key={i} className="tasks-card">
+              <p>{tasks.name}</p>
+              <p>{tasks.description}</p>
+              <p>data: {tasks.data}</p>
+              <p>taData: {tasks.taData}</p>
+              <p>ساعت: {tasks.time}</p>
             </div>
-            <div className="taskInfo">
-              <p className="taskInfoTitle">ساعت:</p>
-              <p className="taskInfoValue">{task.time}</p>
-            </div>
-            <div className="taskInfo">
-              <p className="taskInfoTitle">یاداشت:</p>
-              <p className="taskInfoValue">{task.description}</p>
-            </div>
-          </div>
-          <span className="daynum"><p>{dateInfo.persianDay}</p></span>
+          ))}
         </div>
       ))}
     </div>
   );
 };
 
-export default DaysTaskChekbox;
+export default DaystasksChekbox;
