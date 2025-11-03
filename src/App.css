@@ -40,7 +40,7 @@ p {
   position: fixed;
   left: 0;
   width: 100vw;
-  height: -webkit-fill-available;
+  height: 100vh;
   z-index: -1;
   pointer-events: none;
 }
@@ -564,19 +564,63 @@ height: 54px;
 
 
 
-
-
-
-.erert {
-  position: absolute;
+.mainGrid {
+  width: 100%;
+  height: calc(100vh - 110px);
+  min-height: 500px;
+  max-height: 1000px;
+  max-width: 1440px;
   display: flex;
-  width: 310px; 
+  justify-content: center;
+  gap: 24px;
+  margin: 24px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  gap: 24px;
+}
+
+.column1 { 
+  min-width: 300px;
+}
+.column2 { 
+  width: inherit;
+}
+.column3 { 
+  min-width: 300px;
+}
+
+.clockWidget {
+  height: fit-content;
+}
+.shortcutWidget {
+  height: 166px;
+}
+.dayChartWidget {
+  height: 280px;
 }
 
 
-.liquid-glass-root {
-  display: block !important;
-  width: 100%;
-  /* یا هر اندازه‌ای که می‌خواهی */
+.widget {
+  height: inherit;
+}
+
+.widgetBox {
+
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 14px;
+}
+.apps {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }

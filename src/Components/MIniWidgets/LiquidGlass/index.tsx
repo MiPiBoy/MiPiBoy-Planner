@@ -1,4 +1,4 @@
-import { type CSSProperties, forwardRef, useCallback, useEffect, useId, useRef, useState } from "react"
+import React, { type CSSProperties, forwardRef, useCallback, useEffect, useId, useRef, useState } from "react"
 import { ShaderDisplacementGenerator, fragmentShaders } from "./shader-utils.ts"
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from "./utils.ts"
 
@@ -190,10 +190,12 @@ const GlassContainer = forwardRef<
     const backdropStyle = {
       filter: isFirefox ? null : `url(#${filterId})`,
       backdropFilter: `blur(${(overLight ? 12 : 4) + blurAmount * 32}px) saturate(${saturation}%)`,
+      background: "transparent",
+      WebkitBackdropFilter: `blur(${(overLight ? 12 : 4) + blurAmount * 32}px) saturate(${saturation}%)`,
     }
 
     return (
-      <div ref={ref} className={`relative ${className} ${active ? "active" : ""} ${Boolean(onClick) ? "cursor-pointer" : ""}`} style={style} onClick={onClick}>
+      <div ref={ref} className={`relative ${active ? "active" : ""} ${Boolean(onClick) ? "cursor-pointer" : ""}`} style={style} onClick={onClick}>
         <GlassFilter mode={mode} id={filterId} displacementScale={displacementScale} aberrationIntensity={aberrationIntensity} width={glassSize.width} height={glassSize.height} shaderMapUrl={shaderMapUrl} />
 
         <div
@@ -208,6 +210,7 @@ const GlassContainer = forwardRef<
             overflow: "hidden",
             transition: "all 0.2s ease-in-out",
             boxShadow: overLight ? "0px 16px 70px rgba(0, 0, 0, 0.75)" : "0px 12px 40px rgba(0, 0, 0, 0.25)",
+            background: "rgba(255, 255, 255, 0.05)",
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -220,8 +223,16 @@ const GlassContainer = forwardRef<
             style={
               {
                 ...backdropStyle,
-                position: "relative",
-                inset: "0",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 0,
+                borderRadius: `${cornerRadius}px`,
+                pointerEvents: "none",
               } as CSSProperties
             }
           />
@@ -268,7 +279,7 @@ interface LiquidGlassProps {
 export default function LiquidGlass({
   children,
   displacementScale = 70,
-  blurAmount = 0.0625,
+  blurAmount = 0.375,
   saturation = 140,
   aberrationIntensity = 2,
   elasticity = 0.15,
@@ -345,10 +356,11 @@ export default function LiquidGlass({
     }
 
     const rect = glassRef.current.getBoundingClientRect()
-    const pillCenterX = rect.left + rect.width / 2
-    const pillCenterY = rect.top + rect.height / 2
-    const pillWidth = glassSize.width
-    const pillHeight = glassSize.height
+    // Use actual rect dimensions instead of glassSize state
+    const pillWidth = rect.width
+    const pillHeight = rect.height
+    const pillCenterX = rect.left + pillWidth / 2
+    const pillCenterY = rect.top + pillHeight / 2
 
     const deltaX = globalMousePos.x - pillCenterX
     const deltaY = globalMousePos.y - pillCenterY
@@ -388,7 +400,7 @@ export default function LiquidGlass({
     const scaleY = 1 + Math.abs(normalizedY) * stretchIntensity * 0.3 - Math.abs(normalizedX) * stretchIntensity * 0.15
 
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`
-  }, [globalMousePos, elasticity, glassSize])
+  }, [globalMousePos, elasticity])
 
   // Helper function to calculate fade-in factor based on distance from element edges
   const calculateFadeInFactor = useCallback(() => {
@@ -397,10 +409,11 @@ export default function LiquidGlass({
     }
 
     const rect = glassRef.current.getBoundingClientRect()
-    const pillCenterX = rect.left + rect.width / 2
-    const pillCenterY = rect.top + rect.height / 2
-    const pillWidth = glassSize.width
-    const pillHeight = glassSize.height
+    // Use actual rect dimensions instead of glassSize state
+    const pillWidth = rect.width
+    const pillHeight = rect.height
+    const pillCenterX = rect.left + pillWidth / 2
+    const pillCenterY = rect.top + pillHeight / 2
 
     const edgeDistanceX = Math.max(0, Math.abs(globalMousePos.x - pillCenterX) - pillWidth / 2)
     const edgeDistanceY = Math.max(0, Math.abs(globalMousePos.y - pillCenterY) - pillHeight / 2)
@@ -408,7 +421,7 @@ export default function LiquidGlass({
 
     const activationZone = 200
     return edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone
-  }, [globalMousePos, glassSize])
+  }, [globalMousePos])
 
   // Helper function to calculate elastic translation
   const calculateElasticTranslation = useCallback(() => {
@@ -418,6 +431,7 @@ export default function LiquidGlass({
 
     const fadeInFactor = calculateFadeInFactor()
     const rect = glassRef.current.getBoundingClientRect()
+    // Use actual rect dimensions
     const pillCenterX = rect.left + rect.width / 2
     const pillCenterY = rect.top + rect.height / 2
 
@@ -427,8 +441,10 @@ export default function LiquidGlass({
     }
   }, [globalMousePos, elasticity, calculateFadeInFactor])
 
-  // Update glass size whenever component mounts or window resizes
+  // Update glass size whenever component mounts, window resizes, or content changes
   useEffect(() => {
+    if (!glassRef.current) return
+
     const updateGlassSize = () => {
       if (glassRef.current) {
         const rect = glassRef.current.getBoundingClientRect()
@@ -437,31 +453,39 @@ export default function LiquidGlass({
     }
 
     updateGlassSize()
+    
+    // Use ResizeObserver for automatic size updates
+    const resizeObserver = new ResizeObserver(() => {
+      updateGlassSize()
+    })
+    
+    resizeObserver.observe(glassRef.current)
     window.addEventListener("resize", updateGlassSize)
-    return () => window.removeEventListener("resize", updateGlassSize)
+    
+    return () => {
+      window.removeEventListener("resize", updateGlassSize)
+      resizeObserver.disconnect()
+    }
   }, [])
 
   const transformStyle = `translate(${calculateElasticTranslation().x}px, ${calculateElasticTranslation().y}px) ${isActive && Boolean(onClick) ? "scale(0.96)" : calculateDirectionalScale()}`
 
   const baseStyle = {
     ...style,
+    position: style.position || "relative",
     transform: transformStyle,
     transition: "all ease-out 0.2s",
   }
 
-  const positionStyles = {
-    position: baseStyle.position || "relative",
-    top: baseStyle.top || "0",
-    left: baseStyle.left || "0",
-  }
-
   return (
-    <>
+    <div className={className} style={{ position: "relative", display: "inline-block" }}>
       {/* Over light effect */}
       <div
         className={`bg-black transition-all duration-150 ease-in-out pointer-events-none ${overLight ? "opacity-20" : "opacity-0"}`}
         style={{
-          ...positionStyles,
+          position: "absolute",
+          top: 0,
+          left: 0,
           height: glassSize.height,
           width: glassSize.width,
           borderRadius: `${cornerRadius}px`,
@@ -472,7 +496,9 @@ export default function LiquidGlass({
       <div
         className={`bg-black transition-all duration-150 ease-in-out pointer-events-none mix-blend-overlay ${overLight ? "opacity-100" : "opacity-0"}`}
         style={{
-          ...positionStyles,
+          position: "absolute",
+          top: 0,
+          left: 0,
           height: glassSize.height,
           width: glassSize.width,
           borderRadius: `${cornerRadius}px`,
@@ -483,7 +509,7 @@ export default function LiquidGlass({
 
       <GlassContainer
         ref={glassRef}
-        className={className}
+        className=""
         style={baseStyle}
         cornerRadius={cornerRadius}
         displacementScale={overLight ? displacementScale * 0.5 : displacementScale}
@@ -508,7 +534,9 @@ export default function LiquidGlass({
       {/* Border layer 1 - extracted from glass container */}
       <span
         style={{
-          ...positionStyles,
+          position: "absolute",
+          top: 0,
+          left: 0,
           height: glassSize.height,
           width: glassSize.width,
           borderRadius: `${cornerRadius}px`,
@@ -535,7 +563,9 @@ export default function LiquidGlass({
       {/* Border layer 2 - duplicate with mix-blend-overlay */}
       <span
         style={{
-          ...positionStyles,
+          position: "absolute",
+          top: 0,
+          left: 0,
           height: glassSize.height,
           width: glassSize.width,
           borderRadius: `${cornerRadius}px`,
@@ -563,7 +593,9 @@ export default function LiquidGlass({
         <>
           <div
             style={{
-              ...positionStyles,
+              position: "absolute",
+              top: 0,
+              left: 0,
               height: glassSize.height,
               width: glassSize.width + 1,
               borderRadius: `${cornerRadius}px`,
@@ -577,7 +609,9 @@ export default function LiquidGlass({
           />
           <div
             style={{
-              ...positionStyles,
+              position: "absolute",
+              top: 0,
+              left: 0,
               height: glassSize.height,
               width: glassSize.width + 1,
               borderRadius: `${cornerRadius}px`,
@@ -591,13 +625,13 @@ export default function LiquidGlass({
           />
           <div
             style={{
-              ...baseStyle,
+              position: "absolute",
+              top: 0,
+              left: 0,
               height: glassSize.height,
               width: glassSize.width + 1,
               borderRadius: `${cornerRadius}px`,
-              position: baseStyle.position,
-              top: baseStyle.top,
-              left: baseStyle.left,
+              transform: baseStyle.transform,
               pointerEvents: "none",
               transition: "all 0.2s ease-out",
               opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
@@ -607,6 +641,6 @@ export default function LiquidGlass({
           />
         </>
       )}
-    </>
+    </div>
   )
 }
