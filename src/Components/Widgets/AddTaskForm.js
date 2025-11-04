@@ -145,7 +145,7 @@ const AddTaskForm = () => {
     }
   };
   return (
-    <div style={{width: "100%", gap: "24px",display: "flex",flexDirection: "column"}}>
+    <div style={{width: "100%", gap: "12px",display: "flex",flexDirection: "column"}}>
       <div className='titleDiv'>
           <p className='title'>افزودن وظیفه</p>
       </div>
@@ -220,16 +220,16 @@ const AddTaskForm = () => {
       </div>
 
       <div className="weekDay" style={{display: tekrarDisplay}}>
-        <input type="checkbox" id="wDN0" className="customCheckBoxInput" value="0" {...register("repeatDays")}/> <label htmlFor="wDN0" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>شنبه</span> </label>
-        <input type="checkbox" id="wDN1" className="customCheckBoxInput" value="1" {...register("repeatDays")}/> <label htmlFor="wDN1" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>یک شنبه</span> </label>
-        <input type="checkbox" id="wDN2" className="customCheckBoxInput" value="2" {...register("repeatDays")}/> <label htmlFor="wDN2" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>دو شنبه</span> </label>
-        <input type="checkbox" id="wDN3" className="customCheckBoxInput" value="3" {...register("repeatDays")}/> <label htmlFor="wDN3" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>سه شنبه</span> </label>
-        <input type="checkbox" id="wDN4" className="customCheckBoxInput" value="4" {...register("repeatDays")}/> <label htmlFor="wDN4" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>چهار شنبه</span> </label>
-        <input type="checkbox" id="wDN5" className="customCheckBoxInput" value="5" {...register("repeatDays")}/> <label htmlFor="wDN5" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>پنج شنبه</span> </label>
-        <input type="checkbox" id="wDN6" className="customCheckBoxInput" value="6" {...register("repeatDays")}/> <label htmlFor="wDN6" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>جمعه</span> </label>
+        <input type="checkbox" id="wDN0" className="customCheckBoxInput" value="0" {...register("repeatDays")}/> <label htmlFor="wDN0" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>ش</span> </label>
+        <input type="checkbox" id="wDN1" className="customCheckBoxInput" value="1" {...register("repeatDays")}/> <label htmlFor="wDN1" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>ی</span> </label>
+        <input type="checkbox" id="wDN2" className="customCheckBoxInput" value="2" {...register("repeatDays")}/> <label htmlFor="wDN2" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>د</span> </label>
+        <input type="checkbox" id="wDN3" className="customCheckBoxInput" value="3" {...register("repeatDays")}/> <label htmlFor="wDN3" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>س</span> </label>
+        <input type="checkbox" id="wDN4" className="customCheckBoxInput" value="4" {...register("repeatDays")}/> <label htmlFor="wDN4" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>چ</span> </label>
+        <input type="checkbox" id="wDN5" className="customCheckBoxInput" value="5" {...register("repeatDays")}/> <label htmlFor="wDN5" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>پ</span> </label>
+        <input type="checkbox" id="wDN6" className="customCheckBoxInput" value="6" {...register("repeatDays")}/> <label htmlFor="wDN6" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>ج</span> </label>
       </div>
 
-      <button className="Gray Medium Pill ButtonMipiboy" type="submit" style={{marginTop: "24px"}} >
+      <button className="Gray Medium Pill ButtonMipiboy" type="submit" style={{marginTop: "12px"}} >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6v12m6-6H6"/></svg>
         <span>افزودن</span>
       </button>

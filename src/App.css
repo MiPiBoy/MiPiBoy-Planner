@@ -481,7 +481,7 @@ height: 54px;
 .shortCutPhoto {
   width: 35px;
   height: 35px;
-}
+} 
 
 .shortCutTitle{
   margin: 0;
@@ -552,8 +552,9 @@ height: 54px;
 
 .weekDay {
   display: flex;
+  justify-content: center;
   flex-direction: row-reverse;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   margin-top: 12px;
 }
@@ -564,8 +565,9 @@ height: 54px;
 
 
 
-.mainGrid {
-  width: 100%;
+/* .mainGrid {
+  padding-inline: 324px;
+  width: calc(100vw - 696px);
   height: calc(100vh - 110px);
   min-height: 500px;
   max-height: 1000px;
@@ -573,54 +575,100 @@ height: 54px;
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin: 24px;
+  margin-block: 24px;
+} */
+
+.mainGrid {
+width: 100%;
+height: calc(100vh - 110px);
+min-height: 500px;
+max-height: 1000px; 
+max-width: 1440px;
+display: flex;
+justify-content: center;
+gap: 24px;
+margin-block: 24px;
+margin-inline: 24px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
-  height: 100%;
   gap: 24px;
 }
 
 .column1 { 
   min-width: 300px;
+  max-width: 300px;
 }
 .column2 { 
-  width: inherit;
+  width: 100%;
 }
 .column3 { 
   min-width: 300px;
+  max-width: 300px;
 }
 
 .clockWidget {
   height: fit-content;
 }
 .shortcutWidget {
-  height: 166px;
+  height: fit-content;
 }
 .dayChartWidget {
-  height: 280px;
+  min-height: 280px;
+}
+.notesWidget {
+  min-height: 250px;
 }
 
 
 .widget {
-  height: inherit;
+  height: 100%;
 }
 
-.widgetBox {
 
+.appsShortcut {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  justify-items: start;
+  height: fit-content;
+}
+.shortCutIcon {
+  border: solid 1px #ffffff;
+  border-radius: 20%;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;
+}
+.appShort {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 14px;
-  gap: 14px;
-}
-.apps {
-  display: flex;
-  flex-direction: row;
-  gap: 14px;
-  overflow-x: auto;
-  flex-wrap: wrap;
   justify-content: flex-start;
-  align-items: flex-start;
 }
+
+
+
+.appsShortcut::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.appsShortcut::-webkit-scrollbar-thumb {
+  background-color: var(--p2);
+  border-radius: 10px;
+  border: 0px;
+}
+
+.appsShortcut::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+.appsShortcut::selection {
+  background: #00000000;
+  color: #00000000;
+}
+

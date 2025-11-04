@@ -7,6 +7,7 @@ import LiquidGlass from '../Components/MIniWidgets/LiquidGlass/index.tsx';
 import MagicBento, { GlobalSpotlight } from '../Components/ReadyToUse/MagicBento'
 import '../Components/ReadyToUse/MagicBento.css';
 import AddTaskForm from '../Components/Widgets/AddTaskForm';
+import AppsShortcut from '../Components/Widgets/AppsShortcut.js';
 import DataTime from '../Components/Widgets/DataTime';
 import { useRef } from 'react';
 
@@ -24,7 +25,7 @@ export const Tasks = () => {
 
           <div className='column column1'>
             <MagicBento className='clockWidget' enableSpotlight={false}>
-              <div className='widgetBox'>
+              <div style={{padding: '14px'}} className='widgetBox'>
                 <DataTime/>
               </div>
             </MagicBento>
@@ -39,31 +40,24 @@ export const Tasks = () => {
             <MagicBento className='widget lifeViewerWidget' enableSpotlight={false}>
               <div className='widgetBox'>
                 lifeViewerWidget
-                <AddTaskForm/>
+              </div>
+            </MagicBento>
+            <MagicBento className='notesWidget' enableSpotlight={false}>
+              <div className='widgetBox'>
+                notesWidget
               </div>
             </MagicBento>
             <div className='shortcutWidget'>
-              <div className='widgetBox apps'>
-                <div padding='20px' cornerRadius='20' className='app'>
-                  <img src={shortCutPhoto1} className='shortCutPhoto'/>
-                </div>
-                <div padding='20px' cornerRadius='20' className='app'>
-                  <img src={shortCutPhoto2} className='shortCutPhoto'/>
-                </div>
-                <div padding='20px' cornerRadius='20' className='app'>
-                <img src={shortCutPhoto3} className='shortCutPhoto'/>
-                </div>
-                <div padding='20px' cornerRadius='20' className='app'>
-                <img src={shortCutPhoto4} className='shortCutPhoto'/>
-                </div>
+              <div className='widgetBox'>
+                <AppsShortcut/>
               </div>
             </div>
           </div>
 
           <div className='column column3'>
             <MagicBento className='widget tasksWidget' enableSpotlight={false}>
-              <div className='widgetBox'>
-                tasksWidget
+              <div style={{padding: '14px'}} className='widgetBox'>
+                <AddTaskForm/>
               </div>
             </MagicBento>
             <MagicBento className='dayChartWidget' enableSpotlight={false}>
