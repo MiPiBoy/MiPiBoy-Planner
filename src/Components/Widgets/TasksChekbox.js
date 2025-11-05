@@ -2,6 +2,7 @@ import "../../Style/Task.css"
 import jalaali from 'jalaali-js';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchTasks } from '../../API/fetchTasks';
+import { supabase } from '../../utils/supabase'
 
 
 const TasksChekbox = () => {
@@ -10,6 +11,7 @@ const TasksChekbox = () => {
   const [daysOffset, setDaysOffset] = useState(0);
   const [displayDays, setDisplayDays] = useState([]);
   const observerRef = useRef(null);
+  const [completedSet, setCompletedSet] = useState(new Set()); // مجموعه تسک‌های تکمیل‌شده برای تاریخ‌های قابل نمایش
 
   // تابع برای تبدیل تاریخ شمسی به فرمت قابل مقایسه
   const parsePersianDate = (dateString) => {
@@ -162,6 +164,32 @@ const TasksChekbox = () => {
     setDisplayDays(days);
   }, [daysOffset]);
 
+  // واکشی وضعیت تکمیل‌شدن‌ها از CompletionStatus برای تاریخ‌های قابل نمایش
+  useEffect(() => {
+    const fetchCompletionStatuses = async () => {
+      try {
+        if (displayDays.length === 0) return;
+        const dates = Array.from(new Set(displayDays.map(d => d.date)));
+        const { data, error } = await supabase
+          .from('CompletionStatus')
+          .select('code, date')
+          .in('date', dates);
+        if (error) {
+          console.error('خطا در دریافت وضعیت انجام تسک‌ها:', error.message);
+          return;
+        }
+        const next = new Set();
+        (data || []).forEach(row => {
+          next.add(`${row.code}|${row.date}`);
+        });
+        setCompletedSet(next);
+      } catch (e) {
+        console.error('اشکال در واکشی CompletionStatus:', e);
+      }
+    };
+    fetchCompletionStatuses();
+  }, [displayDays]);
+
   // Observer برای اسکرول (Intersection Observer)
   const lastDayElementRef = useCallback(node => {
     if (observerRef.current) observerRef.current.disconnect();
@@ -181,84 +209,133 @@ const TasksChekbox = () => {
     return tasks.filter(task => shouldShowTaskForDate(task, dayDate, dayWeekday));
   };
 
+  // رویداد تیک زدن/برداشتن تیک هر تسک
+  // اگر تیک زده شود: رکوردی با { code, date } در CompletionStatus ثبت می‌شود
+  // اگر تیک برداشته شود: همان رکورد با همان code و date حذف می‌شود
+  const handleCompletionToggle = async (taskCode, dayDate, isChecked) => {
+    try {
+      if (isChecked) {
+        const { error } = await supabase
+          .from('CompletionStatus')
+          .insert([{ code: taskCode, date: dayDate }]);
+        if (error) {
+          console.error('خطا در ثبت وضعیت انجام تسک:', error.message);
+        }
+        // به‌روزرسانی فوری UI
+        setCompletedSet(prev => {
+          const copy = new Set(prev);
+          copy.add(`${taskCode}|${dayDate}`);
+          return copy;
+        });
+      } else {
+        const { error } = await supabase
+          .from('CompletionStatus')
+          .delete()
+          .eq('code', taskCode)
+          .eq('date', dayDate);
+        if (error) {
+          console.error('خطا در حذف وضعیت انجام تسک:', error.message);
+        }
+        // به‌روزرسانی فوری UI
+        setCompletedSet(prev => {
+          const copy = new Set(prev);
+          copy.delete(`${taskCode}|${dayDate}`);
+          return copy;
+        });
+      }
+    } catch (e) {
+      console.error('اشکال در بروزرسانی CompletionStatus:', e);
+    }
+  };
+
   return (
     <div className="checkList" style={{width: "100%"}}>
       <p className='title'>لیست وظایف</p>
       
       {displayDays.map((dayObj, dayIndex) => {
         const dayTasks = getTasksForDay(dayObj.date, dayObj.weekday);
-        const isLastDay = dayIndex === displayDays.length - 1;
         const isNotLastDay = dayIndex < displayDays.length - 1;
-        
-        // بررسی اینکه آیا روز بعدی تسک داره یا نه
+
+        // اگر برای این روز هیچ تسکی وجود ندارد، اصلا چیزی رندر نکن
+        if (dayTasks.length === 0) return null;
+
+        // بررسی اینکه آیا روز بعدی تسک داره یا نه (برای نمایش خط عمودی)
         let nextDayHasTasks = false;
         if (isNotLastDay) {
           const nextDayObj = displayDays[dayIndex + 1];
           const nextDayTasks = getTasksForDay(nextDayObj.date, nextDayObj.weekday);
           nextDayHasTasks = nextDayTasks.length > 0;
         }
-        
+
         return (
-          <div key={dayObj.index} ref={isLastDay ? lastDayElementRef : null}>
-            {dayTasks.length > 0 && (
-              <div style={{  
+          <div key={dayObj.index}>
+            <div style={{  
+              display: 'flex', 
+              gap: '14px', 
+              flexDirection: 'row',
+              position: 'relative'
+            }}>
+              {/* شماره روز و خط عمودی */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0'
+              }}>
+                <span className="daynum"><p>{dayObj.day}</p></span>
+                {/* خط عمودی - فقط وقتی که روز بعدی هم تسک داره */}
+                {isNotLastDay && nextDayHasTasks && (
+                  <div style={{
+                    width: '2px',
+                    flex: 1,
+                    minHeight: '20px',
+                    backgroundColor: 'var(--B1)',
+                    opacity: 0.3,
+                    marginTop: '4px'
+                  }}></div>
+                )}
+              </div>
+
+              {/* لیست تسک‌های روز */}
+              <div style={{ 
+                flex: 1, 
                 display: 'flex', 
                 gap: '14px', 
-                flexDirection: 'row',
-                position: 'relative'
+                flexDirection: 'column'
               }}>
-                {/* شماره روز و خط عمودی */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '0'
-                }}>
-                  <span className="daynum"><p>{dayObj.day}</p></span>
-                  {/* خط عمودی - فقط وقتی که روز بعدی هم تسک داره */}
-                  {isNotLastDay && nextDayHasTasks && (
-                    <div style={{
-                      width: '2px',
-                      flex: 1,
-                      minHeight: '20px',
-                      backgroundColor: 'var(--B1)',
-                      opacity: 0.3,
-                      marginTop: '4px'
-                    }}></div>
-                  )}
-                </div>
-
-                {/* لیست تسک‌های روز */}
-                <div style={{ 
-                  flex: 1, 
-                  display: 'flex', 
-                  gap: '14px', 
-                  flexDirection: 'column'
-                }}>
-                  {dayTasks.map((task, taskIndex) => (
-                    <div className="tasksList" key={`${dayObj.index}-${task.code}`}>
-                      <div className='showTask'>
-                        <div className="taskName">
-                          <p>{task.name}</p>
-                          <input value={task.code} type="checkbox" id={task.code}/>
-                        </div>
-                        <div className="taskInfo">
-                          <p className="taskInfoTitle">ساعت:</p>
-                          <p className="taskInfoValue">{task.time || 'ندارد'}</p>
-                        </div>
-                        <div className="taskInfo">
-                          <p className="taskInfoTitle">یاداشت:</p>
-                          <p className="taskInfoValue">{task.description || 'ندارد'}</p>
-                        </div>
+                {dayTasks.map((task) => (
+                  <div className="tasksList" key={`${dayObj.index}-${task.code}`}>
+                    <div className='showTask'>
+                      <div className="taskName">
+                        <p>{task.name}</p>
+                        {/* با تغییر وضعیت چک‌باکس، در جدول CompletionStatus درج/حذف می‌کنیم */}
+                        <input
+                          value={task.code}
+                          type="checkbox"
+                          id={task.code}
+                          checked={completedSet.has(`${task.code}|${dayObj.date}`)}
+                          onChange={(e) => handleCompletionToggle(task.code, dayObj.date, e.target.checked)}
+                        />
+                      </div>
+                      <div className="taskInfo">
+                        <p className="taskInfoTitle">ساعت:</p>
+                        <p className="taskInfoValue">{task.time || 'ندارد'}</p>
+                      </div>
+                      <div className="taskInfo">
+                        <p className="taskInfoTitle">یاداشت:</p>
+                        <p className="taskInfoValue">{task.description || 'ندارد'}</p>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
         );
       })}
+
+      {/* المان نگهبان برای افزودن روزهای بیشتر هنگام اسکرول */}
+      <div ref={lastDayElementRef} />
     </div>
   );
 };
