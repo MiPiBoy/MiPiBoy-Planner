@@ -10,6 +10,7 @@ import AddTaskForm from '../Components/Widgets/AddTaskForm';
 import AppsShortcut from '../Components/Widgets/AppsShortcut.js';
 import DataTime from '../Components/Widgets/DataTime';
 import { useRef } from 'react';
+import TasksChekbox from '../Components/Widgets/TasksChekbox.js';
 
 export const Tasks = () => {
   
@@ -55,9 +56,9 @@ export const Tasks = () => {
           </div>
 
           <div className='column column3'>
-            <MagicBento className='widget tasksWidget' enableSpotlight={false}>
-              <div style={{padding: '14px'}} className='widgetBox'>
-                <AddTaskForm/>
+            <MagicBento className='tasksWidget' enableSpotlight={false}>
+              <div style={{padding: '14px', height: 'calc(100% - 27px)'}} className='widgetBox'>
+                <TasksChekbox/>
               </div>
             </MagicBento>
             <MagicBento className='dayChartWidget' enableSpotlight={false}>

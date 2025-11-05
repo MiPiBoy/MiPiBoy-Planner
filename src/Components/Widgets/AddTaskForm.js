@@ -229,7 +229,7 @@ const AddTaskForm = () => {
         <input type="checkbox" id="wDN6" className="customCheckBoxInput" value="6" {...register("repeatDays")}/> <label htmlFor="wDN6" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>ج</span> </label>
       </div>
 
-      <button className="Gray Medium Pill ButtonMipiboy" type="submit" style={{marginTop: "12px"}} >
+      <button className="Gray Medium Pill ButtonMipiboy" type="submit" style={{width: 'calc(100% - 28px)', position: "fixed", top: 'calc(100% - 52px)'}} >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6v12m6-6H6"/></svg>
         <span>افزودن</span>
       </button>

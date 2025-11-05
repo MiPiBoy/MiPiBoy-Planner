@@ -616,12 +616,14 @@ margin-inline: 24px;
   height: fit-content;
 }
 .dayChartWidget {
-  min-height: 280px;
+  height: 180px;
 }
 .notesWidget {
-  min-height: 250px;
+  height: 250px;
 }
-
+.tasksWidget {
+  height: calc(100% - 204px);
+}
 
 .widget {
   height: 100%;
