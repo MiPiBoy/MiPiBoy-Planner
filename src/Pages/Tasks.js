@@ -1,9 +1,3 @@
-import shortCutPhoto1 from '../assets/shortCutPhoto1.png';
-import shortCutPhoto2 from '../assets/shortCutPhoto2.png';
-import shortCutPhoto3 from '../assets/shortCutPhoto3.png';
-import shortCutPhoto4 from '../assets/shortCutPhoto4.png';
-import LiquidGlass from '../Components/MIniWidgets/LiquidGlass/index.tsx';
-// import LiquidGlass from 'liquid-glass-react';
 import MagicBento, { GlobalSpotlight } from '../Components/ReadyToUse/MagicBento'
 import '../Components/ReadyToUse/MagicBento.css';
 import AddTaskForm from '../Components/Widgets/AddTaskForm';
@@ -39,7 +33,7 @@ export const Tasks = () => {
           </div>
         
           <div className='column column2'>
-            <MagicBento className='widget lifeViewerWidget' enableSpotlight={false}>
+            <MagicBento className='lifeViewerWidget' enableSpotlight={false}>
               <div className='widgetBox'>
                 <LifeViewerWidget/>
               </div>

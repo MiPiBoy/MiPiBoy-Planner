@@ -622,6 +622,9 @@ margin-inline: 24px;
 .tasksWidget {
   height: calc(100% - 204px);
 }
+.lifeViewerWidget{
+  height: fit-content;
+}
 
 .widget {
   height: 100%;

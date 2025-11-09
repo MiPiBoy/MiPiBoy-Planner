@@ -250,7 +250,9 @@ const TasksChekbox = () => {
 
   return (
     <div className="checkList" style={{width: "100%"}}>
-
+      <div>
+        <div style={{height: '30px'}}></div>
+      </div>
       {displayDays.map((dayObj, dayIndex) => {
         const dayTasks = getTasksForDay(dayObj.date, dayObj.weekday);
         const isNotLastDay = dayIndex < displayDays.length - 1;
