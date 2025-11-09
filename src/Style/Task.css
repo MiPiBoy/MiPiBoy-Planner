@@ -34,7 +34,7 @@
     padding-bottom: 8px;
     margin-bottom: 8px;
     border-bottom: solid 2px;
-    border-color: #ffffff44;
+    border-color: #ffffff33;
 }
 .checkList {
     height: 100%;
@@ -42,7 +42,7 @@
     flex-direction: column;
     overflow-y: scroll;
     gap: 12px;
-    border-radius: 8px;
+    border-radius: 14px;
 }
 
 .checkList::-webkit-scrollbar {
@@ -54,7 +54,7 @@
     width: 25px;
     height: 25px;
     border-radius: 9999px;
-    background-color: var(--B1);
+    border: solid 2px #ffffff33;
     display: flex;
     font-size: 12px;
     justify-content: center;

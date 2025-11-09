@@ -18,7 +18,7 @@ const DEFAULT_CONFIG = {
   particleCount: 6,
   glowColor: '132, 0, 255',
   enableTilt: false,
-  clickEffect: true,
+  clickEffect: false,
   enableMagnetism: false,
   
   // تنظیمات موبایل

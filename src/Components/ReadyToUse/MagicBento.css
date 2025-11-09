@@ -11,10 +11,10 @@
   */
   --white: hsl(0, 0%, 100%);
   --purple-primary: rgba(132, 0, 255, 0.474);
-  --purple-glow: rgba(132, 0, 255, 0.2);
-  --purple-border: rgba(132, 0, 255, 0.294);
+  --purple-glow: rgba(132, 0, 255, 0.079);
+  --purple-border: #8400ff2a;
   --border-color: #392e4e;
-  --background-dark: #060010b3;
+  --background-dark: #06001033;
   color-scheme: light dark;
 }
 
@@ -22,7 +22,7 @@
 .magic-bento-card {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 30px;
   border: 1px solid var(--border-color);
   background: var(--background-dark);
   backdrop-filter: blur(10.5px);
