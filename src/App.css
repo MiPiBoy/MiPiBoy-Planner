@@ -516,6 +516,17 @@ margin-block: 24px;
 margin-inline: 24px;
 }
 
+.mainGridpar.nav-active {
+  position: absolute;
+  left: 348px;
+  width: calc(100% - 922px);
+}
+.mainGridpar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .column {
   display: flex;
   flex-direction: column;

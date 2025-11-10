@@ -7,20 +7,20 @@ import { useRef, useState } from 'react';
 import TasksChekbox from '../Components/Widgets/TasksChekbox.js';
 import LifeViewerWidget from '../Components/Widgets/LifeViewerWidget.js';
 
-export const Dashboard = () => {
+export const Dashboard = ({showNav}) => {
 
-  const [addTaskForm, setaddTaskForm] = useState("none")
-  const [tasksChekbox, settasksChekbox] = useState("flex")
+  const [addTaskForm, setaddTaskForm] = useState("none");
+  const [tasksChekbox, settasksChekbox] = useState("flex");
 
   const mainGridRef = useRef(null);
   
   return (
-    <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+    <div className={`mainGridpar ${showNav ? 'nav-active' : ''}`}>
       <GlobalSpotlight
         gridRef={mainGridRef}
         enabled={true}
       />
-      <div className='mainGrid' ref={mainGridRef}>
+      <div className={`mainGrid ${showNav ? 'nav-active' : ''}`} ref={mainGridRef}>
 
           <div className='column column1'>
             <MagicBento className='clockWidget' enableSpotlight={false}>
