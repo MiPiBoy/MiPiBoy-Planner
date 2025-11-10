@@ -1,6 +1,8 @@
 import "../../Style/SwitchButton.css"
 import "../../Style/CheckButton.css"
 import "../../Style/Input.css"
+import "../../Style/Button.css"
+import "../../Style/AddTaskForm.css"
 import jalaali from 'jalaali-js';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -145,9 +147,12 @@ const AddTaskForm = () => {
     }
   };
   return (
-    <div style={{width: "100%", gap: "12px",display: "flex",flexDirection: "column"}}>
-      <div className='titleDiv'>
+    <div className="addTaskForm">
+      <div style={{display:'none'}} className='titleDiv'>
           <p className='title'>افزودن وظیفه</p>
+      </div>
+      <div>
+        <div style={{height: '20px'}}></div>
       </div>
     <form className="forms" onSubmit={handleSubmit(onFormSubmit)}>
 
@@ -229,7 +234,7 @@ const AddTaskForm = () => {
         <input type="checkbox" id="wDN6" className="customCheckBoxInput" value="6" {...register("repeatDays")}/> <label htmlFor="wDN6" className="CheckButton Br8 CheckButtonSize CheckButtonMipiboy"> <span>ج</span> </label>
       </div>
 
-      <button className="Gray Medium Pill ButtonMipiboy" type="submit" style={{width: 'calc(100% - 28px)', position: "fixed", top: 'calc(100% - 52px)'}} >
+      <button className="Gray Medium Pill ButtonMipiboy AddTaskSubmit" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6v12m6-6H6"/></svg>
         <span>افزودن</span>
       </button>

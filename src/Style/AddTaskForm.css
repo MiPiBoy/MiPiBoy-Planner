@@ -1,0 +1,27 @@
+.forms{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 54px;
+    padding-top: 10px;
+}
+
+.addTaskForm {
+    width: 100%;
+    height: 100%;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow-y:auto;
+}
+
+.addTaskForm::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.AddTaskSubmit {
+    width: calc(100% - 28px);
+    top: calc(100% - 52px);
+    position: fixed;
+}

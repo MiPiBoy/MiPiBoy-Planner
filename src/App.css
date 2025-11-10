@@ -45,66 +45,6 @@ p {
   pointer-events: none;
 }
 
-.parent {
-    width: 100%;
-    margin: 24px;
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    grid-template-rows: repeat(1, 1fr);
-    gap: 12px;
-}
-
-.contents-300 {
-    grid-column: span 3 / span 3;
-}
-
-.contents-100-1 {
-    grid-column: span 2 / span 2;
-    grid-column-start: 10;
-    grid-row-start: 1;
-}
-
-.contents-100-2 {
-    grid-column: span 2 / span 2;
-    grid-column-start: 8;
-    grid-row-start: 1;
-}
-
-.contents-400 {
-    grid-column: span 4 / span 4;
-    grid-column-start: 4;
-    grid-row-start: 1;
-}
-
-.parent.nav-active { grid-template-rows: repeat(7, 1fr);}
-.contents-400.nav-active { grid-area: 1 / 1 / 8 / 6 ;}
-.contents-300.nav-active { grid-area: 1 / 6 / 3 / 12 ; }
-.contents-100-2.nav-active { grid-area: 3 / 6 / 8 / 9 ; }
-.contents-100-1.nav-active { grid-area: 3 / 9 / 8 / 12 ; }
-
-@media only screen and (max-width: 1150px) {
-.parent { grid-template-rows: repeat(7, 1fr);}
-.contents-400 { grid-area: 1 / 1 / 8 / 6 ;}
-.contents-300 { grid-area: 1 / 6 / 3 / 12 ; }
-.contents-100-2 { grid-area: 3 / 6 / 8 / 9 ; }
-.contents-100-1 { grid-area: 3 / 9 / 8 / 12 ; }
-}
-
-@media only screen and (max-width: 740px) {
-.parent{
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(12, 1fr);
-}
-.contents-400 { grid-area:1 / 1 / 13 / 5; }
-.contents-300 { grid-area:1 / 5 / 4 / 9; }
-.contents-100-2 { grid-area:4 / 5 / 8 / 9; }
-.contents-100-1 { grid-area:8 / 5 / 13 / 9; }
-.parent.nav-active{
-  display: flex;
-  flex-direction: column;
-}
-}
-
 @media only screen and (max-width: 640px) {
 .parent{
   display: flex;
@@ -118,7 +58,6 @@ display: none;
 .quixie{
   overflow: hidden;
   padding-right: 14px;
-  
   border-radius: 9999px;
   border: 1px solid #ffffff56;
   background-color: #ffffff11;
@@ -140,13 +79,6 @@ display: none;
   padding: 12px 20px 12px 40px;
 }
 
-.contents {
-  height: 100%;
-  gap: 12px;
-  display:flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
 
 .mainSection {
   min-width: 100%;
@@ -508,11 +440,6 @@ height: 54px;
   font-weight: 200;
 }
 
-.forms{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
 
 .taskType {
   cursor: default;
@@ -617,7 +544,7 @@ margin-inline: 24px;
   height: 180px;
 }
 .notesWidget {
-  height: 250px;
+  height: 100%;
 }
 .tasksWidget {
   height: calc(100% - 204px);
@@ -676,8 +603,8 @@ margin-inline: 24px;
 }
 
 .editButton {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -689,7 +616,7 @@ margin-inline: 24px;
   cursor: pointer;
   margin: 0;
   outline: none;
-  padding: 0px;
+  padding: 4px;
   transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
   user-select: none;
   -webkit-user-select: none;
