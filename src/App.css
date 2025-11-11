@@ -555,7 +555,7 @@ margin-inline: 24px;
   height: 180px;
 }
 .notesWidget {
-  height: 100%;
+  height: calc(100% - 209px);
 }
 .tasksWidget {
   height: calc(100% - 204px);
