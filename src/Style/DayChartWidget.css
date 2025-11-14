@@ -1,0 +1,18 @@
+.dayChartWidget {
+    height: 180px;
+}
+
+.dayChartWidget2 {
+    height: calc(100% - 54px);
+    padding: 0 14px 14px 14px;
+}
+
+.percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+}

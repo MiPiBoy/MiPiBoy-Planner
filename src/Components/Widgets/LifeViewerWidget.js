@@ -1,10 +1,16 @@
 import './LifeViewerWidget.css';
 import jalaali from 'jalaali-js';
 import { useEffect, useState } from 'react';
+import { useTaskContext } from '../../Components/TaskContext';
 import { fetchTasks } from '../../API/fetchTasks';
 import { supabase } from '../../utils/supabase';
 
 const LifeViewerWidget = () => {
+const { setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
+const totalTasks = setChartTotalTasks;
+const completedTasks = setChartCompletedTasks;
+
+
   // State برای نگهداری تسک‌ها و وضعیت انجام آن‌ها
   const [tasks, setTasks] = useState([]);
   const [completedSet, setCompletedSet] = useState(new Set()); // Set از `${code}|${date}` - دقیقاً مثل TasksChekbox
@@ -257,6 +263,14 @@ const LifeViewerWidget = () => {
     const clamped = Math.max(0, Math.min(100, rounded));
     return `dayView${clamped}`;
   };
+
+useEffect(() => {
+  const today = daysData[daysData.length - 1];
+  if (today) {
+    completedTasks(today.completedTasks);
+    totalTasks(today.totalTasks);
+  }
+}, [daysData]);
 
   return (
     <div>

@@ -2,11 +2,13 @@ import MagicBento, { GlobalSpotlight } from '../Components/ReadyToUse/MagicBento
 import '../Components/ReadyToUse/MagicBento.css';
 import AddTaskForm from '../Components/Widgets/AddTaskForm';
 import AppsShortcut from '../Components/Widgets/AppsShortcut.js';
+import DayChartWidget from '../Components/Widgets/DayChartWidget.js';
 import DataTime from '../Components/Widgets/DataTime';
 import { useRef, useState } from 'react';
 import TasksChekbox from '../Components/Widgets/TasksChekbox.js';
 import LifeViewerWidget from '../Components/Widgets/LifeViewerWidget.js';
 import NotesWidget from "../Components/Widgets/NotesWidget.js";
+import { TaskProvider  } from '../Components/TaskContext.js';
 
 export const Dashboard = ({showNav}) => {
 
@@ -16,6 +18,7 @@ export const Dashboard = ({showNav}) => {
   const mainGridRef = useRef(null);
   
   return (
+    <TaskProvider>
     <div className={`mainGridpar ${showNav ? 'nav-active' : ''}`}>
       <GlobalSpotlight
         gridRef={mainGridRef}
@@ -82,12 +85,11 @@ export const Dashboard = ({showNav}) => {
               </div>
             </MagicBento>
             <MagicBento className='dayChartWidget' enableSpotlight={false}>
-              <div className='widgetBox'>
-                dayChartWidget
-              </div>
+                <DayChartWidget/>
             </MagicBento>
           </div>
 
       </div>
     </div>
+    </TaskProvider>
 )};

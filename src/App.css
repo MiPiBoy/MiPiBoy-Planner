@@ -551,9 +551,6 @@ margin-inline: 24px;
 .shortcutWidget {
   height: fit-content;
 }
-.dayChartWidget {
-  height: 180px;
-}
 .notesWidget {
   height: calc(100% - 209px);
 }
