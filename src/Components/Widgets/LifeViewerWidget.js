@@ -6,9 +6,9 @@ import { fetchTasks } from '../../API/fetchTasks';
 import { supabase } from '../../utils/supabase';
 
 const LifeViewerWidget = () => {
-const { setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
-const totalTasks = setChartTotalTasks;
-const completedTasks = setChartCompletedTasks;
+  const { setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
+  const totalTasks = setChartTotalTasks;
+  const completedTasks = setChartCompletedTasks;
 
 
   // State برای نگهداری تسک‌ها و وضعیت انجام آن‌ها
@@ -59,7 +59,7 @@ const completedTasks = setChartCompletedTasks;
   // تابع برای تولید روزهای شمسی گذشته (از امروز به عقب)
   // تعداد روزها: 210 روز (7 ردیف × 30 ستون)
   // ترتیب: امروز در اول (برای نمایش در راست پایین)، قدیمی‌ترین در آخر
-  const generatePastJalaliDays = (count = 210) => {
+  const generatePastJalaliDays = (count = 364) => {
     const days = [];
     const today = new Date();
 
@@ -168,7 +168,7 @@ const completedTasks = setChartCompletedTasks;
     const fetchCompletionStatuses = async () => {
       try {
         // تولید لیست تاریخ‌های 210 روز گذشته
-        const pastDays = generatePastJalaliDays(210);
+        const pastDays = generatePastJalaliDays(364);
         const dates = Array.from(new Set(pastDays.map(d => d.date)));
         
         // دریافت CompletionStatus برای تاریخ‌های قابل نمایش
@@ -210,7 +210,7 @@ const completedTasks = setChartCompletedTasks;
 
     // تولید 210 روز گذشته (از امروز به عقب)
     // 7 ردیف × 30 ستون = 210 روز
-    const pastDays = generatePastJalaliDays(315);
+    const pastDays = generatePastJalaliDays(364);
     
     // معکوس کردن آرایه تا امروز در راست پایین باشد
     // با grid و direction: rtl، ترتیب پر شدن از راست بالا شروع می‌شود
@@ -274,7 +274,7 @@ useEffect(() => {
 
   return (
     <div>
-      <div style={{height: 'calc(100% - 27px)', zIndex: '1'}}>    
+      <div style={{height: '40px', zIndex: '1'}}>    
         <div className='titleDiv'>
           <p className='title'>نمای کل</p>
           <div className="editButton" title='فیلتر'>
@@ -285,13 +285,9 @@ useEffect(() => {
           </div>
         </div>
       </div>
-      <div>
-        <div style={{height: '40px'}}></div>
-      </div>
-      {/* بخش نمایش مربع‌های contributions */}
-      {/* ساختار: 7 ردیف، از راست به چپ و از پایین به بالا */}
-      {/* روز فعلی در راست پایین است و با اسکرول به عقب می‌رویم */}
-      <div className='dayViewSection'>
+
+
+      <div className='dayViewSection' style={{position: 'relative', zIndex: '2'}}>
         {daysData.map((dayObj) => (
           <div
             key={dayObj.index}

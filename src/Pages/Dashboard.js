@@ -1,5 +1,6 @@
 import MagicBento, { GlobalSpotlight } from '../Components/ReadyToUse/MagicBento'
 import '../Components/ReadyToUse/MagicBento.css';
+import '../Style/Dashboard.css';
 import AddTaskForm from '../Components/Widgets/AddTaskForm';
 import AppsShortcut from '../Components/Widgets/AppsShortcut.js';
 import DayChartWidget from '../Components/Widgets/DayChartWidget.js';
@@ -9,8 +10,17 @@ import TasksChekbox from '../Components/Widgets/TasksChekbox.js';
 import LifeViewerWidget from '../Components/Widgets/LifeViewerWidget.js';
 import NotesWidget from "../Components/Widgets/NotesWidget.js";
 import { TaskProvider  } from '../Components/TaskContext.js';
+import { useMediaQuery } from '@mui/material';
+import Quixie from '../Components/MIniWidgets/Quixie.js';
+
+
 
 export const Dashboard = ({showNav}) => {
+
+  const ifW1180 = useMediaQuery('(min-width:1180px)');
+  const ifW1024 = useMediaQuery('(min-width:1024px)');
+  const ifW414 = useMediaQuery('(min-width:414px)');
+
 
   const [addTaskForm, setaddTaskForm] = useState("none");
   const [tasksChekbox, settasksChekbox] = useState("flex");
@@ -24,8 +34,8 @@ export const Dashboard = ({showNav}) => {
         gridRef={mainGridRef}
         enabled={true}
       />
+      {!ifW1180 && (<Quixie style={{width: 'calc(100% - 64px)'}}/>)}
       <div className={`mainGrid ${showNav ? 'nav-active' : ''}`} ref={mainGridRef}>
-
           <div className='column column1'>
             <MagicBento className='clockWidget' enableSpotlight={false}>
               <div style={{padding: '14px'}} className='widgetBox'>
@@ -39,6 +49,7 @@ export const Dashboard = ({showNav}) => {
             </MagicBento>
           </div>
         
+          {ifW1180 ? 
           <div className='column column2'>
             <MagicBento className='lifeViewerWidget' enableSpotlight={false}>
               <div className='widgetBox'>
@@ -55,7 +66,8 @@ export const Dashboard = ({showNav}) => {
                 <AppsShortcut/>
               </div>
             </div> */}
-          </div>
+          </div> 
+          : null}
 
           <div className='column column3'>
             <MagicBento className='tasksWidget' enableSpotlight={false}>
@@ -88,8 +100,25 @@ export const Dashboard = ({showNav}) => {
                 <DayChartWidget/>
             </MagicBento>
           </div>
-
       </div>
+  {ifW1180 ? null: 
+      <div className='column column2' >
+        <MagicBento className='lifeViewerWidget' enableSpotlight={false}>
+          <div className='widgetBox'>
+            <LifeViewerWidget/>
+          </div>
+        </MagicBento>
+        <MagicBento className='notesWidget' enableSpotlight={false}>
+          <div className='widgetBox' style={{height: '100%'}}>
+            <NotesWidget/>
+          </div>
+        </MagicBento>
+        {/* <div className='shortcutWidget'>
+          <div className='widgetBox'>
+            <AppsShortcut/>
+          </div>
+        </div> */}
+      </div>}
     </div>
     </TaskProvider>
 )};

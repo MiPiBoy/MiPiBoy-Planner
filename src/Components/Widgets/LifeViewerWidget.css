@@ -1,95 +1,86 @@
-/* بخش نمایش مربع‌های contributions */
-/* ساختار: 7 ردیف (هر ردیف یک روز هفته)، 30 ستون (30 هفته) */
-/* 7 ردیف × 30 ستون = 210 روز */
-/* روز فعلی در راست پایین است و با اسکرول به چپ (عقب) می‌رویم */
 .dayViewSection {
   max-width: fit-content;
-  width: calc(100vw - 739px);
-  display: grid;
-  grid-template-rows: repeat(7, 13px); /* دقیقاً 7 ردیف (هر ردیف یک روز هفته) */
-  grid-template-columns: repeat(45, 13px); /* دقیقاً 30 ستون */
+  height: 120px;
+  display: flex;
+  grid-template-rows: repeat(7, 13px);
+  grid-template-columns: repeat(45, 13px);
   grid-auto-flow: column;
   gap: 4px;
   border-radius: 4px;
   margin: 14px;
-  justify-content: flex-end;
-  align-content: flex-start;
+  justify-content: flex-start;
   overflow: hidden;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-end;
 }
 
-/* استایل پایه برای هر مربع */
 .dayView {
   width: 12px;
   height: 12px;
   border: solid 0.5px #151b23ff;
   border-radius: 4px;
-  background-color: #151b23ff; /* رنگ پیش‌فرض (بی‌رنگ) */
+  background-color: #151b23ff;
   transition: background-color 0.2s ease;
 }
 
-/* کلاس‌های رنگ بر اساس درصد انجام تسک‌ها */
-/* از سبز پررنگ (100%) تا بی‌رنگ (0%) */
 .dayView100 {
-  background-color: #56d364ff; /* سبز پررنگ - 100% */
+  background-color: #56d364ff;
 }
 
 .dayView90 {
-  background-color: #56d364ff; /* سبز - 90% */
+  background-color: #56d364ff;
 }
 
 .dayView80 {
-  background-color: #2ea043ff; /* سبز روشن - 80% */
+  background-color: #2ea043ff;
 }
 
 .dayView70 {
-  background-color: #2ea043ff; /* سبز روشن‌تر - 70% */
+  background-color: #2ea043ff;
 }
 
 .dayView60 {
-  background-color: #196c2eff; /* سبز روشن - 60% */
+  background-color: #196c2eff;
 }
 
 .dayView50 {
-  background-color: #196c2eff; /* سبز خیلی روشن - 50% */
+  background-color: #196c2eff;
 }
 
 .dayView40 {
-  background-color: #033a16ff; /* سبز خیلی روشن - 40% */
+  background-color: #033a16ff;
 }
 
 .dayView30 {
-  background-color: #033a16ff; /* سبز خیلی روشن - 30% */
+  background-color: #033a16ff;
 }
 
 .dayView20 {
-  background-color: #033a16ff; /* سبز خیلی روشن - 20% */
+  background-color: #033a16ff;
 }
 
 .dayView10 {
-  background-color: #151b23ff; /* خاکستری روشن - 10% */
+  background-color: #151b23ff;
 }
 
 .dayView0 {
-  background-color: #151b23ff; /* بی‌رنگ - 0% */
+  background-color: #151b23ff;
 }
 
-
-/* Responsive: وقتی صفحه کوچک می‌شود، تعداد ستون‌ها کم می‌شود */
-/* این باعث می‌شود که ستون‌های چپ حذف شوند (چون direction: rtl است) */
-/* اما ردیف‌ها همیشه 7 عدد باقی می‌مانند */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .dayViewSection {
-    grid-template-columns: repeat(20, 18px); /* 20 ستون در صفحه کوچک */
+    grid-template-columns: repeat(20, 18px);
   }
 }
 
 @media (max-width: 480px) {
   .dayViewSection {
-    grid-template-columns: repeat(15, 16px); /* 15 ستون در صفحه خیلی کوچک */
+    grid-template-columns: repeat(15, 16px);
   }
   
   .dayView {
     width: 16px;
     height: 16px;
   }
-}
+} */
