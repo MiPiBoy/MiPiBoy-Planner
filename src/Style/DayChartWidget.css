@@ -3,8 +3,12 @@
 }
 
 .dayChartWidget2 {
+    display: flex;
     height: calc(100% - 54px);
     padding: 0 14px 14px 14px;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
 }
 
 .percent {

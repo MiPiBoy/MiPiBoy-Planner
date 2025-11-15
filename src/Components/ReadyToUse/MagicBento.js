@@ -36,7 +36,7 @@ const createParticleElement = (x, y, color = DEFAULT_CONFIG.glowColor) => {
     background: rgba(${color}, 1);
     box-shadow: 0 0 6px rgba(${color}, 0.6);
     pointer-events: none;
-    z-index: 100;
+    z-index: -1;
     left: ${x}px;
     top: ${y}px;
   `;

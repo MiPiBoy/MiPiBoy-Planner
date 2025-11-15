@@ -8,8 +8,6 @@ const DayChartWidget = () => {
 const { chartCompletedTasks, chartTotalTasks } = useTaskContext();
 const totalTasks = chartTotalTasks;
 const completedTasks = chartCompletedTasks;
-// const percent = Math.round((completedTasks / totalTasks) * 100);
-
 const percent = chartTotalTasks > 0
   ? Math.round((completedTasks / totalTasks) * 100)
   : 0;
@@ -19,9 +17,15 @@ const data = [
 ];
 const angle = percent * 3.6; // خروجی: 180 درجه
 
+let motive = '';
+
+
+
+// 🏛️❤️👨🏻‍👩🏼‍👧🏼‍🧒🏻<👼🫀<🏠🚗<💶<👨🏻‍💻🎓<💪🏽
+
     return (
         <div style={{height: '100%'}}>
-            <div style={{height: '40px', zIndex: '1'}}>    
+            <div style={{height: '40px', zIndex: '2'}}>    
             <div className='titleDiv'>
                 <p className='title'>وضعیت روز</p>
                 <div className="editButton" title='بعدی'>
@@ -34,11 +38,13 @@ const angle = percent * 3.6; // خروجی: 180 درجه
             </div>
             <div className='dayChartWidget2'>
                 <div style={{ position: 'relative', width: 120, height: 120 }}>
-                    <PieChart series={[ { type: 'pie', data, innerRadius: 40, outerRadius: 50, paddingAngle: 2, endAngle: angle, }, ]} slotProps={{ legend: { hidden: true }, tooltip: { hidden: true }, }} width={120} height={120} />
+                    <PieChart  series={[ { type: 'pie', data, innerRadius: 40, outerRadius: 50, paddingAngle: 0, endAngle: angle }, ]} slotProps={{ legend: { hidden: true }, tooltip: { hidden: true }, }} width={120} height={120}style={{zIndex: 1}} />
+                    <PieChart  series={[ { type: 'pie', innerRadius: 43.5, outerRadius: 46.5, paddingAngle: 0, endAngle: 360, data: [{ color: '#ffffff77', value: 1}] }, ]} slotProps={{ legend: { hidden: true }, tooltip: { hidden: true }, }} width={120} height={120} style={{position: 'absolute', top: 0, left: 0, transform: 'translate(-0%, -0%)'}} />
                     <div className='percent'>
                         {percent}%
                     </div>
                 </div>
+                <div><p>{motive}</p></div>
             </div>
         </div>
 )};
