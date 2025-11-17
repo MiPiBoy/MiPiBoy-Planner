@@ -1,10 +1,7 @@
 .dayViewSection {
   max-width: fit-content;
-  height: 120px;
+  height: 108px;
   display: flex;
-  grid-template-rows: repeat(7, 13px);
-  grid-template-columns: repeat(45, 13px);
-  grid-auto-flow: column;
   gap: 4px;
   border-radius: 4px;
   margin: 14px;
@@ -18,7 +15,7 @@
 .dayView {
   width: 12px;
   height: 12px;
-  border: solid 0.5px #151b23ff;
+  /* border: solid 0.5px #151b23ff; */
   border-radius: 4px;
   background-color: #151b23ff;
   transition: background-color 0.2s ease;
@@ -68,19 +65,16 @@
   background-color: #151b23ff;
 }
 
-/* @media (max-width: 768px) {
-  .dayViewSection {
-    grid-template-columns: repeat(20, 18px);
-  }
-}
 
-@media (max-width: 480px) {
+@media (max-width: 1180px) {
   .dayViewSection {
-    grid-template-columns: repeat(15, 16px);
+    height: 145px;
+    gap: 5.5PX;
   }
-  
   .dayView {
     width: 16px;
     height: 16px;
+    border-radius: 5px;
+
   }
-} */
+}

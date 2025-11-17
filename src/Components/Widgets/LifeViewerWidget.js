@@ -5,7 +5,8 @@ import { useTaskContext } from '../../Components/TaskContext';
 import { fetchTasks } from '../../API/fetchTasks';
 import { supabase } from '../../utils/supabase';
 
-const LifeViewerWidget = () => {
+const LifeViewerWidget = ({daysCount}) => {
+  const daysCounts = daysCount
   const { setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
   const totalTasks = setChartTotalTasks;
   const completedTasks = setChartCompletedTasks;
@@ -59,7 +60,7 @@ const LifeViewerWidget = () => {
   // تابع برای تولید روزهای شمسی گذشته (از امروز به عقب)
   // تعداد روزها: 210 روز (7 ردیف × 30 ستون)
   // ترتیب: امروز در اول (برای نمایش در راست پایین)، قدیمی‌ترین در آخر
-  const generatePastJalaliDays = (count = 364) => {
+  const generatePastJalaliDays = (count = daysCounts) => {
     const days = [];
     const today = new Date();
 
@@ -168,7 +169,7 @@ const LifeViewerWidget = () => {
     const fetchCompletionStatuses = async () => {
       try {
         // تولید لیست تاریخ‌های 210 روز گذشته
-        const pastDays = generatePastJalaliDays(364);
+        const pastDays = generatePastJalaliDays(daysCounts);
         const dates = Array.from(new Set(pastDays.map(d => d.date)));
         
         // دریافت CompletionStatus برای تاریخ‌های قابل نمایش
@@ -210,7 +211,7 @@ const LifeViewerWidget = () => {
 
     // تولید 210 روز گذشته (از امروز به عقب)
     // 7 ردیف × 30 ستون = 210 روز
-    const pastDays = generatePastJalaliDays(364);
+    const pastDays = generatePastJalaliDays(daysCounts);
     
     // معکوس کردن آرایه تا امروز در راست پایین باشد
     // با grid و direction: rtl، ترتیب پر شدن از راست بالا شروع می‌شود

@@ -192,7 +192,7 @@ p {
   border-bottom: 0;
   border-right: 0;
   border-left: 1px solid #ffffff56;
-  height: 100vh;
+  height: 100svh;
   width: fit-content;
   display: flex;
   position: fixed;
@@ -484,75 +484,6 @@ height: 54px;
   flex-wrap: nowrap;
   gap: 8px;
   margin-top: 12px;
-}
-
-
-
-
-
-
-
-
-.mainGrid {
-width: 100%;
-height: calc(100vh - 110px);
-min-height: 500px;
-max-height: 1000px; 
-max-width: 1440px;
-display: flex;
-justify-content: center;
-gap: 24px;
-margin-block: 24px;
-margin-inline: 24px;
-}
-
-/* .mainGridpar.nav-active {
-  position: absolute;
-  left: 348px;
-  width: calc(100% - 922px);
-} */
-.mainGridpar {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.column1 { 
-  min-width: 300px;
-  max-width: 300px;
-}
-.column2 { 
-  width: 100%;
-}
-.column3 { 
-  min-width: 300px;
-  max-width: 300px;
-}
-
-.clockWidget {
-  height: fit-content;
-}
-.shortcutWidget {
-  height: fit-content;
-}
-.notesWidget {
-  height: calc(100% - 209px);
-}
-.tasksWidget {
-  height: calc(100% - 204px);
-}
-.lifeViewerWidget{
-  height: fit-content;
-}
-
-.widget {
-  height: 100%;
 }
 
 

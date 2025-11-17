@@ -336,16 +336,16 @@ const GlobalSpotlight = ({
     const handleMouseMove = e => {
       if (!spotlightRef.current || !gridRef.current) return;
 
-      // اگر mainGrid باشه (برای spotlight سراسری)، مستقیماً از gridRef استفاده می‌کنیم
+      // اگر mainEffect باشه (برای spotlight سراسری)، مستقیماً از gridRef استفاده می‌کنیم
       // وگرنه bento-section رو پیدا می‌کنیم
-      const isMainGrid = gridRef.current.classList.contains('mainGrid');
-      const section = isMainGrid ? gridRef.current : gridRef.current.closest('.bento-section');
+      const isMainEffect = gridRef.current.classList.contains('mainEffect');
+      const section = isMainEffect ? gridRef.current : gridRef.current.closest('.bento-section');
       const rect = section?.getBoundingClientRect();
       const mouseInside =
         rect && e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
 
       isInsideSection.current = mouseInside || false;
-      // همه کارت‌های داخل grid (mainGrid یا bento-section) رو پیدا می‌کنیم
+      // همه کارت‌های داخل grid (mainEffect یا bento-section) رو پیدا می‌کنیم
       const cards = section?.querySelectorAll('.magic-bento-card') || [];
 
       if (!mouseInside) {
@@ -407,8 +407,8 @@ const GlobalSpotlight = ({
 
     const handleMouseLeave = () => {
       isInsideSection.current = false;
-      const isMainGrid = gridRef.current?.classList.contains('mainGrid');
-      const section = isMainGrid ? gridRef.current : gridRef.current?.closest('.bento-section');
+      const isMainEffect = gridRef.current?.classList.contains('mainEffect');
+      const section = isMainEffect ? gridRef.current : gridRef.current?.closest('.bento-section');
       section?.querySelectorAll('.magic-bento-card').forEach(card => {
         card.style.setProperty('--glow-intensity', '0');
       });

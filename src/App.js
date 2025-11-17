@@ -8,6 +8,8 @@ import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
 import { Tasks } from './Pages/Tasks';
+import { Setting } from './Pages/Setting';
+import { SettingProvider } from './Components/SettingContext';
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -28,6 +30,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <SettingProvider>
         <div className='mainSection'>
             <div className='backgrond'>
               <DarkVeil />
@@ -40,6 +43,7 @@ function App() {
           <Routes>
             <Route path="/dashboard" element={<Dashboard showNav={showNav} />} />
             <Route path="/tasks" element={<Tasks/>} />
+            <Route path="/setting" element={<Setting/>} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
           </div>
@@ -57,6 +61,7 @@ function App() {
               strokeColor="#6528F7"
               minFontSize={28}
             />
+      </SettingProvider>
       </BrowserRouter>
     </div>
   );
