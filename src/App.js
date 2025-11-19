@@ -4,12 +4,14 @@ import DarkVeil from './Components/ReadyToUse/DarkVeil';
 import { Dashboard } from './Pages/Dashboard';
 import TextPressure from './Components/ReadyToUse/TextPressure';
 import Nav from './Components/Nav';
+import MobileNav from './Components/MobileNav';
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
 import { Tasks } from './Pages/Tasks';
 import { Setting } from './Pages/Setting';
 import { SettingProvider } from './Components/SettingContext';
+import { useMediaQuery } from '@mui/material';
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -26,6 +28,7 @@ function App() {
     setShowNav(false);
     setHideMenuSection(false);
   };
+  const ifW685 = useMediaQuery('(min-width:685px)');
 
   return (
     <div className="App">
@@ -33,11 +36,12 @@ function App() {
       <SettingProvider>
         <div className='mainSection'>
             <div className='backgrond'>
-              <DarkVeil />
+              <DarkVeil/>
             </div>
             <header className='appHeader'>
               <AppHeader handleClick={openNav} hideMenuSection={hideMenuSection}/>
             </header>
+            {!ifW685 ? <MobileNav/>: null}
             {showNav && <Nav onClose={closeNav}/>}
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>

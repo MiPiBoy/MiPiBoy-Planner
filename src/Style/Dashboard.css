@@ -85,6 +85,11 @@
   height: calc(100% - 204px) !important;
 }
 
+.taskaria {
+  padding: 0 14px 14px 14px;
+  height: calc(100% - 14px);
+}
+
 .lifeViewerWidget{
   height: 176px !important;
 }

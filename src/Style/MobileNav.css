@@ -1,0 +1,169 @@
+.mobileNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* justify-content: space-around; */
+    box-sizing: border-box;
+    /* padding: 8px 14px; */
+    /* gap: 10px; */
+
+    position: fixed;
+    width: calc(100% - 28px);
+    height: fit-content;
+    left: 14px;
+    bottom: 14px;
+
+    overflow: hidden;
+    /* border-radius: 9999px; */
+    /* border: 1px solid #ffffff56; */
+    /* background-color: #ffffff11; */
+    /* backdrop-filter: blur(10.5px); */
+
+    z-index: 3;
+}
+
+.radio-input input {
+    display: none;
+  }
+  
+.radio-input {
+    color: #fff;
+    
+}
+
+.radio-input label {
+    width: 24px;
+    height: 24px;
+    padding: 14px;
+    border: solid 0.5px #fff;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 400ms cubic-bezier(0.15, 0.4, 0.8, 1);
+    background-color: #505050cc;
+    /* backdrop-filter: blur(10.5px); */
+}
+.radio-input .item2,
+.radio-input .item3,
+.radio-input .item4 {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+.radio-input .item1{
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input .item5{
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+}
+
+/* ... */
+.radio-input label:has(input:checked) {
+    border: solid 0.5px #9000ff;
+}
+/* ... */
+.radio-input .item1:has(input:checked) {
+    border-radius: 9999px !important;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.radio-input:has(.item1 input:checked) .item2{
+  border-radius: 9999px 0 0 9999px !important;
+  border-right: 0px !important;
+}
+.radio-input:has(.item1 input:checked) .item3,
+.radio-input:has(.item1 input:checked) .item4 {
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+.radio-input:has(.item1 input:checked) .item5{
+  border-radius: 0 9999px 9999px 0 !important;
+  border-left: 0px !important;
+}
+/* ... */
+.radio-input .item2:has(input:checked) {
+    border-radius: 9999px !important;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.radio-input:has(.item2 input:checked) .item1{
+    border-radius: 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item2 input:checked) .item3 {
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item2 input:checked) .item4 {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item2 input:checked) .item5{
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+}
+/* ... */
+.radio-input .item3:has(input:checked) {
+    border-radius: 9999px !important;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.radio-input:has(.item3 input:checked) .item1{
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item3 input:checked) .item2 {
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+}
+.radio-input:has(.item3 input:checked) .item4 {
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item3 input:checked) .item5{
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+}
+/* ... */
+.radio-input .item4:has(input:checked) {
+    border-radius: 9999px !important;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.radio-input:has(.item4 input:checked) .item1 {
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item4 input:checked) .item2 {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+.radio-input:has(.item4 input:checked) .item3{
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+}
+.radio-input:has(.item4 input:checked) .item5{
+    border-radius: 9999px !important;
+    border-right: 0px !important;
+}
+/* ... */
+.radio-input .item5:has(input:checked) {
+    border-radius: 9999px !important;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.radio-input:has(.item5 input:checked) .item1{
+    border-radius: 9999px 0 0 9999px !important;
+    border-right: 0px !important;
+  }
+  .radio-input:has(.item5 input:checked) .item2,
+  .radio-input:has(.item5 input:checked) .item3 {
+    border-left: 0px !important;
+    border-right: 0px !important;
+  }
+  .radio-input:has(.item5 input:checked) .item4{
+    border-radius: 0 9999px 9999px 0 !important;
+    border-left: 0px !important;
+  }
+
+

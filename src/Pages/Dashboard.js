@@ -95,10 +95,10 @@ export const Dashboard = ({showNav}) => {
               </svg>
               </div>
               </div>
-              <div style={{display: addTaskForm, padding: '14px', height: 'calc(100% - 27px)'}} className='widgetBox'>
+              <div style={{display: addTaskForm}} className='widgetBox taskaria'>
                 <AddTaskForm/>
               </div>
-              <div style={{display: tasksChekbox, padding: '14px', height: 'calc(100% - 27px)'}} className='widgetBox'>
+              <div style={{display: tasksChekbox}} className='widgetBox taskaria'>
                 <TasksChekbox/>
               </div>
             </MagicBento>
@@ -183,10 +183,10 @@ export const Dashboard = ({showNav}) => {
             </svg>
             </div>
             </div>
-            <div style={{display: addTaskForm, padding: '14px', height: 'calc(100% - 27px)'}} className='widgetBox'>
+            <div style={{display: addTaskForm}} className='widgetBox taskaria'>
               <AddTaskForm/>
             </div>
-            <div style={{display: tasksChekbox, padding: '14px', height: 'calc(100% - 27px)'}} className='widgetBox'>
+            <div style={{display: tasksChekbox}} className='widgetBox taskaria'>
               <TasksChekbox/>
             </div>
           </div>

@@ -249,7 +249,7 @@ const TasksChekbox = () => {
   };
 
   return (
-    <div className="checkList" style={{width: "100%"}}>
+    <div className="checkList">
       <div>
         <div style={{height: '30px'}}></div>
       </div>

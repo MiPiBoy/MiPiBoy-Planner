@@ -1,3 +1,7 @@
+* {
+  user-select: none;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -192,7 +196,7 @@ p {
   border-bottom: 0;
   border-right: 0;
   border-left: 1px solid #ffffff56;
-  height: 100svh;
+  height: 100vh;
   width: fit-content;
   display: flex;
   position: fixed;

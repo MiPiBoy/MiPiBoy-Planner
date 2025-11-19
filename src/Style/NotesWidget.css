@@ -9,8 +9,9 @@
 }
 
 .note {
-    width: calc(33% - 14px);
-    height: calc(100% - 28px);
+    box-sizing: border-box;
+    width: 33%;
+    height: 100%;
     background-color: var(--B2);
     border-radius: 14px;
     padding: 14px 14px 14px 0px;
@@ -44,6 +45,7 @@
     flex-direction: column;
   }
   .note {
-    width: calc(100% - 14px);
+    box-sizing: border-box;
+    width: 100%;
   }
 }
