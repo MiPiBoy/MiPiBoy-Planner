@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { supabase } from '../../utils/supabase'
+import { useTaskContext } from "../TaskContext"
 
 const dateRegex = new RegExp(
   `^(` +
@@ -31,6 +32,8 @@ const AddTaskForm = () => {
     time : yup.string().matches(timeRegex, "زمان معتبر نیست"),
     repeatDays: yup.array().of(yup.string())
   })
+
+  const { triggerReload } = useTaskContext();
 
   const [dataDisplay, setDataDisplay] = useState("none")
   const [dataDisplay2, setDataDisplay2] = useState("none")
@@ -131,6 +134,7 @@ const AddTaskForm = () => {
     const { data: insertedData, error } = await supabase
       .from('Tasks')
       .insert([payload]);
+      triggerReload();
     if (error) {
       console.error("خطا در ثبت تسک:", error.message);
     } else {

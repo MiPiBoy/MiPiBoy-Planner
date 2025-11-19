@@ -3,10 +3,11 @@ import jalaali from 'jalaali-js';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchTasks } from '../../API/fetchTasks';
 import { supabase } from '../../utils/supabase'
-
+import { useTaskContext } from '../../Components/TaskContext';
 
 const TasksChekbox = () => {
-
+  
+  const { triggerReload } = useTaskContext();
   const [tasks, setTasks] = useState([]);
   const [daysOffset, setDaysOffset] = useState(0);
   const [displayDays, setDisplayDays] = useState([]);
@@ -197,7 +198,7 @@ const TasksChekbox = () => {
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
         // وقتی به آخرین روز رسیدیم، 10 روز دیگر اضافه کن
-        setDaysOffset(prev => prev + 1);
+        setDaysOffset(prev => prev + 0); // صفر رو یک کنی فعال میشه و اسکرول بی نهانت میشه
       }
     });
     
@@ -218,6 +219,7 @@ const TasksChekbox = () => {
         const { error } = await supabase
           .from('CompletionStatus')
           .insert([{ code: taskCode, date: dayDate }]);
+          triggerReload();
         if (error) {
           console.error('خطا در ثبت وضعیت انجام تسک:', error.message);
         }
@@ -233,6 +235,7 @@ const TasksChekbox = () => {
           .delete()
           .eq('code', taskCode)
           .eq('date', dayDate);
+          triggerReload();
         if (error) {
           console.error('خطا در حذف وضعیت انجام تسک:', error.message);
         }

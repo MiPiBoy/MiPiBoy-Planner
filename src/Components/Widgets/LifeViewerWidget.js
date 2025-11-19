@@ -7,7 +7,7 @@ import { supabase } from '../../utils/supabase';
 
 const LifeViewerWidget = ({daysCount}) => {
   const daysCounts = daysCount
-  const { setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
+  const { reloadFlag, setChartCompletedTasks, setChartTotalTasks } = useTaskContext();
   const totalTasks = setChartTotalTasks;
   const completedTasks = setChartCompletedTasks;
 
@@ -160,7 +160,7 @@ const LifeViewerWidget = ({daysCount}) => {
     };
 
     loadTasks();
-  }, []);
+  }, [reloadFlag]);
 
   // واکشی وضعیت تکمیل‌شدن‌ها از CompletionStatus
   // این داده‌ها برای محاسبه درصد انجام تسک‌ها در هر روز استفاده می‌شوند
@@ -196,7 +196,7 @@ const LifeViewerWidget = ({daysCount}) => {
     };
     
     fetchCompletionStatuses();
-  }, []);
+  }, [reloadFlag]);
 
   // محاسبه درصد انجام تسک‌ها برای هر روز
   // این useEffect هر بار که tasks یا completedSet تغییر کند، اجرا می‌شود
