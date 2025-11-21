@@ -67,6 +67,7 @@ function App() {
               strokeColor="#6528F7"
               minFontSize={28}
             />
+            <div style={{height: '68px'}}></div>
       </SettingProvider>
       </BrowserRouter>
     </div>
