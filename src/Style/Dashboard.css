@@ -78,7 +78,7 @@
 }
 
 .notesWidget {
-  height: calc(100% - 209px) !important;
+  height: 100% !important;
 }
 
 .tasksWidget {
@@ -90,9 +90,10 @@
   height: calc(100% - 14px);
 }
 
-.lifeViewerWidget{
-  height: 176px !important;
-}
+/* .lifeViewerWidget{
+  box-sizing: border-box;
+  height: 295px !important; 
+} */
 
 .boxesWidget{
   height: 100% !important;
@@ -117,11 +118,14 @@
     align-items: center;
   }
   .lifeViewerWidget{
-    height: 243px !important;
+    height: 300px;
   }
 }
 
 @media only screen and (max-width: 685px) {
+  .column {
+    gap: 14px;
+  }
   .column1 { 
     min-height: 500px;
     max-height: 700px;
@@ -142,14 +146,20 @@
   }
   .mainGrid {
     width: 100%;
+    gap: 14px;
     height: auto;
     max-height: fit-content;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin-block: 14px;
+    margin-inline: 14px;
   }
-  .lifeViewerWidget{
+  /* .lifeViewerWidget{
     height: 230px !important;
+  } */
+  .tasksWidget {
+    height: calc(100% - 194px) !important;
   }
 }
 
@@ -167,8 +177,3 @@
   scale: none;
   transform: translate(0px, 0px);
 }
-
-/* .notEffect:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-} */

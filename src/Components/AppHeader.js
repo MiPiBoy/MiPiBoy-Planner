@@ -6,23 +6,34 @@ import Quixie from './MIniWidgets/Quixie';
 const AppHeader = ({ handleClick, hideMenuSection }) => {
 
     const ifW1180 = useMediaQuery('(min-width:1180px)');
+    const ifW685 = useMediaQuery('(min-width:685px)'); 
 
     return (
         <div className="headerSection">
-        {!hideMenuSection && (
-        <div className="headeritem navOpenIcon">
-            <div onClick={handleClick}style={{ height: '35px', width: '35px', cursor: 'pointer' }}>
-                <img src={navClose} style={{ height: '35px', width:'35' }}/>
+        {ifW685 && (
+        !hideMenuSection ?
+            <div className="headeritem navOpenIcon">
+            <div 
+                onClick={handleClick} 
+                style={{ height: '35px', width: '35px', cursor: 'pointer' }}
+            >
+                <img 
+                src={navClose} 
+                style={{ height: '35px', width: '35px' }} 
+                alt="close navigation"
+                />
             </div>
-        </div>
-        )}
-        {hideMenuSection && (
-        <div className="headeritem navOpenIcon">
-        </div>
+            </div>
+        :
+            <div className="headeritem navOpenIcon">
+            <div style={{ height: '35px', width: '35px' }}>
+            </div>
+            </div>
         )}
 
+
         {ifW1180 &&(
-        <Quixie/>
+        <Quixie style={{width: '350px'}}/>
         )}
 
         <div className="headeritem logoSection" >

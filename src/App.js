@@ -38,9 +38,11 @@ function App() {
             <div className='backgrond'>
               <DarkVeil/>
             </div>
+            {ifW685 ?
             <header className='appHeader'>
               <AppHeader handleClick={openNav} hideMenuSection={hideMenuSection}/>
             </header>
+            : null}
             {!ifW685 ? <MobileNav/>: null}
             {showNav && <Nav onClose={closeNav}/>}
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>

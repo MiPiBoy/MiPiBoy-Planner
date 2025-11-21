@@ -1,6 +1,7 @@
 import MagicBento, { GlobalSpotlight } from '../Components/ReadyToUse/MagicBento'
 import '../Components/ReadyToUse/MagicBento.css';
 import '../Style/Dashboard.css';
+import logo from '../assets/logo.svg';
 import AddTaskForm from '../Components/Widgets/AddTaskForm';
 import AppsShortcut from '../Components/Widgets/AppsShortcut.js';
 import DayChartWidget from '../Components/Widgets/DayChartWidget.js';
@@ -23,6 +24,7 @@ export const Dashboard = ({showNav}) => {
   const ifW685 = useMediaQuery('(min-width:685px)');
   const ifW414 = useMediaQuery('(min-width:414px)');
 
+  const quixieWidth = ifW685 ? 'calc(100% - 48px)' : 'calc(100% - 28px)';
 
   const [addTaskForm, setaddTaskForm] = useState("none");
   const [tasksChekbox, settasksChekbox] = useState("flex");
@@ -40,7 +42,15 @@ export const Dashboard = ({showNav}) => {
         gridRef={mainEffectRef}
         enabled={true}
       />
-      {!ifW1180 && (<Quixie style={{width: 'calc(100% - 40px)'}}/>)}
+      {!ifW1180 && (<div style={{display: "flex", gap: "14px", width: quixieWidth}}>
+                    {!ifW685 ?
+                    <div className="headeritem logoSection" >
+                        <img src={logo} style={{ height: '35px', width:'35' }}/>
+                        <span className="logotype">MIPIBOY</span>
+                    </div>
+                    : null}
+                    <Quixie style={{width: '100%'}}/>
+                    </div>)}
       <div className={ `mainGrid ${showNav ? 'nav-active' : ''}`} >
           <div className='column column1'>
             <MagicBento className='clockWidget' enableSpotlight={false}>
@@ -128,7 +138,7 @@ export const Dashboard = ({showNav}) => {
     </div>
     :
     <div className={`mainGridpar ${showNav ? 'nav-active' : ''}`} >
-    {!ifW1180 && (<Quixie style={{width: 'calc(100% - 40px)'}}/>)}
+    {!ifW1180 && (<Quixie style={{width: quixieWidth}}/>)}
     <div className={ `mainGrid ${showNav ? 'nav-active' : ''}`} >
         <div className='column column1'>
           <div className='notEffect clockWidget'>

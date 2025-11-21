@@ -3,7 +3,7 @@ import quixieIcon from '../../assets/quixieIcon.svg';
 const Quixie = ({style}) => {
 
 return (
-    <div  className="quixie" style={style}>
+    <div  className="quixie notEffect" style={style}>
     <div className="input-wrapper">
         <img className="icon" src={quixieIcon}></img>
         <input type="text" name="text" className="input" placeholder="بسپارش به Quixie."/>

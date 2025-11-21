@@ -50,12 +50,11 @@ p {
 }
 
 .quixie{
+  height: 50px !important;
+  box-sizing: border-box;
   overflow: hidden;
   padding-right: 14px;
-  border-radius: 9999px;
-  border: 1px solid #ffffff56;
-  background-color: #ffffff11;
-  backdrop-filter: blur(10.5px);
+  border-radius: 9999px !important;
 }
 
 .input{
@@ -571,3 +570,9 @@ height: 54px;
   box-shadow: none;
   transform: translateY(0);
  }
+
+@media only screen and (max-width: 685px) {
+  .inliner {
+    padding-top: 14px;
+  }
+}
