@@ -254,7 +254,7 @@ const TasksChekbox = () => {
   return (
     <div className="checkList">
       <div>
-        <div style={{height: '30px'}}></div>
+        <div style={{height: '30px'}}/>
       </div>
       {displayDays.map((dayObj, dayIndex) => {
         const dayTasks = getTasksForDay(dayObj.date, dayObj.weekday);

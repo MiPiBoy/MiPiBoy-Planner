@@ -70,7 +70,8 @@
 }
 
 .clockWidget {
-  height: 200px !important;
+  box-sizing: border-box;
+  height: 140px !important;
 }
 
 .shortcutWidget {
@@ -100,7 +101,8 @@
 }
 
 .boxesWidget{
-  height: 100% !important;
+  box-sizing: border-box;
+  height: calc(100% - 164px) !important;
 }
 
 @media only screen and (max-width: 1180px) {

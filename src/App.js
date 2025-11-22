@@ -5,7 +5,6 @@ import { Dashboard } from './Pages/Dashboard';
 import TextPressure from './Components/ReadyToUse/TextPressure';
 import Nav from './Components/Nav';
 import MobileNav from './Components/MobileNav';
-import SmoothScroll from "./Components/SmoothScroll";
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
@@ -55,6 +54,7 @@ function App() {
           </Routes>
           </div>
         </div>
+          {/* {ifW685 ?
             <TextPressure
               showNav={showNav}
               text="MIPIBOY"
@@ -68,7 +68,7 @@ function App() {
               strokeColor="#6528F7"
               minFontSize={28}
             />
-            <div style={{height: '68px'}}></div>
+            : null} */}
       </SettingProvider>
       </BrowserRouter>
     </div>
