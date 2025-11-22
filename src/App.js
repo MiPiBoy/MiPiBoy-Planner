@@ -5,6 +5,7 @@ import { Dashboard } from './Pages/Dashboard';
 import TextPressure from './Components/ReadyToUse/TextPressure';
 import Nav from './Components/Nav';
 import MobileNav from './Components/MobileNav';
+import SmoothScroll from "./Components/SmoothScroll";
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
