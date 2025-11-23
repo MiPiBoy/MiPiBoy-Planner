@@ -25,7 +25,7 @@ const schema = yup.object().shape({
     name : yup.string().required("فیلد نام اجباری است"),
     description : yup.string(),
     date : yup.string().matches(dateRegex, "تاریخ معتبر نیست"),
-    requiredValue : yup.number().typeError("مقدار عددی وارد کنید "),
+    requiredValue: yup.number().nullable().transform((value, originalValue) => originalValue === '' ? 0 : value).typeError("مقدار عددی وارد کنید")
 })
 
 const { register, handleSubmit, reset, formState:{errors} } = useForm({

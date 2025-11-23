@@ -167,6 +167,9 @@
   .tasksWidget {
     height: calc(100% - 194px) !important;
   }
+  .boxesWidget {
+    height: calc(100% - 154px) !important;
+}
 }
 
 .notEffect {
