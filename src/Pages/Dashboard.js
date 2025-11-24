@@ -49,9 +49,9 @@ export const Dashboard = ({showNav}) => {
       />
       {!ifW1180 && (<div style={{display: "flex", gap: "14px", width: quixieWidth}}>
                     {!ifW685 ?
-                    <div className="headeritem logoSection" >
+                    <div className="headeritem" >
                         <img src={logo} style={{ height: '35px', width:'35' }}/>
-                        <span className="logotype">MIPIBOY</span>
+                        {/* <span className="logotype">MIPIBOY</span> */}
                     </div>
                     : null}
                     <Quixie style={{width: '100%'}}/>
@@ -155,7 +155,15 @@ export const Dashboard = ({showNav}) => {
     </div>
     :
     <div className={`mainGridpar ${showNav ? 'nav-active' : ''}`} >
-    {!ifW1180 && (<Quixie style={{width: quixieWidth}}/>)}
+    {!ifW1180 && (<div style={{display: "flex", gap: "14px", width: quixieWidth}}>
+              {!ifW685 ?
+              <div className="headeritem" >
+                  <img src={logo} style={{ height: '35px', width:'35' }}/>
+                  {/* <span className="logotype">MIPIBOY</span> */}
+              </div>
+              : null}
+              <Quixie style={{width: '100%'}}/>
+              </div>)}
     <div className={ `mainGrid ${showNav ? 'nav-active' : ''}`} >
         <div className='column column1'>
           <div className='notEffect clockWidget'>

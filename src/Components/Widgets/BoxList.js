@@ -24,6 +24,9 @@ const [activeIndex, setActiveIndex] = useState(null);
 const [loading, setLoading] = useState(false);
 const [refresh, setRefresh] = useState(false);
 
+const refreshReload = () => setRefresh(prev => !prev);
+
+
 // دریافت داده از دیتابیس
 useEffect(() => {
   fetchBoxsData();
@@ -57,13 +60,13 @@ const handleInputChange = (index, value) => {
 // تابع برای افزایش مقدار
 const handleIncrease = async (item, index) => {
   await updateValue(item, index, 'increase');
-  setRefresh(!refresh);
+  refreshReload();
 };
 
 // تابع برای کاهش مقدار
 const handleDecrease = async (item, index) => {
   await updateValue(item, index, 'decrease');
-  setRefresh(!refresh);
+  refreshReload();
 };
 
 // تابع اصلی برای بروزرسانی مقدار در دیتابیس
@@ -196,7 +199,7 @@ return (
 
         return (
         <div className="box-card"  key={index}
-        // onClick={() => {setActiveIndex(activeIndex === index ? null : index)}}
+        onClick={() => {setActiveIndex(activeIndex === index ? null : index)}}
         >
         <div className="box-title">
         {item.name}
@@ -243,7 +246,8 @@ return (
         {item.description}
         </div>
         : null}
-          <div className="budgeting" style={{zIndex:'1', display: "flex"}}>
+          {/* <div className="budgeting" style={{zIndex:'1', display: activeIndex === index ? 'flex' : 'none'}}> */}
+          <div className="budgeting" style={{zIndex:'1', display:'flex'}}>
               <div className="budgetingSection">
                 <div className="inBorder" onClick={() => handleDecrease(item, index)}>
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -255,7 +259,7 @@ return (
               <div className="budgetInput">
                 <div className="inBorder">
                   <input
-                    style={{width: '50px'}}
+                    style={{width: 'calc(100% - 8px)', border: 0, padding: 0 }}
                     className="formInput"
                     type="text"
                     placeholder="مقدار"
