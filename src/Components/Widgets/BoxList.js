@@ -18,6 +18,110 @@ if (error) {
 
 const BoxList = () => {
 
+const [boxsData, setBoxsData] = useState([]);
+const [inputValues, setInputValues] = useState({});
+const [activeIndex, setActiveIndex] = useState(null);
+const [loading, setLoading] = useState(false);
+const [refresh, setRefresh] = useState(false);
+
+// دریافت داده از دیتابیس
+useEffect(() => {
+  fetchBoxsData();
+}, [refresh]);
+
+const fetchBoxsData = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('BuckBoxs')
+      .select('*');
+    
+    if (error) {
+      console.error("خطا در دریافت باکس ها:", error.message);
+    } else {
+      setBoxsData(data);
+      console.log("باکس های دریافت‌شده:", data);
+    }
+  } catch (error) {
+    console.error("خطا در دریافت داده:", error);
+  }
+};
+
+// تابع برای تغییر مقدار input
+const handleInputChange = (index, value) => {
+  setInputValues(prev => ({
+    ...prev,
+    [index]: value
+  }));
+};
+
+// تابع برای افزایش مقدار
+const handleIncrease = async (item, index) => {
+  await updateValue(item, index, 'increase');
+  setRefresh(!refresh);
+};
+
+// تابع برای کاهش مقدار
+const handleDecrease = async (item, index) => {
+  await updateValue(item, index, 'decrease');
+  setRefresh(!refresh);
+};
+
+// تابع اصلی برای بروزرسانی مقدار در دیتابیس
+const updateValue = async (item, index, operation) => {
+  if (loading) return;
+  
+  const inputValue = parseFloat(inputValues[index]) || 0;
+  if (inputValue <= 0) {
+    // alert("لطفا مقدار معتبر وارد کنید");
+    return;
+  }
+
+  setLoading(true);
+  
+  try {
+    let newValue;
+    if (operation === 'increase') {
+      newValue = item.value + inputValue;
+    } else {
+      newValue = item.value - inputValue;
+      if (newValue < 0) newValue = 0; // جلوگیری از مقادیر منفی
+    }
+
+    // بروزرسانی در دیتابیس
+    const { error } = await supabase
+      .from('BuckBoxs')
+      .update({ value: newValue })
+      .eq('code', item.code);
+
+    if (error) {
+      console.error("خطا در بروزرسانی:", error);
+      alert("خطا در بروزرسانی مقدار");
+    } else {
+      // بروزرسانی local state
+      setBoxsData(prev => 
+        prev.map(box => 
+          box.code === item.code ? { ...box, value: newValue } : box
+        )
+      );
+      
+      // پاک کردن input
+      setInputValues(prev => ({
+        ...prev,
+        [index]: ''
+      }));
+      
+      console.log("مقدار با موفقیت بروزرسانی شد");
+    }
+  } catch (error) {
+    console.error("خطا:", error);
+    alert("خطا در بروزرسانی مقدار");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
 const schema = yup.object().shape({
   requiredValue: yup.number().typeError("مقدار عددی وارد کنید")
 })
@@ -81,19 +185,19 @@ const calculateDaysRemaining = (targetDateString) => {
   return diffDays > 0 ? diffDays : 0;
 };
 
-const [activeIndex, setActiveIndex] = useState(null);
-
 return (
 <div className="checkList">
 <div><div style={{height: "30px"}}/></div>
         {BoxsData.map((item, index) => {
-        const percent = (item.value / item.requiredValue) * 100;
+        const percent = item.requiredValue !== 0 ? (item.value / item.requiredValue) * 100 : 0;
         const daysRemaining = calculateDaysRemaining(item.date);
-        const formattedDate = formatPersianDate(item.date);        
-        
+        const formattedDate = formatPersianDate(item.date);
+        const currentInputValue = inputValues[index] || '';
+
         return (
         <div className="box-card"  key={index}
-        onClick={() => {setActiveIndex(activeIndex === index ? null : index)}}>
+        // onClick={() => {setActiveIndex(activeIndex === index ? null : index)}}
+        >
         <div className="box-title">
         {item.name}
         </div>
@@ -139,24 +243,39 @@ return (
         {item.description}
         </div>
         : null}
-          <div className="budgeting" style={{zIndex:'1', display: activeIndex === index ? "flex" : "none"}}>
-            <div className="budgetingSection">
-            <div className="inBorder">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M5.5 11H16.5" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11 16.5V5.5" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/> </svg>
-            </div>
-            </div>
-            <div className="budgetInput">
-            <div className="inBorder">
-            <input className="formInput" type="text" placeholder="مقدار را وارد کنید" {...register("budgetInput")} />
-            </div>
-            </div>
-            <div className="budgetingSection">
-            <div className="inBorder">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M5.5 11H16.5" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/> </svg>
-            </div>
+          <div className="budgeting" style={{zIndex:'1', display: "flex"}}>
+              <div className="budgetingSection">
+                <div className="inBorder" onClick={() => handleDecrease(item, index)}>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <div className="budgetInput">
+                <div className="inBorder">
+                  <input
+                    style={{width: '50px'}}
+                    className="formInput"
+                    type="text"
+                    placeholder="مقدار"
+                    value={currentInputValue}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+              
+              <div className="budgetingSection">
+                <div className="inBorder" onClick={() => handleIncrease(item, index)}>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M11 16.5V5.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 )})}
 </div>
 )}
