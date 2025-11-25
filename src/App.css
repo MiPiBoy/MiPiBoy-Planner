@@ -387,7 +387,6 @@ height: 54px;
   justify-content: space-between;
   align-items: flex-start;
   
-  background: #1d002e55;
   mask: linear-gradient(black, black, transparent);
   backdrop-filter: blur(8px);
 }

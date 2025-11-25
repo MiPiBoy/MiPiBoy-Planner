@@ -35,7 +35,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <div className='mainSection'>
-          {!mobileOptimizedMode ?
+          {mobileOptimizedMode ?
             <div className='backgrond'>
               <DarkVeil/>
             </div>
@@ -49,7 +49,7 @@ function App() {
             {showNav && <Nav onClose={closeNav}/>}
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
-            <Route path="/dashboard" element={<Dashboard showNav={showNav} />} />
+            <Route path="/" element={<Dashboard showNav={showNav} />} />
             <Route path="/tasks" element={<Tasks/>} />
             <Route path="/setting" element={<Setting/>} />
             <Route path="*" element={<NotFound/>} />

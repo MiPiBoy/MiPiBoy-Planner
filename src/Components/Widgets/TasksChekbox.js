@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchTasks } from '../../API/fetchTasks';
 import { supabase } from '../../utils/supabase'
 import { useTaskContext } from '../../Components/TaskContext';
+import { useSettingContext } from '../SettingContext.js';
 
 const TasksChekbox = () => {
   
@@ -13,6 +14,7 @@ const TasksChekbox = () => {
   const [displayDays, setDisplayDays] = useState([]);
   const observerRef = useRef(null);
   const [completedSet, setCompletedSet] = useState(new Set()); // مجموعه تسک‌های تکمیل‌شده برای تاریخ‌های قابل نمایش
+  const { mobileOptimizedMode } = useSettingContext();
 
   // تابع برای تبدیل تاریخ شمسی به فرمت قابل مقایسه
   const parsePersianDate = (dateString) => {
@@ -308,7 +310,7 @@ const TasksChekbox = () => {
               }}>
                 {dayTasks.map((task) => (
                   <div className="tasksList" key={`${dayObj.index}-${task.code}`}>
-                    <div className='showTask'>
+                    <div className='showTask' style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
                       <div className="taskName">
                         <p>{task.name}</p>
                         {/* با تغییر وضعیت چک‌باکس، در جدول CompletionStatus درج/حذف می‌کنیم */}

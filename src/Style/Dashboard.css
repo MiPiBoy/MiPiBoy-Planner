@@ -118,6 +118,7 @@
     max-width: calc(100% - 372px);
   }
   .mainGridpar {
+    margin-bottom: 24px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -160,6 +161,9 @@
     align-items: center;
     margin-block: 14px;
     margin-inline: 14px;
+  }
+  .mainGridpar {
+    margin-bottom: 81px;
   }
   .lifeViewerWidget{
     height: 242px !important;

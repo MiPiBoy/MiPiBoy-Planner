@@ -2,9 +2,12 @@ import logo from '../assets/logo.svg';
 import navClose from '../assets/navClose.svg';
 import { useMediaQuery } from '@mui/material';
 import Quixie from './MIniWidgets/Quixie';
+import { useSettingContext } from '../Components/SettingContext.js';
+
 
 const AppHeader = ({ handleClick, hideMenuSection }) => {
 
+    const { mobileOptimizedMode } = useSettingContext();
     const ifW1180 = useMediaQuery('(min-width:1180px)');
     const ifW685 = useMediaQuery('(min-width:685px)'); 
 
@@ -33,7 +36,7 @@ const AppHeader = ({ handleClick, hideMenuSection }) => {
 
 
         {ifW1180 &&(
-        <Quixie style={{width: '350px'}}/>
+        <Quixie style={{width: '350px', background: !mobileOptimizedMode ? "var(--B2)" : "" }}/>
         )}
 
         <div className="headeritem logoSection" >

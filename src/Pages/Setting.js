@@ -29,7 +29,7 @@ return (
                         </label>
                     </div>
                     <div className="taskType">
-                        <span style={{fontSize: "14px"}} >حالت بهینه برای موبایل</span>
+                        <span style={{fontSize: "14px"}} >Dark Violet حالت</span>
                         <label className="switch">
                             <input type="checkbox"
                             checked={mobileOptimizedMode}

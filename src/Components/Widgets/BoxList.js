@@ -6,12 +6,14 @@ import jalaali from 'jalaali-js';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useSettingContext } from '../SettingContext.js';
 
 const BoxList = () => {
   const [boxsData, setBoxsData] = useState([]); // استفاده از state داخلی
   const [inputValues, setInputValues] = useState({});
   const [activeIndex, setActiveIndex] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { mobileOptimizedMode } = useSettingContext();
 
     // ایجاد refهای داینامیک برای هر آیتم
   const targetRefs = useRef([]);
@@ -178,9 +180,10 @@ return (
         
 
         return (
-      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <div key={item.code} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div ref={el => targetRefs.current[index] = el} className={`box-card ${activeIndex === index ? "blurred" : ""}`}  key={index}
         onClick={() => {setActiveIndex(activeIndex === null ? index : null)}}
+        style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}
         >
         <div className="box-title">
         {item.name}
@@ -191,7 +194,7 @@ return (
             <div className="box-column">
             <div className="progress-container">
             <div className="progress-label">
-            {percent.toFixed(0)}%
+            {Math.min(percent, 100).toFixed(0)}%
             </div>
             <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${percent}%` }}>

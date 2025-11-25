@@ -1,6 +1,7 @@
 import '../../Style/NotesWidget.css';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase'
+import { useSettingContext } from '../SettingContext.js';
 
 const { data: notsData, error } = await supabase
   .from('Notes')
@@ -12,7 +13,8 @@ if (error) {
 }
 
 const NotesWidget = () => {
-
+  
+const { mobileOptimizedMode } = useSettingContext();
 const [nextArrow, setNextArrow] = useState("flex");
 const [prevArrow, setPrevArrow] = useState("none");
 const [startIndex, setStartIndex] = useState(0);
@@ -54,7 +56,7 @@ return (
     </div>
     <div className="notes">
         {currentNotes.map((item, index) => (
-        <div className="note">        
+        <div key={item.id || index} className="note" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>        
             <p key={index}>{item.note}</p>
         </div>
         ))}

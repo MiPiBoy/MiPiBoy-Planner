@@ -180,7 +180,7 @@ const TextPressure = ({
           top: 0;
           color: transparent;
           z-index: -1;
-          -webkit-text-stroke-width: 3px;
+          -webkit-text-strokeWidth: 3px;
           -webkit-text-stroke-color: ${strokeColor};
         }
 

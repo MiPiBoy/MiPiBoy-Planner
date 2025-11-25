@@ -2,7 +2,6 @@
     width: fill-available;
     align-self: stretch;
     padding: 12px;
-    background: var(--B2);
     border-radius: 20px;
     display: inline-flex;
     flex-direction: column;
@@ -10,6 +9,7 @@
     align-items: flex-start;
     gap: 12px;
     transition: filter 0.3s ease;
+    border: 1px solid var(--border-color);
   }
   
   .box-card.blurred {
