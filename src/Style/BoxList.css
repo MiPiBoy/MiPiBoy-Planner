@@ -1,4 +1,5 @@
 .box-card {
+    width: fill-available;
     align-self: stretch;
     padding: 12px;
     background: var(--B2);
@@ -8,6 +9,11 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 12px;
+    transition: filter 0.3s ease;
+  }
+  
+  .box-card.blurred {
+    filter: blur(2px);
   }
   
   .box-title {
@@ -126,8 +132,14 @@
     color: #ccc;
   }
   .budgeting {
-    width: 100%;
+    transition: filter 0.3s ease;
+    width: calc(100% - 24px);
     gap: 10px;
+    height: 0px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
   }
   .budgetingSection{
     box-sizing: border-box;

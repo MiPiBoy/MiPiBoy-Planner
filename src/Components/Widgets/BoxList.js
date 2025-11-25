@@ -1,127 +1,106 @@
 import "../../Style/BoxList.css"
 import "../../Style/Task.css"
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../../utils/supabase'
 import jalaali from 'jalaali-js';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-const { data: BoxsData, error } = await supabase
-  .from('BuckBoxs')
-  .select('*');
-if (error) {
-  console.error("خطا در دریافت باکس ها:", error.message);
-} else {
-  console.log("باکس های دریافت‌شده:", BoxsData);
-}
-
 const BoxList = () => {
+  const [boxsData, setBoxsData] = useState([]); // استفاده از state داخلی
+  const [inputValues, setInputValues] = useState({});
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-const [boxsData, setBoxsData] = useState([]);
-const [inputValues, setInputValues] = useState({});
-const [activeIndex, setActiveIndex] = useState(null);
-const [loading, setLoading] = useState(false);
-const [refresh, setRefresh] = useState(false);
+    // ایجاد refهای داینامیک برای هر آیتم
+  const targetRefs = useRef([]);
+  const moveRefs = useRef([]);
 
-const refreshReload = () => setRefresh(prev => !prev);
+  // تابع برای تنظیم موقعیت budgeting
+  useEffect(() => {
+    if (activeIndex !== null) {
+      const targetEl = targetRefs.current[activeIndex];
+      const moveEl = moveRefs.current[activeIndex];
+      
+      if (targetEl && moveEl) {
+        const targetHeight = targetEl.offsetHeight;
+        moveEl.style.translate = `0 -${targetHeight / 2}px`;
+      }
+    }
+  }, [activeIndex]); // هر بار که activeIndex تغییر کرد اجرا شود
 
+  // دریافت داده از دیتابیس
+  useEffect(() => {
+    fetchBoxsData();
+  }, []);
 
-// دریافت داده از دیتابیس
-useEffect(() => {
-  fetchBoxsData();
-}, [refresh]);
+  const fetchBoxsData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('BuckBoxs')
+        .select('*');
+      
+      if (error) {
+        console.error("خطا در دریافت باکس ها:", error.message);
+      } else {
+        setBoxsData(data); // ذخیره در state داخلی
+        console.log("باکس های دریافت‌شده:", data);
+      }
+    } catch (error) {
+      console.error("خطا در دریافت داده:", error);
+    }
+  };
 
-const fetchBoxsData = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('BuckBoxs')
-      .select('*');
+  // تابع برای تغییر مقدار input
+  const handleInputChange = (index, value) => {
+    setInputValues(prev => ({
+      ...prev,
+      [index]: value
+    }));
+  };
+
+  // تابع برای افزایش مقدار
+  const handleIncrease = async (item, index) => {
+    const inputValue = parseFloat(inputValues[index]) || 0;
+    if (inputValue <= 0) return;
+
+    const newValue = item.value + inputValue;
     
-    if (error) {
-      console.error("خطا در دریافت باکس ها:", error.message);
-    } else {
-      setBoxsData(data);
-      console.log("باکس های دریافت‌شده:", data);
-    }
-  } catch (error) {
-    console.error("خطا در دریافت داده:", error);
-  }
-};
-
-// تابع برای تغییر مقدار input
-const handleInputChange = (index, value) => {
-  setInputValues(prev => ({
-    ...prev,
-    [index]: value
-  }));
-};
-
-// تابع برای افزایش مقدار
-const handleIncrease = async (item, index) => {
-  await updateValue(item, index, 'increase');
-  refreshReload();
-};
-
-// تابع برای کاهش مقدار
-const handleDecrease = async (item, index) => {
-  await updateValue(item, index, 'decrease');
-  refreshReload();
-};
-
-// تابع اصلی برای بروزرسانی مقدار در دیتابیس
-const updateValue = async (item, index, operation) => {
-  if (loading) return;
-  
-  const inputValue = parseFloat(inputValues[index]) || 0;
-  if (inputValue <= 0) {
-    // alert("لطفا مقدار معتبر وارد کنید");
-    return;
-  }
-
-  setLoading(true);
-  
-  try {
-    let newValue;
-    if (operation === 'increase') {
-      newValue = item.value + inputValue;
-    } else {
-      newValue = item.value - inputValue;
-      if (newValue < 0) newValue = 0; // جلوگیری از مقادیر منفی
-    }
-
-    // بروزرسانی در دیتابیس
-    const { error } = await supabase
+    // اول UI رو به‌روز کن
+    setBoxsData(prev => prev.map(box => 
+      box.code === item.code ? { ...box, value: newValue } : box
+    ));
+    
+    setInputValues(prev => ({ ...prev, [index]: '' }));
+    
+    // بعد دیتابیس رو به‌روز کن
+    await supabase
       .from('BuckBoxs')
       .update({ value: newValue })
       .eq('code', item.code);
+  };
 
-    if (error) {
-      console.error("خطا در بروزرسانی:", error);
-      alert("خطا در بروزرسانی مقدار");
-    } else {
-      // بروزرسانی local state
-      setBoxsData(prev => 
-        prev.map(box => 
-          box.code === item.code ? { ...box, value: newValue } : box
-        )
-      );
-      
-      // پاک کردن input
-      setInputValues(prev => ({
-        ...prev,
-        [index]: ''
-      }));
-      
-      console.log("مقدار با موفقیت بروزرسانی شد");
-    }
-  } catch (error) {
-    console.error("خطا:", error);
-    alert("خطا در بروزرسانی مقدار");
-  } finally {
-    setLoading(false);
-  }
-};
+  // تابع برای کاهش مقدار
+  const handleDecrease = async (item, index) => {
+    const inputValue = parseFloat(inputValues[index]) || 0;
+    if (inputValue <= 0) return;
+
+    const newValue = Math.max(0, item.value - inputValue); // جلوگیری از مقادیر منفی
+    
+    // اول UI رو به‌روز کن
+    setBoxsData(prev => prev.map(box => 
+      box.code === item.code ? { ...box, value: newValue } : box
+    ));
+    
+    setInputValues(prev => ({ ...prev, [index]: '' }));
+    
+    // بعد دیتابیس رو به‌روز کن
+    await supabase
+      .from('BuckBoxs')
+      .update({ value: newValue })
+      .eq('code', item.code);
+  };
 
 
 
@@ -191,15 +170,17 @@ const calculateDaysRemaining = (targetDateString) => {
 return (
 <div className="checkList">
 <div><div style={{height: "30px"}}/></div>
-        {BoxsData.map((item, index) => {
+        {boxsData.map((item, index) => {
         const percent = item.requiredValue !== 0 ? (item.value / item.requiredValue) * 100 : 0;
         const daysRemaining = calculateDaysRemaining(item.date);
         const formattedDate = formatPersianDate(item.date);
         const currentInputValue = inputValues[index] || '';
+        
 
         return (
-        <div className="box-card"  key={index}
-        onClick={() => {setActiveIndex(activeIndex === index ? null : index)}}
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <div ref={el => targetRefs.current[index] = el} className={`box-card ${activeIndex === index ? "blurred" : ""}`}  key={index}
+        onClick={() => {setActiveIndex(activeIndex === null ? index : null)}}
         >
         <div className="box-title">
         {item.name}
@@ -246,40 +227,40 @@ return (
         {item.description}
         </div>
         : null}
-          {/* <div className="budgeting" style={{zIndex:'1', display: activeIndex === index ? 'flex' : 'none'}}> */}
-          <div className="budgeting" style={{zIndex:'1', display:'flex'}}>
-              <div className="budgetingSection">
-                <div className="inBorder" onClick={() => handleDecrease(item, index)}>
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+      </div>
+      <div ref={el => moveRefs.current[index] = el} className="budgeting" style={{zIndex:'1', display: activeIndex === index ? 'flex' : 'none'}} >
+            <div className="budgetingSection">
+              <div className="inBorder" onClick={() => handleDecrease(item, index)}>
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              
-              <div className="budgetInput">
-                <div className="inBorder">
-                  <input
-                    style={{width: 'calc(100% - 8px)', border: 0, padding: 0 }}
-                    className="formInput"
-                    type="text"
-                    placeholder="مقدار"
-                    value={currentInputValue}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    disabled={loading}
-                  />
-                </div>
+            </div>
+            
+            <div className="budgetInput">
+              <div className="inBorder">
+                <input
+                  style={{width: 'calc(100% - 8px)', border: 0, padding: 0 }}
+                  className="formInput"
+                  type="text"
+                  placeholder="مقدار"
+                  value={currentInputValue}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  disabled={loading}
+                />
               </div>
-              
-              <div className="budgetingSection">
-                <div className="inBorder" onClick={() => handleIncrease(item, index)}>
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M11 16.5V5.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+            </div>
+            
+            <div className="budgetingSection">
+              <div className="inBorder" onClick={() => handleIncrease(item, index)}>
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.5 11H16.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M11 16.5V5.5" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
             </div>
           </div>
+        </div>
 )})}
 </div>
 )}
