@@ -10,7 +10,7 @@ import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
 import { Tasks } from './Pages/Tasks';
 import { Setting } from './Pages/Setting';
-import { SettingProvider } from './Components/SettingContext';
+import { useSettingContext } from './Components/SettingContext';
 import { useMediaQuery } from '@mui/material';
 
 function App() {
@@ -29,15 +29,17 @@ function App() {
     setHideMenuSection(false);
   };
   const ifW685 = useMediaQuery('(min-width:685px)');
+  const { mobileOptimizedMode } = useSettingContext();
 
   return (
     <div className="App">
       <BrowserRouter>
-      <SettingProvider>
         <div className='mainSection'>
+          {!mobileOptimizedMode ?
             <div className='backgrond'>
               <DarkVeil/>
             </div>
+            : null}
             {ifW685 ?
             <header className='appHeader'>
               <AppHeader handleClick={openNav} hideMenuSection={hideMenuSection}/>
@@ -69,7 +71,6 @@ function App() {
               minFontSize={28}
             />
             : null} */}
-      </SettingProvider>
       </BrowserRouter>
     </div>
   );

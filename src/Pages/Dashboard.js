@@ -15,7 +15,7 @@ import NotesWidget from "../Components/Widgets/NotesWidget.js";
 import { TaskProvider  } from '../Components/TaskContext.js';
 import { useMediaQuery } from '@mui/material';
 import Quixie from '../Components/MIniWidgets/Quixie.js';
-import { SettingProvider, useSettingContext } from '../Components/SettingContext.js';
+import { useSettingContext } from '../Components/SettingContext.js';
 
 
 
@@ -36,7 +36,7 @@ export const Dashboard = ({showNav}) => {
 
   const mainEffectRef = useRef(null);
 
-  const { effectStatus, setEffectStatus } = useSettingContext();
+  const { effectStatus, mobileOptimizedMode } = useSettingContext();
 
 
   return (
@@ -166,12 +166,12 @@ export const Dashboard = ({showNav}) => {
               </div>)}
     <div className={ `mainGrid ${showNav ? 'nav-active' : ''}`} >
         <div className='column column1'>
-          <div className='notEffect clockWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} clockWidget`}>
             <div style={{padding: '14px'}} className='widgetBox'>
               <DataTime/>
             </div>
           </div>
-          <div className='notEffect boxesWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} boxesWidget`}>
             <div class="titleDiv">
             <p class="title">لیست باکس ها</p>
             <div style={{display: addBoxForm, padding:'2px'}} title='تایید' class="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none")}}>
@@ -192,12 +192,12 @@ export const Dashboard = ({showNav}) => {
       
         {ifW1180 ? 
         <div className='column column2'>
-          <div className='notEffect lifeViewerWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} lifeViewerWidget`}>
             <div className='widgetBox'>
               <LifeViewerWidget daysCount='343'/>
             </div>
           </div>
-          <div className='notEffect notesWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} notesWidget`}>
             <div className='widgetBox' style={{height: '100%'}}>
               <NotesWidget/>
             </div>
@@ -211,7 +211,7 @@ export const Dashboard = ({showNav}) => {
         : null}
 
         <div className='column column3'>
-          <div className='notEffect tasksWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} tasksWidget`}>
             <div class="titleDiv">
             <p class="title">لیست وظایف</p>
             <div style={{display: addTaskForm, padding:'2px'}} title='تایید' class="editButton" onClick={() =>{setaddTaskForm(addTaskForm === "flex" ? "none" : "flex");settasksChekbox(tasksChekbox === "none" ? "flex" : "none")}}>
@@ -237,19 +237,19 @@ export const Dashboard = ({showNav}) => {
               <TasksChekbox/>
             </div>
           </div>
-          <div className='notEffect dayChartWidget'>
+          <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} dayChartWidget`}>
               <DayChartWidget/>
           </div>
         </div>
     </div>
 {ifW1180 ? null: 
     <div className='column column2' >
-      <div className='notEffect lifeViewerWidget'>
+      <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} lifeViewerWidget`}>
         <div className='widgetBox'>
         <LifeViewerWidget daysCount={ifW685 ? '364' : '203'}/>
         </div>
       </div>
-      <div className='notEffect notesWidget'>
+      <div className={`${mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} notesWidget`}>
         <div className='widgetBox' style={{height: '100%'}}>
           <NotesWidget/>
         </div>
