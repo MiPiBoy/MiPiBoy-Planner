@@ -83,9 +83,20 @@
 
 این پروژه ترکیبی از **منطق دقیق، طراحی حرفه‌ای و خلاقیت بصری** است و نشان‌دهنده‌ی توانایی من در ساخت اپلیکیشن‌های مقیاس‌پذیر و کاربرپسند می‌باشد.
 
-## 🚀 دمو زنده
-برای مشاهده دمو آنلاین پروژه، به لینک زیر مراجعه کنید:  
+---
+
+## 🚀 دموی زنده
+
+برای مشاهده نسخه‌ی آنلاین پروژه می‌توانید از لینک زیر استفاده کنید:
+
 [🌐 مشاهده دمو](https://mipiboy.ir)
+
+> ⚠️ **نکته مهم:**  
+> در حال حاضر نسخه‌ی کامل پروژه فقط روی مرورگر **Google Chrome** به‌طور کامل پشتیبانی می‌شود.  
+> سایر مرورگرها (Firefox, Safari, Edge) در حال توسعه و عیب‌یابی هستند و ممکن است برخی قابلیت‌ها به‌درستی نمایش داده نشوند.  
+> بنابراین برای بهترین تجربه، لطفاً دموی زنده را با **Chrome** باز کنید.  
+
+---
 
 ## ⚙️ نحوه نصب و راهاندازی
 
@@ -221,10 +232,20 @@ This project was completely designed and implemented by me. During development, 
 
 This project combines **precise logic, professional design, and visual creativity** and demonstrates my ability to build scalable and user-friendly applications.
 
+---
+
 ## 🚀 Live Demo
-To view the live demo of the project, visit the following link:  
+
+To view the online version of the project, you can use the following link:
+
 [🌐 View Demo](https://mipiboy.ir)
 
+> ⚠️ **Important Note:**  
+> Currently, the full version of the project is only fully supported on **Google Chrome**.  
+> Other browsers (Firefox, Safari, Edge) are under development and debugging, and some features may not display correctly.  
+> Therefore, for the best experience, please open the live demo with **Chrome**.  
+
+---
 ## ⚙️ Installation and Setup
 
 ### 1. Clone the Project
