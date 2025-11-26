@@ -22,22 +22,21 @@
 ## 📷 اسکرین شات ها
 
 ### دسکتاپ Dark Violet
-![صفحه اصلی](src/assets/desktopDVM.png)
+![دسکتاپ Dark Violet](src/assets/desktopDVM.png)
 
 ### دسکتاپ
-![صفحه اصلی](src/assets/desktop.png)
-
+![دسکتاپ](src/assets/desktop.png)
 ### تبلت Dark Violet
-![داشبورد](src/assets/tabletDVM.png)
+![تبلت Dark Violet](src/assets/tabletDVM.png)
 
 ### تبلت
-![داشبورد](src/assets/tablet.png)
+![تبلت](src/assets/tablet.png)
 
 ### موبایل Dark Violet
-![یادداشت‌ها](src/assets/mobileDVM.png)
+![ موبایل Dark Violet](src/assets/mobileDVM.png)
 
 ### موبایل
-![یادداشت‌ها](src/assets/mobile.png)
+![موبایل](src/assets/mobile.png)
 
 ## 👨🏻‍💻 توضیحات فنی
 
@@ -46,3 +45,38 @@
 [🌐 مشاهده دمو](https://mipiboy.ir)
 
 ## ⚙️ نحوه نصب و راهاندازی
+
+### 1. کلون کردن پروژه
+```bash
+git clone https://github.com/MiPiBoy/MiPiBoy-Planner.git
+cd mipiboy-planner
+```
+
+
+### 2. نصب وابستگی‌ها
+
+```bash
+npm install
+```
+
+### 3. اجرای پروژه در حالت توسعه
+```bash
+npm start
+```
+بعد از اجرا، پروژه روی آدرس زیر در مرورگر در دسترس خواهد بود:
+
+http://localhost:3000
+
+### 4.  ساخت نسخه نهایی
+```bash
+npm run build
+```
+این دستور پوشه‌ی build را ایجاد می‌کند که شامل نسخه‌ی بهینه‌شده‌ی پروژه برای انتشار است.
+
+### نکته !
+- مطمئن شوید که Node.js و npm روی سیستم نصب باشند.
+- اگر از yarn استفاده می‌کنید، می‌توانید به جای npm install بنویسید:
+```bash
+yarn install
+yarn start
+```
