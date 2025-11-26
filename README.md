@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# پلنر MiPiBoy
+## توضیحات پروژه
+این پروژه یک اپلیکیشن چندمنظوره برای مدیریت و برنامه‌ریزی شخصی است. هدف آن ایجاد یک محیط یکپارچه برای کنترل کارهای روزانه، مدیریت مالی، یادداشت‌برداری و دسترسی سریع به سایت‌های پرکاربرد است.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### امکانات اصلی
+- برنامه‌ریزی روزانه: ثبت و مدیریت کارهای روزمره در قالب لیست‌های ساده و قابل پیگیری.
+- باکس‌های پس‌انداز: بخش ویژه برای مدیریت اهداف مالی و پیگیری روند پس‌انداز.
+- یادداشت‌ها: امکان نوشتن یادداشت‌های کوتاه یا بلند برای ثبت ایده‌ها و نکات مهم.
+- میانبرها: دسترسی سریع به وب‌سایت‌های پر استفاده برای صرفه‌جویی در زمان.
 
-## Available Scripts
+### بخش رسیدگی به پروژه (در حال توسعه)
+- تعریف فیچرها و تعیین ددلاین برای هر وظیفه.
+- اختصاص هر تسک به فرد مناسب در تیم.
+- مدیریت پیشرفت پروژه و هماهنگی بین اعضا.
 
-In the project directory, you can run:
+### بخش دانشگاه (در حال توسعه)
+- برنامه‌ریزی هفتگی کلاس‌های درسی.
+- هماهنگ‌سازی کلاس‌ها با برنامه کاری روزانه.
+- مدیریت تمرین‌ها و امتحان‌های هر هفته.
+- ایجاد تعادل بین کارهای دانشگاهی و فعالیت‌های شخصی.
 
-### `npm start`
+## 📷 اسکرین شات ها
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### دسکتاپ Dark Violet
+![صفحه اصلی](src/assets/desktopDVM.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### دسکتاپ
+![صفحه اصلی](src/assets/desktop.png)
 
-### `npm test`
+### تبلت Dark Violet
+![داشبورد](src/assets/tabletDVM.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### تبلت
+![داشبورد](src/assets/tablet.png)
 
-### `npm run build`
+### موبایل Dark Violet
+![یادداشت‌ها](src/assets/mobileDVM.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### موبایل
+![یادداشت‌ها](src/assets/mobile.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## توضیحات فنی
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 دمو زنده
+برای مشاهده دمو آنلاین پروژه، به لینک زیر مراجعه کنید:  
+[🌐 مشاهده دمو](https://mipiboy.ir)
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## نحوه نصب و راهاندازی
