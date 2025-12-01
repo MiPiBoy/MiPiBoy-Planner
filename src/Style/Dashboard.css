@@ -127,6 +127,9 @@
   .lifeViewerWidget{
     height: 262px !important;
   }
+  .mainGrid {
+    max-height: 700px;
+  }
 }
 
 @media only screen and (max-width: 685px) {

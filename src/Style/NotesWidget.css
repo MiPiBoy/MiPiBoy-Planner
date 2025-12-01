@@ -54,3 +54,44 @@
     width: 100%;
   }
 }
+
+/* Skeleton Loader Styles */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-line {
+  width: calc(100% - 14px);
+  height: 14px;
+  background: linear-gradient(90deg, #808080 25%, #80808000 50%, #808080 75%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  animation: loading 2.5s infinite;
+}
+
+.skeleton-line.shorter {
+  width: 70%;
+}
+
+.skeleton-line:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Error Message */
+.error-message {
+  color: #ff6b6b;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
