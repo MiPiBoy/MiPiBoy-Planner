@@ -112,6 +112,7 @@ p {
   position: fixed;
   align-items: center;
   z-index: 100;
+  backdrop-filter: blur(10.5px);
 }
 
 .headerSection {

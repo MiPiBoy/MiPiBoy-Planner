@@ -237,7 +237,9 @@
   align-items: center;
   text-align: center;
   color: #ff6b6b;
+  font-size: 14px;
   background: var(--B1);
+  border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 8px;
 }

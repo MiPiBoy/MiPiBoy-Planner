@@ -87,11 +87,3 @@
     background-position: 200% 0;
   }
 }
-
-/* Error Message */
-.error-message {
-  color: #ff6b6b;
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-}

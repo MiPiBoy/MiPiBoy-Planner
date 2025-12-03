@@ -191,7 +191,7 @@ const BoxList = () => {
   const SkeletonLoader = () => (
   <div style={{paddingTop: '14px'}}>
     <div>
-      <div><div style={{height: "30px"}}/></div>
+      <div style={{mask: 'linear-gradient(black, #0000003d, transparent)'}}><div style={{height: "30px"}}/></div>
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
           <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
             <div className="box-title skeleton-line"></div>
@@ -210,7 +210,7 @@ const BoxList = () => {
             </div>
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', opacity: '50%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
           <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
             <div className="box-title skeleton-line"></div>
             <div className="box-section">
@@ -228,7 +228,7 @@ const BoxList = () => {
             </div>
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', opacity: '20%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
           <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
             <div className="box-title skeleton-line"></div>
             <div className="box-section">
@@ -253,8 +253,28 @@ const BoxList = () => {
   // Error Component
   const ErrorMessage = () => (
   <div style={{paddingTop: '14px'}}>
-    <div>
+    <div style={{mask: 'linear-gradient(black, #0000003d, transparent)'}}>
       <div><div style={{height: "30px"}}/></div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
+          <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
+            <div className="box-title skeleton-line"></div>
+            <div className="box-section">
+              <div className="box-column">
+                <div className="progress-container">
+                  <div className="progress-label skeleton-line shorter"></div>
+                  
+                    <div className="progress-fill skeleton-line"></div>
+                  
+                </div>
+                <div className="progress-text skeleton-line shorter"></div>
+              </div>
+            </div>
+            <div className="box-row">
+              <div className="box-days skeleton-line short"></div>
+              <div className="box-date skeleton-line shorter"></div>
+            </div>
+          </div>
+        </div>
 
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
           <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
@@ -277,28 +297,7 @@ const BoxList = () => {
           </div>
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', opacity: '50%'}}>
-          <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
-            <div className="box-title skeleton-line"></div>
-            <div className="box-section">
-              <div className="box-column">
-                <div className="progress-container">
-                  <div className="progress-label skeleton-line shorter"></div>
-                  
-                    <div className="progress-fill skeleton-line"></div>
-                  
-                </div>
-                <div className="progress-text skeleton-line shorter"></div>
-              </div>
-            </div>
-            <div className="box-row">
-              <div className="box-days skeleton-line short"></div>
-              <div className="box-date skeleton-line shorter"></div>
-            </div>
-          </div>
-        </div>
-
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', opacity: '20%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
           <div className="box-card skeleton" style={{ background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99" }}>
             <div className="box-title skeleton-line"></div>
             <div className="box-section">

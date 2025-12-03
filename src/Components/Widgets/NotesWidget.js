@@ -73,7 +73,7 @@ const NotesWidget = () => {
 
   // Skeleton loader component
   const SkeletonLoader = () => (
-    <div className="notes">
+    <div className="notes" style={{mask: 'linear-gradient(black, #0000003d, transparent)'}}>
       {[...Array(pageSize)].map((_, index) => (
         <div 
           key={index} 
@@ -118,7 +118,7 @@ const NotesWidget = () => {
         <SkeletonLoader />
       ) : error ? (
   <div style={{height: '100%'}}>
-    <div className="notes">
+    <div className="notes" style={{mask: 'linear-gradient(black, #0000003d, transparent)'}}>
       {[...Array(pageSize)].map((_, index) => (
         <div 
           key={index} 
