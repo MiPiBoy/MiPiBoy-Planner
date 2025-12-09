@@ -10,8 +10,8 @@
   --background-dark: #060010;
   */
   --white: hsl(0, 0%, 100%);
-  --purple-primary: rgba(132, 0, 255, 0.474);
-  --purple-glow: rgba(132, 0, 255, 0.079);
+  --purple-primary: #8400ff79;
+  --purple-glow: #8400ff14;
   --purple-border: #8400ff2a;
   --border-color: #392e4e;
   --background-dark: #ffffff04;

@@ -12,7 +12,7 @@ import TasksChekbox from '../Components/Widgets/TasksChekbox.js';
 import BoxList from '../Components/Widgets/BoxList.js';
 import LifeViewerWidget from '../Components/Widgets/LifeViewerWidget.js';
 import NotesWidget from "../Components/Widgets/NotesWidget.js";
-import { TaskProvider  } from '../Components/TaskContext.js';
+import { TaskProvider, useTaskContext  } from '../Components/TaskContext.js';
 import { useMediaQuery } from '@mui/material';
 import Quixie from '../Components/MIniWidgets/Quixie.js';
 import { useSettingContext } from '../Components/SettingContext.js';
@@ -21,6 +21,8 @@ import { useSettingContext } from '../Components/SettingContext.js';
 
 export const Dashboard = ({showNav}) => {
 
+  const { triggerReload2 } = useTaskContext();
+  const { triggerReload3 } = useTaskContext();
   const ifW1180 = useMediaQuery('(min-width:1180px)');
   const ifW1024 = useMediaQuery('(min-width:1024px)');
   const ifW685 = useMediaQuery('(min-width:685px)');
@@ -40,8 +42,8 @@ export const Dashboard = ({showNav}) => {
 
 
   return (
-    <TaskProvider>
-  {effectStatus ?
+    <>
+    {effectStatus ?
     <div className={`mainEffect mainGridpar ${showNav ? 'nav-active' : ''}`} ref={mainEffectRef}>
       <GlobalSpotlight
         gridRef={mainEffectRef}
@@ -66,7 +68,7 @@ export const Dashboard = ({showNav}) => {
             <MagicBento className='boxesWidget' enableSpotlight={false}>
                 <div className="titleDiv" style={{ background: !mobileOptimizedMode ? "none" : "#19191969" }}>
                 <p className="title">لیست باکس ها</p>
-                <div style={{display: addBoxForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none")}}>
+                <div style={{display: addBoxForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none");triggerReload3();}}>
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M3.66634 5.50016C2.52051 7.031 1.83301 8.93766 1.83301 11.0002C1.83301 16.0602 5.93967 20.1668 10.9997 20.1668C16.0597 20.1668 20.1663 16.0602 20.1663 11.0002C20.1663 5.94016 16.0597 1.8335 10.9997 1.8335C9.68884 1.8335 8.43301 2.1085 7.30551 2.61266" stroke="white" strokeLinecap="round" strokeLinejoin="round"/> <path d="M13.75 9.51484L14.7767 8.479" stroke="white" strokeLinecap="round" strokeLinejoin="round"/> <path d="M7.22363 11L9.7353 13.5208L12.0728 11.1925" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/> </svg>
                 </div>
                 <div style={{display: boxList, padding:'2px'}} title='افزودن' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none")}}>
@@ -106,7 +108,7 @@ export const Dashboard = ({showNav}) => {
             <MagicBento className='tasksWidget' enableSpotlight={false}>
               <div className="titleDiv" style={{ background: !mobileOptimizedMode ? "none" : "#19191969" }}>
               <p className="title">لیست وظایف</p>
-              <div style={{display: addTaskForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setaddTaskForm(addTaskForm === "flex" ? "none" : "flex");settasksChekbox(tasksChekbox === "none" ? "flex" : "none")}}>
+              <div style={{display: addTaskForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setaddTaskForm(addTaskForm === "flex" ? "none" : "flex");settasksChekbox(tasksChekbox === "none" ? "flex" : "none");triggerReload2();}}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3.66634 5.50016C2.52051 7.031 1.83301 8.93766 1.83301 11.0002C1.83301 16.0602 5.93967 20.1668 10.9997 20.1668C16.0597 20.1668 20.1663 16.0602 20.1663 11.0002C20.1663 5.94016 16.0597 1.8335 10.9997 1.8335C9.68884 1.8335 8.43301 2.1085 7.30551 2.61266" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M13.75 9.51484L14.7767 8.479" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
@@ -174,7 +176,7 @@ export const Dashboard = ({showNav}) => {
           <div className={`${!mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} boxesWidget`}>
             <div className="titleDiv" style={{ background: !mobileOptimizedMode ? "none" : "#19191969" }}>
             <p className="title">لیست باکس ها</p>
-            <div style={{display: addBoxForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none")}}>
+            <div style={{display: addBoxForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none");triggerReload3();}}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M3.66634 5.50016C2.52051 7.031 1.83301 8.93766 1.83301 11.0002C1.83301 16.0602 5.93967 20.1668 10.9997 20.1668C16.0597 20.1668 20.1663 16.0602 20.1663 11.0002C20.1663 5.94016 16.0597 1.8335 10.9997 1.8335C9.68884 1.8335 8.43301 2.1085 7.30551 2.61266" stroke="white" strokeLinecap="round" strokeLinejoin="round"/> <path d="M13.75 9.51484L14.7767 8.479" stroke="white" strokeLinecap="round" strokeLinejoin="round"/> <path d="M7.22363 11L9.7353 13.5208L12.0728 11.1925" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/> </svg>
             </div>
             <div style={{display: boxList, padding:'2px'}} title='افزودن' className="editButton" onClick={() =>{setAddBoxForm(addBoxForm === "flex" ? "none" : "flex");setBoxList(boxList === "none" ? "flex" : "none")}}>
@@ -214,7 +216,7 @@ export const Dashboard = ({showNav}) => {
           <div className={`${!mobileOptimizedMode ? 'notEffectMOM' : 'notEffect'} tasksWidget`}>
             <div className="titleDiv" style={{ background: !mobileOptimizedMode ? "none" : "#19191969" }}>
             <p className="title">لیست وظایف</p>
-            <div style={{display: addTaskForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setaddTaskForm(addTaskForm === "flex" ? "none" : "flex");settasksChekbox(tasksChekbox === "none" ? "flex" : "none")}}>
+            <div style={{display: addTaskForm, padding:'2px'}} title='تایید' className="editButton" onClick={() =>{setaddTaskForm(addTaskForm === "flex" ? "none" : "flex");settasksChekbox(tasksChekbox === "none" ? "flex" : "none");triggerReload2();}}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3.66634 5.50016C2.52051 7.031 1.83301 8.93766 1.83301 11.0002C1.83301 16.0602 5.93967 20.1668 10.9997 20.1668C16.0597 20.1668 20.1663 16.0602 20.1663 11.0002C20.1663 5.94016 16.0597 1.8335 10.9997 1.8335C9.68884 1.8335 8.43301 2.1085 7.30551 2.61266" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M13.75 9.51484L14.7767 8.479" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
@@ -261,5 +263,5 @@ export const Dashboard = ({showNav}) => {
       </div> */}
     </div>}
   </div>}
-  </TaskProvider>
+  </>
 )};

@@ -27,7 +27,7 @@ const NotesWidget = () => {
           console.error("خطا در دریافت نوت‌ها:", error.message);
           setError(error.message);
         } else {
-          console.log("نوت‌های دریافت‌شده:", data);
+          console.log("نوت‌ها دریافت‌شدند");
           setNotesData(data || []);
         }
       } catch (err) {

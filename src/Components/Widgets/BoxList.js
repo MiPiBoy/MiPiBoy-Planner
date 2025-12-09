@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useSettingContext } from '../SettingContext.js';
+import { useTaskContext } from "../TaskContext.js";
 
 const BoxList = () => {
   const [boxsData, setBoxsData] = useState([]);
@@ -15,6 +16,7 @@ const BoxList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { mobileOptimizedMode } = useSettingContext();
+  const { reloadFlag3 } = useTaskContext();
 
   // ایجاد refهای داینامیک برای هر آیتم
   const targetRefs = useRef([]);
@@ -36,7 +38,7 @@ const BoxList = () => {
   // دریافت داده از دیتابیس
   useEffect(() => {
     fetchBoxsData();
-  }, []);
+  }, [reloadFlag3]);
 
   const fetchBoxsData = async () => {
     try {
@@ -51,7 +53,7 @@ const BoxList = () => {
         setError("خطا در دریافت اطلاعات باکس‌ها");
       } else {
         setBoxsData(data || []);
-        console.log("باکس های دریافت‌شده:", data);
+        console.log("باکس ها دریافت‌شدند");
       }
     } catch (error) {
       console.error("خطا در دریافت داده باکس‌ها:", error);

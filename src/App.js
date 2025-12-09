@@ -12,6 +12,7 @@ import { Tasks } from './Pages/Tasks';
 import { Setting } from './Pages/Setting';
 import { useSettingContext } from './Components/SettingContext';
 import { useMediaQuery } from '@mui/material';
+import { TaskProvider } from './Components/TaskContext';
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -34,6 +35,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <TaskProvider>
         <div className='mainSection'>
           {mobileOptimizedMode ?
             <div className='backgrond'>
@@ -71,6 +73,7 @@ function App() {
               minFontSize={28}
             />
             : null} */}
+      </TaskProvider>
       </BrowserRouter>
     </div>
   );
