@@ -8,7 +8,7 @@ import MobileNav from './Components/MobileNav';
 import { useState } from 'react';
 import AppHeader from './Components/AppHeader';
 import { NotFound } from './Pages/NotFound';
-import { Tasks } from './Pages/Tasks';
+import { University } from './Pages/University';
 import { Setting } from './Pages/Setting';
 import { useSettingContext } from './Components/SettingContext';
 import { useMediaQuery } from '@mui/material';
@@ -52,7 +52,7 @@ function App() {
           <div className={`inliner ${showNav ? 'nav-active' : ''}`}>
           <Routes>
             <Route path="/" element={<Dashboard showNav={showNav} />} />
-            <Route path="/tasks" element={<Tasks/>} />
+            <Route path="/university" element={<University/>} />
             <Route path="/setting" element={<Setting/>} />
             <Route path="*" element={<NotFound/>} />
           </Routes>

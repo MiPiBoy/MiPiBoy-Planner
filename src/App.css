@@ -87,6 +87,7 @@ p {
   padding-top: 60px;
   display: flex;
   flex-direction: row-reverse;
+  justify-content: center;
 }
 
 .box {
