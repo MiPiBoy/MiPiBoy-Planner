@@ -382,7 +382,7 @@ height: 54px;
   padding: 14px;
   z-index: 1;
   position: absolute;
-  height: 45px;
+  height: 30px;
   width: calc(100% - 28px);
   display: flex;
   flex-direction: row-reverse;

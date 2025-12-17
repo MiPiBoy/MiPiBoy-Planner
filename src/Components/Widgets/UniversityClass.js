@@ -1,287 +1,352 @@
 import "../../Style/Task.css"
-import jalaali from 'jalaali-js';
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { fetchTasks } from '../../API/fetchTasks';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../utils/supabase'
 import { useTaskContext } from '../../Components/TaskContext';
 import { useSettingContext } from '../SettingContext.js';
-import { error } from "three";
+import jalaali from 'jalaali-js';
 
 const UniversityClass = () => {
     const { triggerReload, reloadFlag2 } = useTaskContext();
-    const [tasks, setTasks] = useState([]);
-    const [daysOffset, setDaysOffset] = useState(0);
-    const [displayDays, setDisplayDays] = useState([]);
-    const observerRef = useRef(null);
-    const [completedSet, setCompletedSet] = useState(new Set());
+    const [classes, setClasses] = useState([]);
+    const [classTimes, setClassTimes] = useState([]);
+    const [selectedDay, setSelectedDay] = useState(new Date().getDay() === 6 ? 0 : new Date().getDay() + 1); // Convert JS day to Persian week (0-6)
+    const [combinedData, setCombinedData] = useState([]);
+    const [completedStatus, setCompletedStatus] = useState({}); // { "code|weekStartDate": {status: 3} }
     const { mobileOptimizedMode } = useSettingContext();
 
     // حالت‌های لودینگ و خطا
-    const [loadingTasks, setLoadingTasks] = useState(true);
-    const [loadingCompletion, setLoadingCompletion] = useState(false);
-    const [errorTasks, setErrorTasks] = useState(null);
-    const [errorCompletion, setErrorCompletion] = useState(null);
+    const [loadingClasses, setLoadingClasses] = useState(true);
+    const [loadingTimes, setLoadingTimes] = useState(true);
+    const [loadingStatus, setLoadingStatus] = useState(false);
+    const [errorClasses, setErrorClasses] = useState(null);
+    const [errorTimes, setErrorTimes] = useState(null);
+    const [errorStatus, setErrorStatus] = useState(null);
 
-    // تابع برای تبدیل تاریخ شمسی به فرمت قابل مقایسه
-    const parsePersianDate = (dateString) => {
-        if (!dateString || dateString.trim() === '') return null;
+    // روزهای هفته فارسی
+    const persianWeekDays = [
+        { id: 0, name: 'SAT' },
+        { id: 1, name: 'SUN' },
+        { id: 2, name: 'MON' },
+        { id: 3, name: 'TUE' },
+        { id: 4, name: 'WED' },
+        { id: 5, name: 'THU' }
+    ];
 
-        try {
-            const parts = dateString.split('/');
-            if (parts.length !== 3) return null;
-
-            const day = parseInt(parts[0], 10);
-            const month = parseInt(parts[1], 10);
-            const year = parseInt(parts[2], 10);
-
-            if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
-
-            return { year, month, day, original: dateString };
-        } catch (error) {
-            console.error('خطا در پارس کردن تاریخ:', error);
-            return null;
-        }
+    // تابع برای تبدیل ساعت به فرمت قابل مرتب‌سازی
+    const timeToMinutes = (timeStr) => {
+        if (!timeStr) return 0;
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        return hours * 60 + minutes;
     };
 
-    // تابع برای مقایسه تاریخ‌های شمسی
-    const comparePersianDates = (date1, date2) => {
-        if (!date1 || !date2) return null;
+    // تابع برای محاسبه تاریخ شمسی روز انتخابی در هفته
+    const getSelectedDayJalaliDate = () => {
+        const today = new Date();
+        const todayJsWeekday = today.getDay();
+        const todayPersianWeekday = todayJsWeekday === 6 ? 0 : todayJsWeekday + 1;
 
-        const parsed1 = parsePersianDate(date1);
-        const parsed2 = parsePersianDate(date2);
+        let diff = selectedDay - todayPersianWeekday;
 
-        if (!parsed1 || !parsed2) return null;
-
-        if (parsed1.year !== parsed2.year) {
-            return parsed1.year - parsed2.year;
+        if (diff < 0) {
+            diff += 7;
         }
 
-        if (parsed1.month !== parsed2.month) {
-            return parsed1.month - parsed2.month;
-        }
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() + diff);
 
-        return parsed1.day - parsed2.day;
+        const { jy, jm, jd } = jalaali.toJalaali(targetDate);
+        return `${jy}-${jm.toString().padStart(2, '0')}-${jd.toString().padStart(2, '0')}`;
     };
 
-    // تابع برای تولید روزهای شمسی
-    const generateJalaliDays = (startOffset = 0, count = 10) => {
-        try {
-            const days = [];
-            const today = new Date();
+    // تابع برای محاسبه تاریخ شمسی برای هر روز هفته
+    const getJalaliDateForDay = (dayId) => {
+        const today = new Date();
+        const todayJsWeekday = today.getDay();
+        const todayPersianWeekday = todayJsWeekday === 6 ? 0 : todayJsWeekday + 1;
 
-            for (let i = startOffset; i < startOffset + count; i++) {
-                const future = new Date(today);
-                future.setDate(today.getDate() + i);
+        let diff = dayId - todayPersianWeekday;
 
-                const { jy, jm, jd } = jalaali.toJalaali(future);
-                const formatted = `${jd}/${jm}/${jy}`;
-                const jsWeekday = future.getDay();
-                const persianWeekday = jsWeekday === 6 ? 0 : jsWeekday + 1;
-
-                days.push({
-                    date: formatted,
-                    day: jd,
-                    month: jm,
-                    year: jy,
-                    weekday: persianWeekday,
-                    index: i
-                });
-            }
-
-            return days;
-        } catch (error) {
-            console.error('خطا در تولید روزهای شمسی:', error);
-            return [];
+        if (diff < 0) {
+            diff += 7;
         }
+
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() + diff);
+
+        const { jy, jm, jd } = jalaali.toJalaali(targetDate);
+        return `${jd}/${jm}`;
     };
 
-    // تابع برای پارس کردن repeatDays
-    const parseRepeatDays = (repeatDaysString) => {
-        if (!repeatDaysString) return [];
-        try {
-            const parsed = JSON.parse(repeatDaysString);
-            return Array.isArray(parsed) ? parsed.map(d => String(d)) : [];
-        } catch (error) {
-            console.error('خطا در پارس کردن repeatDays:', error);
-            return [];
-        }
+    // تابع برای محاسبه تاریخ شنبه هفته شمسی برای یک تاریخ شمسی
+    const getSaturdayOfJalaliWeek = (jalaliDate) => {
+        const [year, month, day] = jalaliDate.split('-').map(Number);
+        const gregorianDate = jalaali.toGregorian(year, month, day);
+        const date = new Date(gregorianDate.gy, gregorianDate.gm - 1, gregorianDate.gd);
+
+        // روز هفته میلادی
+        const jsWeekday = date.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
+        // تبدیل به روز هفته شمسی: 0=شنبه, 1=یکشنبه, ..., 6=جمعه
+        const persianWeekday = (jsWeekday + 1) % 7;
+
+        // اختلاف روز تا شنبه
+        const diffToSaturday = -persianWeekday;
+
+        // محاسبه تاریخ شنبه
+        const saturdayDate = new Date(date);
+        saturdayDate.setDate(date.getDate() + diffToSaturday);
+
+        const saturdayJalali = jalaali.toJalaali(saturdayDate);
+        return `${saturdayJalali.jy}-${saturdayJalali.jm.toString().padStart(2, '0')}-${saturdayJalali.jd.toString().padStart(2, '0')}`;
     };
 
-    // تابع برای بررسی اینکه آیا تسک باید نمایش داده شود
-    const shouldShowTaskForDate = (task, dayDate, dayWeekday) => {
-        try {
-            const taskData = task.data?.trim() || '';
-            const taskTaData = task.taData?.trim() || '';
-
-            // بررسی repeatDays
-            let repeatDays = [];
-            if (task.repeatDays) {
-                if (typeof task.repeatDays === 'string' && task.repeatDays.trim() !== '') {
-                    repeatDays = parseRepeatDays(task.repeatDays);
-                } else if (Array.isArray(task.repeatDays)) {
-                    repeatDays = task.repeatDays.map(d => String(d));
-                }
-            }
-
-            if (task.repeatDays !== null && task.repeatDays !== undefined) {
-                if (repeatDays.length === 0) {
-                    return false;
-                }
-
-                const dayWeekdayStr = String(dayWeekday);
-                if (!repeatDays.includes(dayWeekdayStr)) {
-                    return false;
-                }
-            }
-
-            if (!taskData && !taskTaData) {
-                return true;
-            }
-
-            if (taskData && taskData === dayDate) {
-                return true;
-            }
-
-            if (taskTaData) {
-                const comparison = comparePersianDates(taskTaData, dayDate);
-                if (comparison !== null && comparison >= 0) {
-                    return true;
-                }
-            }
-
-            return false;
-        } catch (error) {
-            console.error('خطا در بررسی نمایش تسک:', error);
-            return false;
-        }
-    };
-
-    // بارگذاری تسک‌ها
+    // بارگذاری کلاس‌ها
     useEffect(() => {
-        const loadTasks = async () => {
-            setLoadingTasks(true);
-            setErrorTasks(null);
+        const loadClasses = async () => {
+            setLoadingClasses(true);
+            setErrorClasses(null);
 
             try {
-                const result = await fetchTasks();
-                setTasks(result);
-            } catch (error) {
-                console.error('خطا در دریافت تسک‌ها:', error);
-                setErrorTasks('خطا در بارگذاری تسک‌ها.');
-            } finally {
-                setLoadingTasks(false);
-            }
-        };
-
-        loadTasks();
-    }, [reloadFlag2]);
-
-    // تولید روزهای اولیه و اضافه کردن روزهای جدید هنگام اسکرول
-    useEffect(() => {
-        const totalDays = 10 + (daysOffset * 10);
-        const days = generateJalaliDays(0, totalDays);
-        setDisplayDays(days);
-    }, [daysOffset]);
-
-    // واکشی وضعیت تکمیل‌شدن‌ها
-    useEffect(() => {
-        const fetchCompletionStatuses = async () => {
-            if (displayDays.length === 0) return;
-
-            setLoadingCompletion(true);
-            setErrorCompletion(null);
-
-            try {
-                const dates = Array.from(new Set(displayDays.map(d => d.date)));
                 const { data, error } = await supabase
-                    .from('CompletionStatus')
-                    .select('code, date')
-                    .in('date', dates);
+                    .from('UniversityClass')
+                    .select('*')
+                    .order('lesson');
 
                 if (error) {
                     throw new Error(error.message);
                 }
 
-                const next = new Set();
-                (data || []).forEach(row => {
-                    next.add(`${row.code}|${row.date}`);
-                });
-                setCompletedSet(next);
+                setClasses(data || []);
             } catch (error) {
-                console.error('خطا در دریافت وضعیت انجام تسک‌ها:', error);
-                setErrorCompletion('خطا در دریافت اطلاعات تسک‌ها');
+                console.error('خطا در دریافت کلاس‌ها:', error);
+                setErrorClasses('خطا در بارگذاری کلاس‌ها.');
             } finally {
-                setLoadingCompletion(false);
+                setLoadingClasses(false);
             }
         };
 
-        fetchCompletionStatuses();
-    }, [displayDays]);
+        loadClasses();
+    }, [reloadFlag2]);
 
-    // Observer برای اسکرول
-    const lastDayElementRef = useCallback(node => {
-        if (observerRef.current) observerRef.current.disconnect();
+    // بارگذاری زمان‌بندی کلاس‌ها
+    useEffect(() => {
+        const loadClassTimes = async () => {
+            setLoadingTimes(true);
+            setErrorTimes(null);
 
-        observerRef.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
-                setDaysOffset(prev => prev + 0);
+            try {
+                const { data, error } = await supabase
+                    .from('UniversityClassTimes')
+                    .select('*')
+                    .order('dayOfWeek')
+                    .order('startTime');
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+                setClassTimes(data || []);
+            } catch (error) {
+                console.error('خطا در دریافت زمان‌بندی کلاس‌ها:', error);
+                setErrorTimes('خطا در بارگذاری زمان‌بندی کلاس‌ها.');
+            } finally {
+                setLoadingTimes(false);
             }
-        });
+        };
 
-        if (node) observerRef.current.observe(node);
-    }, []);
+        loadClassTimes();
+    }, [reloadFlag2]);
 
-    // فیلتر کردن تسک‌ها برای هر روز
-    const getTasksForDay = (dayDate, dayWeekday) => {
-        try {
-            return tasks.filter(task => shouldShowTaskForDate(task, dayDate, dayWeekday));
-        } catch (error) {
-            console.error('خطا در فیلتر کردن تسک‌ها:', error);
-            return [];
+    // ترکیب داده‌های کلاس‌ها و زمان‌بندی‌ها
+    useEffect(() => {
+        if (classes.length === 0 || classTimes.length === 0) {
+            setCombinedData([]);
+            return;
         }
+
+        try {
+            const combined = [];
+
+            classTimes.forEach(time => {
+                const classInfo = classes.find(c => c.code === time.code);
+                if (classInfo) {
+                    combined.push({
+                        ...classInfo,
+                        dayOfWeek: time.dayOfWeek,
+                        startTime: time.startTime,
+                        endTime: time.endTime,
+                        timeId: time.id,
+                        rightClass: time.rightClass || false,
+                        mainClass: time.mainClass || false
+                    });
+                }
+            });
+
+            // مرتب‌سازی ابتدایی بر اساس روز هفته و ساعت شروع
+            combined.sort((a, b) => {
+                if (a.dayOfWeek !== b.dayOfWeek) {
+                    return a.dayOfWeek - b.dayOfWeek;
+                }
+                return timeToMinutes(a.startTime) - timeToMinutes(b.startTime);
+            });
+
+            setCombinedData(combined);
+        } catch (error) {
+            console.error('خطا در ترکیب داده‌ها:', error);
+        }
+    }, [classes, classTimes]);
+
+    // بارگذاری وضعیت تیک خوردن‌ها از UniversityClassStatus
+    useEffect(() => {
+        const loadCompletionStatus = async () => {
+            if (!selectedDay && selectedDay !== 0) return;
+
+            setLoadingStatus(true);
+            setErrorStatus(null);
+
+            try {
+                // تاریخ روز انتخابی
+                const selectedDate = getSelectedDayJalaliDate();
+                // تاریخ شنبه هفته
+                const weekStartDate = getSaturdayOfJalaliWeek(selectedDate);
+
+                // دریافت وضعیت‌های هفته جاری
+                const { data, error } = await supabase
+                    .from('UniversityClassStatus')
+                    .select('code, date, status')
+                    .eq('date', weekStartDate);
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+                const statusMap = {};
+                (data || []).forEach(item => {
+                    statusMap[`${item.code}|${item.date}`] = item;
+                });
+
+                setCompletedStatus(statusMap);
+            } catch (error) {
+                console.error('خطا در دریافت وضعیت کلاس‌ها:', error);
+                setErrorStatus('خطا در دریافت وضعیت کلاس‌ها');
+            } finally {
+                setLoadingStatus(false);
+            }
+        };
+
+        loadCompletionStatus();
+    }, [selectedDay, reloadFlag2]);
+
+    // بررسی وضعیت تیک خوردن کلاس
+    const isClassCompleted = (classCode) => {
+        const selectedDate = getSelectedDayJalaliDate();
+        const weekStartDate = getSaturdayOfJalaliWeek(selectedDate);
+        const key = `${classCode}|${weekStartDate}`;
+        return completedStatus[key]?.status === 3;
+    };
+
+    // فیلتر کردن و مرتب‌سازی کلاس‌های روز انتخاب شده
+    const getClassesForSelectedDay = useCallback(() => {
+        const filtered = combinedData.filter(item => item.dayOfWeek === selectedDay);
+        
+        // مرتب‌سازی با اولویت‌های مشخص شده
+        return filtered.sort((a, b) => {
+            // اولویت ۱: وضعیت تیک خوردن (status === 3)
+            const aCompleted = isClassCompleted(a.code);
+            const bCompleted = isClassCompleted(b.code);
+            
+            if (!aCompleted && bCompleted) return -1;
+            if (aCompleted && !bCompleted) return 1;
+            
+            // اولویت ۲: rightClass = true
+            if (a.rightClass && !b.rightClass) return -1;
+            if (!a.rightClass && b.rightClass) return 1;
+            
+            // اولویت ۳: ساعت شروع
+            return timeToMinutes(a.startTime) - timeToMinutes(b.startTime);
+        });
+    }, [combinedData, selectedDay]);
+
+    // رویداد تغییر روز انتخابی
+    const handleDayChange = (dayId) => {
+        setSelectedDay(dayId);
     };
 
     // رویداد تیک زدن/برداشتن تیک
-    const handleCompletionToggle = async (taskCode, dayDate, isChecked) => {
+    const handleCompletionToggle = async (classCode, isChecked) => {
         try {
+            const selectedDate = getSelectedDayJalaliDate();
+            const weekStartDate = getSaturdayOfJalaliWeek(selectedDate);
+            const key = `${classCode}|${weekStartDate}`;
+
             if (isChecked) {
-                const { error } = await supabase
-                    .from('CompletionStatus')
-                    .insert([{ code: taskCode, date: dayDate }]);
+                // درج وضعیت
+                const { data, error } = await supabase
+                    .from('UniversityClassStatus')
+                    .insert([
+                        {
+                            code: classCode,
+                            date: weekStartDate,
+                            status: 3
+                        }
+                    ]);
 
                 if (error) {
-                    throw new Error(error.message);
+                    if (error.code !== '23505') { // 23505 = unique_violation در PostgreSQL
+                        throw new Error(error.message);
+                    }
                 }
 
-                triggerReload();
-                setCompletedSet(prev => {
-                    const copy = new Set(prev);
-                    copy.add(`${taskCode}|${dayDate}`);
-                    return copy;
-                });
+                setCompletedStatus(prev => ({
+                    ...prev,
+                    [key]: { code: classCode, date: weekStartDate, status: 3 }
+                }));
+
             } else {
+                // حذف وضعیت
                 const { error } = await supabase
-                    .from('CompletionStatus')
+                    .from('UniversityClassStatus')
                     .delete()
-                    .eq('code', taskCode)
-                    .eq('date', dayDate);
+                    .eq('code', classCode)
+                    .eq('date', weekStartDate);
 
                 if (error) {
                     throw new Error(error.message);
                 }
 
-                triggerReload();
-                setCompletedSet(prev => {
-                    const copy = new Set(prev);
-                    copy.delete(`${taskCode}|${dayDate}`);
-                    return copy;
-                });
+                const newStatus = { ...completedStatus };
+                delete newStatus[key];
+                setCompletedStatus(newStatus);
             }
+
+            triggerReload();
         } catch (error) {
-            console.error('خطا در بروزرسانی وضعیت تسک:', error);
-            alert('خطا در بروزرسانی وضعیت تسک. لطفاً دوباره تلاش کنید.');
+            console.error('خطا در بروزرسانی وضعیت کلاس:', error);
+            alert('خطا در بروزرسانی وضعیت کلاس. لطفاً دوباره تلاش کنید.');
         }
     };
+
+    // تابع فرمت‌بندی ساعت برای نمایش
+    const formatTime = (timeStr) => {
+        if (!timeStr) return '--:--';
+        return timeStr.substring(0, 5);
+    };
+
+    // اسکلتون لودر
+    const SkeletonLoader = () => (
+        <div className="checkList" style={{ mask: 'linear-gradient(black, #0000003d, transparent)' }}>
+            <div style={{ height: '30px' }} />
+            <div>
+                <div style={{ display: 'flex', gap: '8px', flexDirection: 'row', position: 'relative' }}>
+                    <div style={{ flex: 1, display: 'flex', gap: '14px', flexDirection: 'column' }}>
+                        <SkeletonTask />
+                        <SkeletonTask />
+                        <SkeletonTask />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
     const SkeletonTask = () => (
         <div className="tasksList">
             <div className='showTask skeleton'>
@@ -303,36 +368,18 @@ const UniversityClass = () => {
             </div>
         </div>
     );
-    const SkeletonLoader = () => (
-        <div className="checkList" style={{ mask: 'linear-gradient(black, #0000003d, transparent)' }}>
-            <div style={{ height: '30px' }} />
-            <div>
-                <div style={{ display: 'flex', gap: '8px', flexDirection: 'row', position: 'relative' }}>
-                    {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
-            <span className="daynum skeleton"><p>&nbsp;</p></span>
-            <div className="skeleton" style={{ width: '2px', flex: 1, minHeight: '20px', marginTop: '4px' }}></div>
-          </div> */}
-                    <div style={{ flex: 1, display: 'flex', gap: '14px', flexDirection: 'column' }}>
-                        <SkeletonTask />
-                        <SkeletonTask />
-                        <SkeletonTask />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 
     // نمایش لودینگ
-    if (loadingTasks) {
+    if (loadingClasses || loadingTimes) {
         return (
             <div style={{ display: 'contents' }}>
                 <SkeletonLoader />
             </div>
-        )
+        );
     }
 
     // نمایش خطا
-    if (errorCompletion) {
+    if (errorClasses || errorTimes || errorStatus) {
         return (
             <div style={{ display: 'contents' }}>
                 <SkeletonLoader />
@@ -341,109 +388,126 @@ const UniversityClass = () => {
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z" fill="#ff6b6b" />
                         </svg>
-                        خطا در دریافت اطلاعات تسک‌ها
+                        {errorClasses || errorTimes || errorStatus || 'خطا در دریافت اطلاعات کلاس‌ها'}
                     </div>
                 </div>
             </div>
-        )
+        );
     }
+
+    // دریافت کلاس‌های روز انتخابی
+    const dayClasses = getClassesForSelectedDay();
 
     return (
         <div className="checkList">
-            <div>
-                <div style={{ height: '30px' }} />
+            {/* دکمه‌های روزهای هفته */}
+            <div style={{
+                boxSizing: 'border-box',
+                width: '100%',
+                marginTop: '44px',
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                justifyContent: 'center',
+                gap: '8px',
+                marginBottom: '20px',
+                padding: '0 10px'
+            }}>
+                {persianWeekDays.map(day => {
+                    const dateStr = getJalaliDateForDay(day.id);
+                    return (
+                        <button
+                            key={day.id}
+                            onClick={() => handleDayChange(day.id)}
+                            style={{
+                                boxSizing: 'border-box',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: 'none',
+                                background: selectedDay === day.id ? 'var(--primary)' : 'var(--B1)',
+                                color: selectedDay === day.id ? 'white' : 'var(--text)',
+                                cursor: 'pointer',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                transition: 'all 0.3s ease',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '4px'
+                            }}
+                        >
+                            <span>{day.name}</span>
+                            <span style={{ fontSize: '12px', opacity: 0.9 }}>{dateStr}</span>
+                        </button>
+                    );
+                })}
             </div>
 
-            {displayDays.map((dayObj, dayIndex) => {
-                const dayTasks = getTasksForDay(dayObj.date, dayObj.weekday);
-                const isNotLastDay = dayIndex < displayDays.length - 1;
-
-                if (dayTasks.length === 0) return null;
-
-                let nextDayHasTasks = false;
-                if (isNotLastDay) {
-                    const nextDayObj = displayDays[dayIndex + 1];
-                    const nextDayTasks = getTasksForDay(nextDayObj.date, nextDayObj.weekday);
-                    nextDayHasTasks = nextDayTasks.length > 0;
-                }
-
-                return (
-                    <div key={dayObj.index}>
-                        <div style={{
-                            display: 'flex',
-                            gap: '8px',
-                            flexDirection: 'row',
-                            position: 'relative'
-                        }}>
-                            {/* شماره روز و خط عمودی */}
-                            {/* <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0'
-              }}>
-                <span className="daynum"><p>{dayObj.day}</p></span>
-                {isNotLastDay && nextDayHasTasks && (
-                  <div style={{
-                    width: '2px',
-                    flex: 1,
-                    minHeight: '20px',
-                    backgroundColor: '#ffffff33',
-                    marginTop: '4px'
-                  }}></div>
-                )}
-              </div> */}
-                            {/* لیست تسک‌های روز */}
-                            <div style={{
-                                flex: 1,
-                                display: 'flex',
-                                gap: '14px',
-                                flexDirection: 'column'
-                            }}>
-                                {dayTasks.map((task) => (
-                                    <div className="tasksList" key={`${dayObj.index}-${task.code}`}>
-                                        <div className='showTask'
-                                            style={{
-                                                background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99",
-                                                opacity: completedSet.has(`${task.code}|${dayObj.date}`) ? 0.5 : 1,
-                                                textDecoration: completedSet.has(`${task.code}|${dayObj.date}`) ? 'line-through' : 'none'
-                                            }}>
-                                            <div className="taskName" style={task.description === '' && task.time === '' ? { paddingBottom: '0px', marginBottom: '0px', borderBottom: '0px' } : {}}>
-                                                <p>{task.name}</p>
-                                                <label className="material-checkbox">
-                                                    <input
-                                                        value={task.code}
-                                                        type="checkbox"
-                                                        id={task.code}
-                                                        checked={completedSet.has(`${task.code}|${dayObj.date}`)}
-                                                        onChange={(e) => handleCompletionToggle(task.code, dayObj.date, e.target.checked)}
-                                                        disabled={loadingCompletion}
-                                                    />
-                                                    <span className="checkmark"></span>
-                                                    {loadingCompletion && <span className="checkbox-loader"></span>}
-                                                </label>
-                                            </div>
-                                            {task.time !== '' && (
-                                                <div className="taskInfo">
-                                                    <p className="taskInfoTitle">ساعت:</p>
-                                                    <p className="taskInfoValue">{task.time || 'ندارد'}</p>
-                                                </div>)}
-                                            {task.description !== '' && (
-                                                <div className="taskInfo">
-                                                    <p className="taskInfoTitle">یاداشت:</p>
-                                                    <p className="taskInfoValue">{task.description || 'ندارد'}</p>
-                                                </div>)}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+            {/* نمایش کلاس‌های روز انتخابی */}
+            <div style={{ padding: '0 10px' }}>
+                {dayClasses.length === 0 ? (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '40px 20px',
+                        color: 'var(--text-secondary)',
+                        fontSize: '16px'
+                    }}>
+                        کلاسی برای {persianWeekDays.find(d => d.id === selectedDay)?.name} برنامه‌ریزی نشده است.
                     </div>
-                );
-            })}
+                ) : (
+                    <div style={{ display: 'flex', gap: '14px', flexDirection: 'column' }}>
+                        {dayClasses.map((classItem, index) => {
+                            const completed = isClassCompleted(classItem.code);
 
-            {/* المان نگهبان برای افزودن روزهای بیشتر */}
-            <div ref={lastDayElementRef} />
+                            return (
+                                <div className="tasksList" key={`${classItem.code}_${classItem.timeId}_${index}`}>
+                                    <div className='showTask'
+                                        style={{
+                                            border: classItem.rightClass ? "2px solid #00FF22" : "1px solid transparent",
+                                            boxShadow: classItem.mainClass ? "0 4px 12px rgba(0, 0, 0, 0.3)" : "none",
+                                            background: !mobileOptimizedMode ? "var(--B1)" : "#1e1e1e99",
+                                            opacity: completed ? 0.5 : 1,
+                                            textDecoration: completed ? 'line-through' : 'none'
+                                        }}>
+                                        <div className="taskName">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <p className="taskInfoValue">{classItem.teacher || 'تعیین نشده'}</p>
+                                                <p>{classItem.lesson}</p>
+                                            </div>
+
+                                            <label className="material-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={completed}
+                                                    onChange={(e) => handleCompletionToggle(classItem.code, e.target.checked)}
+                                                    disabled={loadingStatus}
+                                                />
+                                                <span className="checkmark"></span>
+                                                {loadingStatus && <span className="checkbox-loader"></span>}
+                                            </label>
+                                        </div>
+
+                                        <div className="taskInfo">
+                                            <p className="taskInfoTitle">ساعت:</p>
+                                            <p className="taskInfoValue">
+                                                {formatTime(classItem.startTime)} تا {formatTime(classItem.endTime)}
+                                            </p>
+                                        </div>
+
+                                        {classItem.description && (
+                                            <div className="taskInfo">
+                                                <p className="taskInfoTitle">توضیحات:</p>
+                                                <p className="taskInfoValue">{classItem.description}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
