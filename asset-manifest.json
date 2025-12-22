@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/MIPIBOY-PLANNER/static/css/main.18babd95.css",
+    "main.js": "/MIPIBOY-PLANNER/static/js/main.48888666.js",
+    "static/js/488.37a517c6.chunk.js": "/MIPIBOY-PLANNER/static/js/488.37a517c6.chunk.js",
+    "static/media/logo.svg": "/MIPIBOY-PLANNER/static/media/logo.13c0add702128cf277326988f5d2689f.svg",
+    "static/media/800-YekanBakh-Black.woff": "/MIPIBOY-PLANNER/static/media/800-YekanBakh-Black.a097797c934b77d2dc15.woff",
+    "static/media/700-YekanBakh-ExtraBold.woff": "/MIPIBOY-PLANNER/static/media/700-YekanBakh-ExtraBold.3e2f7681fdbd4aee8546.woff",
+    "static/media/600-YekanBakh-Bold.woff": "/MIPIBOY-PLANNER/static/media/600-YekanBakh-Bold.a8abae714a2d281dde07.woff",
+    "static/media/900-YekanBakh-ExtraBlack.woff": "/MIPIBOY-PLANNER/static/media/900-YekanBakh-ExtraBlack.5dca3514242277ba6a2d.woff",
+    "static/media/500-YekanBakh-SemiBold.woff": "/MIPIBOY-PLANNER/static/media/500-YekanBakh-SemiBold.6133512bd5cac0148d09.woff",
+    "static/media/400-YekanBakh-Regular.woff": "/MIPIBOY-PLANNER/static/media/400-YekanBakh-Regular.77bab7dd3c4d12a12a9d.woff",
+    "static/media/300-YekanBakh-Light.woff": "/MIPIBOY-PLANNER/static/media/300-YekanBakh-Light.ea80ea9812592c2dd323.woff",
+    "static/media/200-YekanBakh-Thin.woff": "/MIPIBOY-PLANNER/static/media/200-YekanBakh-Thin.ba76eb3d77834334a96b.woff",
+    "static/media/digital-7-mono.ttf": "/MIPIBOY-PLANNER/static/media/digital-7-mono.d60dc6e509634f05c9b3.ttf",
+    "static/media/digital-7.ttf": "/MIPIBOY-PLANNER/static/media/digital-7.79c8511a32aab83743b7.ttf",
+    "static/media/digital-7-italic.ttf": "/MIPIBOY-PLANNER/static/media/digital-7-italic.e4f0d914940cef82362b.ttf",
+    "static/media/digital-7-mono-italic.ttf": "/MIPIBOY-PLANNER/static/media/digital-7-mono-italic.4a373b704395672b9269.ttf",
+    "static/media/quixieIcon.svg": "/MIPIBOY-PLANNER/static/media/quixieIcon.84380206e01225a5c657f3f091b8c59f.svg",
+    "static/media/navClose.svg": "/MIPIBOY-PLANNER/static/media/navClose.c18dc4eff371acb37d03865e86c0628a.svg",
+    "index.html": "/MIPIBOY-PLANNER/index.html",
+    "main.18babd95.css.map": "/MIPIBOY-PLANNER/static/css/main.18babd95.css.map",
+    "main.48888666.js.map": "/MIPIBOY-PLANNER/static/js/main.48888666.js.map",
+    "488.37a517c6.chunk.js.map": "/MIPIBOY-PLANNER/static/js/488.37a517c6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.18babd95.css",
+    "static/js/main.48888666.js"
+  ]
+}
