@@ -89,7 +89,7 @@
 
 برای مشاهده نسخه‌ی آنلاین پروژه می‌توانید از لینک زیر استفاده کنید:
 
-[🌐 مشاهده دمو](https://mipiboy.ir)
+[🌐 مشاهده دمو](https://mipiboy.github.io/MiPiBoy-Planner)
 
 > ⚠️ **نکته مهم:**  
 > در حال حاضر نسخه‌ی کامل پروژه فقط روی مرورگر **Google Chrome** به‌طور کامل پشتیبانی می‌شود.  
@@ -238,7 +238,7 @@ This project combines **precise logic, professional design, and visual creativit
 
 To view the online version of the project, you can use the following link:
 
-[🌐 View Demo](https://mipiboy.ir)
+[🌐 View Demo](https://mipiboy.github.io/MiPiBoy-Planner)
 
 > ⚠️ **Important Note:**  
 > Currently, the full version of the project is only fully supported on **Google Chrome**.  
