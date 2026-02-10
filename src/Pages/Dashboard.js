@@ -67,7 +67,6 @@ export const Dashboard = ({ showNav }) => {
               </MagicBento>
               <MagicBento className='boxesWidget' enableSpotlight={false}>
                 <div className="titleDiv" style={{ background: !mobileOptimizedMode ? "none" : "#19191969" }}>
-                  <p className="title">لیست باکس ها</p>
                   {!ifW685 ? <p className="title">لیست وظایف</p> : <p className="title">لیست باکس ها</p>}
                   {ifW685 ?
                     <div style={{ display: addBoxForm, padding: '2px' }} title='تایید' className="editButton" onClick={() => { setAddBoxForm(addBoxForm === "flex" ? "none" : "flex"); setBoxList(boxList === "none" ? "flex" : "none"); triggerReload3(); }}>
@@ -96,10 +95,10 @@ export const Dashboard = ({ showNav }) => {
                     </div>}
                 </div>
                 <div style={{ display: ifW685 ? addBoxForm : addTaskForm }} className='widgetBox taskaria'>
-                  {!ifW685 ? <AddBoxForm /> : <AddTaskForm />}
+                  {ifW685 ? <AddBoxForm /> : <AddTaskForm />}
                 </div>
                 <div style={{ display: ifW685 ? boxList : tasksChekbox }} className='widgetBox taskaria'>
-                  {!ifW685 ? <BoxList /> : <TasksChekbox />}
+                  {ifW685 ? <BoxList /> : <TasksChekbox />}
                 </div>
               </MagicBento>
             </div>
