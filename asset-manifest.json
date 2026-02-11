@@ -1,9 +1,9 @@
 {
   "files": {
-    "main.css": "/MiPiBoy-Planner/static/css/main.76859832.css",
-    "main.js": "/MiPiBoy-Planner/static/js/main.775da466.js",
+    "main.css": "/MiPiBoy-Planner/static/css/main.1b76eb0a.css",
+    "main.js": "/MiPiBoy-Planner/static/js/main.ac159b11.js",
     "static/js/488.37a517c6.chunk.js": "/MiPiBoy-Planner/static/js/488.37a517c6.chunk.js",
-    "static/media/logo.svg": "/MiPiBoy-Planner/static/media/logo.13c0add702128cf277326988f5d2689f.svg",
+    "static/media/logo.svg": "/MiPiBoy-Planner/static/media/logo.9005c3299730aadfcbf8838f2d0c9d6e.svg",
     "static/media/800-YekanBakh-Black.woff": "/MiPiBoy-Planner/static/media/800-YekanBakh-Black.a097797c934b77d2dc15.woff",
     "static/media/700-YekanBakh-ExtraBold.woff": "/MiPiBoy-Planner/static/media/700-YekanBakh-ExtraBold.3e2f7681fdbd4aee8546.woff",
     "static/media/600-YekanBakh-Bold.woff": "/MiPiBoy-Planner/static/media/600-YekanBakh-Bold.a8abae714a2d281dde07.woff",
@@ -16,15 +16,15 @@
     "static/media/digital-7.ttf": "/MiPiBoy-Planner/static/media/digital-7.79c8511a32aab83743b7.ttf",
     "static/media/digital-7-italic.ttf": "/MiPiBoy-Planner/static/media/digital-7-italic.e4f0d914940cef82362b.ttf",
     "static/media/digital-7-mono-italic.ttf": "/MiPiBoy-Planner/static/media/digital-7-mono-italic.4a373b704395672b9269.ttf",
-    "static/media/quixieIcon.svg": "/MiPiBoy-Planner/static/media/quixieIcon.84380206e01225a5c657f3f091b8c59f.svg",
-    "static/media/navClose.svg": "/MiPiBoy-Planner/static/media/navClose.c18dc4eff371acb37d03865e86c0628a.svg",
+    "static/media/quixieIcon.svg": "/MiPiBoy-Planner/static/media/quixieIcon.a9413e7562c160a4593c6677113433e7.svg",
+    "static/media/navClose.svg": "/MiPiBoy-Planner/static/media/navClose.724eedb978835abf79c9192581664400.svg",
     "index.html": "/MiPiBoy-Planner/index.html",
-    "main.76859832.css.map": "/MiPiBoy-Planner/static/css/main.76859832.css.map",
-    "main.775da466.js.map": "/MiPiBoy-Planner/static/js/main.775da466.js.map",
+    "main.1b76eb0a.css.map": "/MiPiBoy-Planner/static/css/main.1b76eb0a.css.map",
+    "main.ac159b11.js.map": "/MiPiBoy-Planner/static/js/main.ac159b11.js.map",
     "488.37a517c6.chunk.js.map": "/MiPiBoy-Planner/static/js/488.37a517c6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.76859832.css",
-    "static/js/main.775da466.js"
+    "static/css/main.1b76eb0a.css",
+    "static/js/main.ac159b11.js"
   ]
 }
