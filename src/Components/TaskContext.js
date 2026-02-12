@@ -8,6 +8,10 @@ export function TaskProvider({ children }) {
   const [reloadFlag, setReloadFlag] = useState(false);
   const [reloadFlag2, setReloadFlag2] = useState(false);
   const [reloadFlag3, setReloadFlag3] = useState(false);
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [countdown, setCountdown] = useState(0);
 
   const triggerReload = () => setReloadFlag(prev => !prev);
   const triggerReload2 = () => setReloadFlag2(prev => !prev);
@@ -23,6 +27,14 @@ export function TaskProvider({ children }) {
       reloadFlag,
       reloadFlag2,
       reloadFlag3,
+      status,
+      error,
+      success,
+      countdown,
+      setStatus,
+      setError,
+      setSuccess,
+      setCountdown,
       triggerReload,
       triggerReload2,
       triggerReload3

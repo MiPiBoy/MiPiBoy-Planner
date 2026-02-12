@@ -1,143 +1,306 @@
-import { useState } from 'react';
-import { supabase } from '../../utils/supabase';
-import quixieIcon from '../../assets/quixieIcon.svg';
-import '../../Style/Liquid-glass.css';
+import { useState, useRef, useCallback } from "react";
+import { supabase } from "../../utils/supabase";
+import quixieIcon from "../../assets/quixieIcon.svg";
+import "../../Style/Liquid-glass.css";
+import moment from "moment-jalaali";
+import { useTaskContext } from '../../Components/TaskContext';
 
-const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
+const AVALAI_API_KEY = process.env.REACT_APP_AVALAI_API_KEY;
+const AVALAI_URL = "https://api.avalai.ir/v1/chat/completions";
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const Quixie = ({ style, userId, onBoxAdded }) => {
-const [prompt, setPrompt] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+    const [prompt, setPrompt] = useState("");
+    const [loading, setLoading] = useState(false);
+    const {setCountdown, setSuccess, setError, setStatus} = useTaskContext();
+    const [disabled, setDisabled] = useState(false);
 
-  // ──────────────── تابع اصلی ────────────────
-  const handleSubmit = async () => {
-    if (!prompt.trim()) return;
-    setLoading(true);
-    setError("");
-    setSuccess("");
+    const isRequesting = useRef(false);
+    const lastRequestTime = useRef(0);
 
-    try {
-      // ───── ۱. ارسال به Gemini ─────
-      const res = await fetch(GEMINI_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [
+    // ───── پرامپت سیستم برای Quixie ─────
+    const SYSTEM_PROMPT = `تو "Quixie" هستی، دستیار هوشمند فارسی‌زبان اپلیکیشن مدیریت مالی BuckBox.
+وظیفه تو: تحلیل جملات فارسی کاربر و استخراج اطلاعات برای ساخت "باکس پس‌انداز".
+
+══════════════════════
+📅 اطلاعات زمانی
+══════════════════════
+- امروز: 1404/11/23 (بهمن)
+- سال جاری: 1404
+- ماه جاری: بهمن (ماه 11)
+- ماه‌های 1-6: هر کدام 31 روز
+- ماه‌های 7-11: هر کدام 30 روز  
+- ماه 12 (اسفند): 29 روز (عادی) / 30 روز (کبیسه)
+- سال 1404 کبیسه نیست
+
+══════════════════════
+📏 قوانین استخراج تاریخ
+══════════════════════
+- فرمت خروجی تاریخ: YYYY-MM-DD شمسی
+- "آخر سال" یا "پایان سال" = 1404-12-29
+- "آخر ماه" = 1404-11-30 (آخر بهمن)
+- "عید نوروز" = 1405-01-01
+- "X ماه دیگه" = از امروز X ماه اضافه کن
+  مثال: "سه ماه دیگه" = 1405-02-23
+  مثال: "شش ماه دیگه" = 1405-05-23
+- "X هفته دیگه" = از امروز X*7 روز اضافه کن
+- "تابستون" = 1405-04-01
+- "اول بهار" = 1405-01-01
+- "یلدا" = 1404-09-30
+- "نیمه شعبان" = تاریخ تقریبی بده
+- اگه تاریخ مشخص نیست = 3 ماه بعد از امروز (1405-02-23)
+
+══════════════════════
+💰 قوانین استخراج مبلغ
+══════════════════════
+- خروجی: فقط عدد صحیح (integer) بدون کاما، نقطه یا جداکننده
+- "میلیون" = ×1,000,000
+  "۵ میلیون" = 5000000
+  "۵۰ میلیون" = 50000000
+  "یک و نیم میلیون" = 1500000
+  "دو و نیم میلیارد" = 2500000000
+- "میلیارد" = ×1,000,000,000
+- "هزار تومان" یا "هزار تومن" = ×1,000
+  "۵۰۰ تومن" = 500
+  "۵۰۰ هزار تومن" = 500000
+- "تومان" و "تومن" یکی هستند
+- اعداد فارسی (۱۲۳) و انگلیسی (123) هر دو قبول هستند
+- اگه مبلغ مشخص نیست = 1000000 (یک میلیون پیش‌فرض)
+
+══════════════════════
+📝 قوانین نام‌گذاری
+══════════════════════
+- نام باکس باید کوتاه و واضح باشد (حداکثر 4 کلمه)
+- از خود جمله کاربر استخراج کن
+  "میخوام برای ماشین پول جمع کنم" → name: "ماشین"
+  "میخوام آیفون بخرم" → name: "آیفون"
+  "پس‌انداز عروسی" → name: "عروسی"
+  "برای سفر ترکیه" → name: "سفر ترکیه"
+- اگه نام مشخص نیست = "پس‌انداز من"
+
+══════════════════════
+📝 قوانین توضیحات
+══════════════════════
+- توضیحات: یک جمله کوتاه فارسی درباره هدف پس‌انداز
+- حداکثر 50 کاراکتر
+- مثال: "پس‌انداز برای خرید ماشین پراید"
+- اگه اطلاعات کافی نیست، خودت یه توضیح منطقی بساز
+
+══════════════════════
+🚫 محدودیت‌ها
+══════════════════════
+- فقط JSON خالص برگردان، بدون هیچ متن اضافه
+- بدون markdown، بدون بک‌تیک، بدون توضیح
+- اگه جمله کاربر ربطی به پس‌انداز نداره، باز هم سعی کن بفهمی منظورش چیه
+- هیچوقت null یا undefined برنگردان
+- requiredValue همیشه عدد صحیح مثبت باشه
+
+══════════════════════
+💡 مثال‌های ورودی/خروجی
+══════════════════════
+
+ورودی: "باکس ماشین ۵۰ میلیون تا آخر سال"
+خروجی: {"name":"ماشین","description":"پس‌انداز برای خرید ماشین","date":"1404-12-29","requiredValue":50000000}
+
+ورودی: "میخوام برای سفر ترکیه ۲۰ میلیون تا تابستون جمع کنم"
+خروجی: {"name":"سفر ترکیه","description":"پس‌انداز برای سفر تابستانی ترکیه","date":"1405-04-01","requiredValue":20000000}
+
+ورودی: "لپتاپ ۱۵ میلیون سه ماه دیگه"
+خروجی: {"name":"لپتاپ","description":"پس‌انداز برای خرید لپتاپ","date":"1405-02-23","requiredValue":15000000}
+
+ورودی: "میخوام ۵۰۰ تومن پس‌انداز کنم"
+خروجی: {"name":"پس‌انداز من","description":"پس‌انداز شخصی","date":"1405-02-23","requiredValue":500}
+
+ورودی: "عروسی دو و نیم میلیارد آخر بهار"
+خروجی: {"name":"عروسی","description":"پس‌انداز برای هزینه‌های عروسی","date":"1405-03-31","requiredValue":2500000000}
+
+ورودی: "آیفون ۱۶ پرو مکس"
+خروجی: {"name":"آیفون ۱۶ پرو مکس","description":"پس‌انداز برای خرید آیفون ۱۶ پرو مکس","date":"1405-02-23","requiredValue":80000000}
+
+ورودی: "ps5"
+خروجی: {"name":"PS5","description":"پس‌انداز برای خرید پلی‌استیشن ۵","date":"1405-02-23","requiredValue":30000000}
+
+ورودی: "هدیه تولد مامان هفته دیگه ۲ میلیون"
+خروجی: {"name":"هدیه تولد مامان","description":"خرید هدیه تولد برای مادر","date":"1404-11-30","requiredValue":2000000}`;
+
+
+    // توی SYSTEM_PROMPT جایگزین کن:
+    const today = moment().format("jYYYY/jMM/jDD");
+    const currentMonth = moment().jMonth() + 1; // 1-12
+    const currentYear = moment().jYear();
+
+    const DYNAMIC_PROMPT = SYSTEM_PROMPT
+        .replace("1404/11/23", today)
+        .replace("سال جاری: 1404", `سال جاری: ${currentYear}`)
+        .replace("ماه جاری: بهمن (ماه 11)", `ماه جاری: ماه ${currentMonth}`);
+
+    // ───── شمارش معکوس ─────
+    const startCountdown = useCallback(async (seconds) => {
+        for (let s = seconds; s > 0; s--) {
+            setCountdown(s);
+            await wait(1000);
+        }
+        setCountdown(0);
+    }, []);
+
+    // ───── ارسال با retry ─────
+    const callAvalAI = async (messages) => {
+
+        const MAX_RETRIES = 3;
+
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            setStatus(`📡 ارسال درخواست... (تلاش ${attempt}/${MAX_RETRIES})`);
+
+            const res = await fetch(AVALAI_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${AVALAI_API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: "gemini-2.0-flash-lite",
+                    messages: messages,
+                    temperature: 0.2,
+                    max_tokens: 500,
+                    response_format: {
+                        type: "json_schema",
+                        json_schema: {
+                            name: "saving_box",
+                            strict: true,
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    name: { type: "string", description: "نام باکس پس‌انداز" },
+                                    description: { type: "string", description: "توضیحات باکس" },
+                                    date: {
+                                        type: "string",
+                                        description: "تاریخ هدف YYYY-MM-DD شمسی",
+                                    },
+                                    requiredValue: {
+                                        type: "number",
+                                        description: "مبلغ هدف به تومان",
+                                    },
+                                },
+                                required: ["name", "description", "date", "requiredValue"],
+                                additionalProperties: false,
+                            },
+                        },
+                    },
+                }),
+            });
+
+            if (res.ok) {
+                setStatus("✅ پاسخ دریافت شد!");
+                // ✅ اینجا JSON رو میخونیم و برمیگردونیم
+                const data = await res.json();
+                return data;
+            }
+
+            if (res.status === 429) {
+                const waitSec = attempt * 15;
+                setStatus(`⏳ محدودیت نرخ. ${waitSec} ثانیه صبر...`);
+                await startCountdown(waitSec);
+                setStatus("");
+                continue;
+            }
+
+            // ❌ خطاهای دیگه
+            const errBody = await res.json().catch(() => ({}));
+            throw new Error(errBody.error?.message || `خطا: ${res.status}`);
+        }
+
+        throw new Error("بعد از ۳ تلاش جواب نگرفتیم. کمی صبر کنید.");
+    };
+
+    // ───── تابع اصلی ─────
+    const handleSubmit = async () => {
+        if (!prompt.trim() || isRequesting.current || disabled) return;
+
+        const now = Date.now();
+        if (now - lastRequestTime.current < 3000) {
+            setError("⏳ بین هر درخواست ۳ ثانیه صبر کنید.");
+            return;
+        }
+
+        isRequesting.current = true;
+        lastRequestTime.current = Date.now();
+        setLoading(true);
+        setError("");
+        setSuccess("");
+        setStatus("🧠 در حال پردازش...");
+
+        try {
+            const messages = [
                 {
-                  text: prompt,
+                    role: "system",
+                    content: DYNAMIC_PROMPT,
                 },
-              ],
-            },
-          ],
-
-          // ───── System Instruction ─────
-          systemInstruction: {
-            parts: [
-              {
-                text: `تو یک دستیار هوشمند فارسی هستی. کاربر یک جمله فارسی میگوید و تو باید اطلاعات یک "باکس پس‌انداز" را استخراج کنی.
-
-قوانین:
-- تاریخ را به فرمت YYYY-MM-DD شمسی برگردان
-- اگر کاربر گفت "آخر سال" یعنی 12-29
-- اگر کاربر گفت "آخر ماه" یعنی آخرین روز ماه جاری
-- امروز: 1404/11/23
-- مقدار عددی را بدون کاما و به عدد برگردان
-- فقط JSON برگردان، هیچ توضیح اضافه‌ای نده`,
-              },
-            ],
-          },
-
-          // ───── ✅ Structured Output Schema ─────
-          generationConfig: {
-            responseMimeType: "application/json",
-            responseSchema: {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                  description: "نام باکس پس‌انداز",
+                {
+                    role: "user",
+                    content: prompt,
                 },
-                description: {
-                  type: "string",
-                  description: "توضیحات باکس",
-                },
-                date: {
-                  type: "string",
-                  description: "تاریخ هدف به فرمت YYYY-MM-DD شمسی",
-                },
-                requiredValue: {
-                  type: "number",
-                  description: "مبلغ هدف به تومان",
-                },
-              },
-              required: ["name", "description", "date", "requiredValue"],
-            },
-          },
-        }),
-      });
+            ];
 
-      // ───── ۲. بررسی خطا ─────
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(
-          errData.error?.message || `خطای Gemini: ${res.status}`
-        );
-      }
+            // ✅ حالا data مستقیم برمیگرده (نه Response)
+            const data = await callAvalAI(messages);
 
-      // ───── ۳. استخراج JSON ─────
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            // ───── استخراج JSON ─────
+            let text = data.choices?.[0]?.message?.content;
+            if (!text) throw new Error("پاسخ خالی دریافت شد");
 
-      if (!text) {
-        throw new Error("پاسخی از Gemini دریافت نشد");
-      }
+            let boxData;
+            try {
+                boxData = JSON.parse(text);
+            } catch {
+                // اگه JSON خالص نبود، با regex استخراج کن
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                if (!jsonMatch)
+                    throw new Error("فرمت پاسخ نامعتبر. دوباره تلاش کنید.");
+                boxData = JSON.parse(jsonMatch[0]);
+            }
 
-      // چون Structured Output فعاله، text مستقیماً JSON هست
-      const boxData = JSON.parse(text);
+            // اعتبارسنجی
+            if (!boxData.name) throw new Error("نام باکس تشخیص داده نشد.");
+            if (!boxData.requiredValue || isNaN(boxData.requiredValue)) {
+                throw new Error("مبلغ هدف تشخیص داده نشد.");
+            }
+            if (!boxData.date) throw new Error("تاریخ هدف تشخیص داده نشد.");
 
-      // ───── ۴. اعتبارسنجی ─────
-      if (
-        !boxData.name ||
-        !boxData.description ||
-        !boxData.date ||
-        !boxData.requiredValue
-      ) {
-        throw new Error("اطلاعات ناقص است. لطفاً دوباره امتحان کنید.");
-      }
+            // ───── ذخیره در Supabase ─────
+            setStatus("💾 ذخیره در دیتابیس...");
+            const { error: dbErr } = await supabase.from("BuckBoxs").insert({
+                name: boxData.name,
+                description: boxData.description || "",
+                date: boxData.date,
+                requiredValue: Number(boxData.requiredValue),
+                user_id: userId,
+            });
 
-      // ───── ۵. ذخیره در Supabase ─────
-      const { error: dbError } = await supabase.from("BuckBoxs").insert({
-        name: boxData.name,
-        description: boxData.description,
-        date: boxData.date,
-        requiredValue: boxData.requiredValue,
-        user_id: userId,
-      });
+            if (dbErr) throw new Error(dbErr.message);
 
-      if (dbError) throw new Error(dbError.message);
+            setSuccess(
+                `✅ باکس "${boxData.name}" — ${Number(
+                    boxData.requiredValue
+                ).toLocaleString()} تومان — تا ${boxData.date} ساخته شد!`
+            );
+            setPrompt("");
+            setStatus("");
+            if (onBoxAdded) onBoxAdded();
 
-      setSuccess(
-        `✅ باکس "${boxData.name}" با مبلغ ${boxData.requiredValue.toLocaleString()} تومان ساخته شد!`
-      );
-      setPrompt("");
+            setDisabled(true);
+            setTimeout(() => setDisabled(false), 3000);
+        } catch (err) {
+            setError(err.message);
+            setStatus("");
+        } finally {
+            setLoading(false);
+            isRequesting.current = false;
+        }
+    };
 
-      // اگه callback داری برای رفرش لیست
-      if (onBoxAdded) onBoxAdded();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ──────────────── UI ────────────────
+    // ───── UI ─────
 
     return (
         <div className="quixie notEffect" style={style}>
