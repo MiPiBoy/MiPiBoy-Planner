@@ -192,7 +192,8 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                     Authorization: `Bearer ${AVALAI_API_KEY}`,
                 },
                 body: JSON.stringify({
-                    model: "gemini-2.0-flash-lite",
+                    model:
+"gemini-3.1-flash-lite-preview",
                     messages: messages,
                     temperature: 0.2,
                     max_tokens: 500,
