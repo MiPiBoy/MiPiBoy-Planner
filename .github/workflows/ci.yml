@@ -22,6 +22,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Validate Supabase build configuration
+        env:
+          REACT_APP_SUPABASE_URL: ${{ secrets.REACT_APP_SUPABASE_URL }}
+          REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}
+        run: |
+          test -n "$REACT_APP_SUPABASE_URL" || (echo "::error::Missing GitHub Actions secret REACT_APP_SUPABASE_URL" && exit 1)
+          test -n "$REACT_APP_SUPABASE_ANON_KEY" || (echo "::error::Missing GitHub Actions secret REACT_APP_SUPABASE_ANON_KEY" && exit 1)
       - name: Build React app
         run: npm run build
         env:
