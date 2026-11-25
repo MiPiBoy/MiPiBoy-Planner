@@ -33,14 +33,25 @@ export default function AuthGate({ children }) {
   const signInWithGoogle = async () => {
     setBusy(true);
     setError("");
-    const basePath = process.env.PUBLIC_URL || "";
-    const redirectTo = `${window.location.origin}${basePath}/`;
-    const { error: authError } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo }
-    });
-    if (authError) {
-      setError(authError.message);
+
+    try {
+      // CRA's PUBLIC_URL may be an absolute homepage URL, not just a path.
+      // Convert it to the GitHub Pages base path before building the OAuth callback.
+      const publicUrl = process.env.PUBLIC_URL;
+      const basePath = publicUrl
+        ? new URL(publicUrl, window.location.origin).pathname
+        : window.location.pathname;
+      const normalizedPath = basePath.endsWith("/") ? basePath : `${basePath}/`;
+      const redirectTo = `${window.location.origin}${normalizedPath}`;
+
+      const { error: authError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo }
+      });
+
+      if (authError) throw authError;
+    } catch (authError) {
+      setError(authError?.message || "ورود با Google انجام نشد. دوباره تلاش کن.");
       setBusy(false);
     }
   };
