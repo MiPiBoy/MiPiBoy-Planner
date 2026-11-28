@@ -13,6 +13,7 @@ import { useSettingContext } from './Components/SettingContext';
 import { useMediaQuery } from '@mui/material';
 import { TaskProvider, useTaskContext } from './Components/TaskContext';
 import DebugToast from './Components/MIniWidgets/DebugToast';
+import AuthGate from './Components/AuthGate';
 
 // ✅ کامپوننت داخلی که داخل TaskProvider هست
 function AppContent() {
@@ -72,9 +73,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <TaskProvider>
-          <AppContent />
-        </TaskProvider>
+        <AuthGate>
+          <TaskProvider>
+            <AppContent />
+          </TaskProvider>
+        </AuthGate>
       </BrowserRouter>
     </div>
   );
