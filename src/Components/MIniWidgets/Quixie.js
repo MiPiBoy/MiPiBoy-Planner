@@ -6,8 +6,6 @@ import moment from "moment-jalaali";
 import { useTaskContext } from '../../Components/TaskContext';
 
 
-const AVALAI_API_KEY = process.env.REACT_APP_AVALAI_API_KEY;
-const AVALAI_URL = "https://api.avalai.ir/v1/chat/completions";
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -179,59 +177,33 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
 
     // ───── ارسال با retry ─────
     const callAvalAI = async (messages) => {
-
         const MAX_RETRIES = 3;
 
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             setStatus(`📡 ارسال درخواست... (تلاش ${attempt}/${MAX_RETRIES})`);
 
-            const res = await fetch(AVALAI_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${AVALAI_API_KEY}`,
-                },
-                body: JSON.stringify({
-                    model:
-"gemini-3.1-flash-lite-preview",
-                    messages: messages,
-                    temperature: 0.2,
-                    max_tokens: 500,
-                    response_format: {
-                        type: "json_schema",
-                        json_schema: {
-                            name: "saving_box",
-                            strict: true,
-                            schema: {
-                                type: "object",
-                                properties: {
-                                    name: { type: "string", description: "نام باکس پس‌انداز" },
-                                    description: { type: "string", description: "توضیحات باکس" },
-                                    date: {
-                                        type: "string",
-                                        description: "تاریخ هدف YYYY-MM-DD شمسی",
-                                    },
-                                    requiredValue: {
-                                        type: "number",
-                                        description: "مبلغ هدف به تومان",
-                                    },
-                                },
-                                required: ["name"],
-                                additionalProperties: false,
-                            },
-                        },
-                    },
-                }),
+            const { data, error } = await supabase.functions.invoke("quixie", {
+                body: { messages },
             });
 
-            if (res.ok) {
+            if (!error) {
                 setStatus("✅ پاسخ دریافت شد!");
-                // ✅ اینجا JSON رو میخونیم و برمیگردونیم
-                const data = await res.json();
                 return data;
             }
 
-            if (res.status === 429) {
+            const statusCode = error.context?.status;
+            let errorMessage = error.message || "ارتباط با سرویس هوش مصنوعی برقرار نشد.";
+
+            if (error.context?.json) {
+                try {
+                    const errorBody = await error.context.json();
+                    errorMessage = errorBody.error?.message || errorBody.message || errorMessage;
+                } catch {
+                    // Keep the original Functions error message.
+                }
+            }
+
+            if (statusCode === 429 && attempt < MAX_RETRIES) {
                 const waitSec = attempt * 15;
                 setStatus(`⏳ محدودیت نرخ. ${waitSec} ثانیه صبر...`);
                 await startCountdown(waitSec);
@@ -239,9 +211,7 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                 continue;
             }
 
-            // ❌ خطاهای دیگه
-            const errBody = await res.json().catch(() => ({}));
-            throw new Error(errBody.error?.message || `خطا: ${res.status}`);
+            throw new Error(errorMessage);
         }
 
         throw new Error("بعد از ۳ تلاش جواب نگرفتیم. کمی صبر کنید.");
