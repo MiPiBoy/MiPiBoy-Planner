@@ -46,25 +46,51 @@ Deno.serve(async (req: Request) => {
         model: "gemini-3.1-flash-lite-preview",
         messages,
         temperature: 0.2,
-        max_tokens: 500,
+        max_tokens: 2200,
         response_format: {
           type: "json_schema",
           json_schema: {
-            name: "saving_box",
+            name: "quixie_action",
             strict: true,
             schema: {
               type: "object",
               properties: {
-                name: { type: "string", description: "نام باکس پس‌انداز" },
-                description: { type: "string", description: "توضیحات باکس" },
-                date: { type: "string", description: "تاریخ هدف YYYY-MM-DD شمسی" },
-                requiredValue: { type: "number", description: "مبلغ هدف به تومان" },
+                intent: {
+                  type: "string",
+                  enum: ["chat", "clarify", "create_tasks", "create_box"],
+                },
+                message: { type: "string" },
+                tasks: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      name: { type: "string" },
+                      description: { type: "string" },
+                      date: { type: "string" },
+                      time: { type: "string" },
+                    },
+                    required: ["name", "description", "date", "time"],
+                    additionalProperties: false,
+                  },
+                },
+                box: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    description: { type: "string" },
+                    date: { type: "string" },
+                    requiredValue: { type: "number" },
+                  },
+                  required: ["name", "description", "date", "requiredValue"],
+                  additionalProperties: false,
+                },
               },
-              required: ["name"],
+              required: ["intent", "message", "tasks", "box"],
               additionalProperties: false,
             },
           },
-        },
+        }
       }),
     });
 
