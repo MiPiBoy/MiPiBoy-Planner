@@ -46,7 +46,7 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
 - هرگز تسک‌های قبلی را حذف یا ویرایش نکن مگر کاربر صریحاً درخواست کرده باشد.
 
 قواعد تاریخ:
-- تاریخ همه تسک‌ها باید دقیقاً به فرمت شمسی «روز/ماه/سال» مثل ۷/۹/۱۴۰۵ باشد.
+- تاریخ همه تسک‌ها باید دقیقاً به فرمت شمسی «روز/ماه/سال» با ارقام انگلیسی مثل 7/9/1405 باشد.
 - برای تسک‌های زمان‌بندی‌شده، date الزامی است. اگر بازه زمانی مشخص نیست و تسک بدون تاریخ مدنظر است، به‌جای ساخت برنامه از کاربر سؤال کن.
 - تاریخ باید در بازه درخواستی باشد؛ برای «این هفته» از weekStart تا weekEnd استفاده کن.
 - از نام روزهای هفته و تاریخ‌های آماده در planner_context استفاده کن.
@@ -211,7 +211,8 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                 const validTasks = result.tasks.map((task) => {
                     const name = String(task.name || "").trim();
                     const date = String(task.date || "").trim();
-                    if (!name || !date || !moment(date, "jD/jM/jYYYY", true).isValid()) {
+                    const parsedDate = moment(date, "jD/jM/jYYYY", true);
+                    if (!name || !date || !parsedDate.isValid()) {
                         throw new Error(`اطلاعات تاریخ یا عنوان تسک «${name || "بدون عنوان"}» معتبر نیست.`);
                     }
                     return {
@@ -223,6 +224,24 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                         repeatDays: null,
                     };
                 });
+
+                const requestText = prompt.trim();
+                const currentWeekStart = moment(plannerContext.weekDays[0].date, "jD/jM/jYYYY", true);
+                let allowedStart = null;
+                let allowedEnd = null;
+                if (/این هفته|همین هفته|هفته جاری/.test(requestText)) {
+                    allowedStart = currentWeekStart.clone();
+                    allowedEnd = currentWeekStart.clone().add(6, "days");
+                } else if (/هفته بعد|هفته آینده/.test(requestText)) {
+                    allowedStart = currentWeekStart.clone().add(7, "days");
+                    allowedEnd = allowedStart.clone().add(6, "days");
+                }
+                if (allowedStart && validTasks.some((task) => {
+                    const taskDate = moment(task.data, "jD/jM/jYYYY", true);
+                    return taskDate.isBefore(allowedStart, "day") || taskDate.isAfter(allowedEnd, "day");
+                })) {
+                    throw new Error("تاریخ یکی از تسک‌ها خارج از بازه هفته درخواستی است. دوباره درخواست را ارسال کن.");
+                }
 
                 const existing = plannerContext.existingTasks || [];
                 const seen = new Set();
