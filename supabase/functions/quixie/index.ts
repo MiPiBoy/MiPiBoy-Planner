@@ -76,20 +76,15 @@ Deno.serve(async (req: Request) => {
                   },
                 },
                 box: {
-                  anyOf: [
-                    {
-                      type: "object",
-                      properties: {
-                        name: { type: "string" },
-                        description: { type: "string" },
-                        date: { type: "string" },
-                        requiredValue: { type: "number" },
-                      },
-                      required: ["name", "description", "date", "requiredValue"],
-                      additionalProperties: false,
-                    },
-                    { type: "null" },
-                  ],
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    description: { type: "string" },
+                    date: { type: "string" },
+                    requiredValue: { type: "number" },
+                  },
+                  required: ["name", "description", "date", "requiredValue"],
+                  additionalProperties: false,
                 },
               },
               required: ["intent", "message", "tasks", "box"],
