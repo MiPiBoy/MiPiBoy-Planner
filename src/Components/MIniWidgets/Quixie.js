@@ -198,6 +198,9 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                 if (!Array.isArray(result.tasks) || result.tasks.length === 0) {
                     throw new Error("برای این درخواست تسک قابل اجرایی تولید نشد.");
                 }
+                if (result.tasks.length > 20) {
+                    throw new Error("برای حفظ کیفیت برنامه‌ریزی، هر بار حداکثر ۲۰ تسک می‌توان ساخت.");
+                }
 
                 const validTasks = result.tasks.map((task) => {
                     const name = String(task.name || "").trim();
@@ -216,12 +219,16 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                 });
 
                 const existing = plannerContext.existingTasks || [];
-                const uniqueTasks = validTasks.filter((task) =>
-                    !existing.some((item) =>
+                const seen = new Set();
+                const uniqueTasks = validTasks.filter((task) => {
+                    const key = `${task.name.toLowerCase()}|${task.data}`;
+                    if (seen.has(key)) return false;
+                    seen.add(key);
+                    return !existing.some((item) =>
                         String(item.name || "").trim().toLowerCase() === task.name.toLowerCase() &&
                         String(item.data || "").trim() === task.data
-                    )
-                );
+                    );
+                });
 
                 if (uniqueTasks.length === 0) {
                     setSuccess("این تسک‌ها از قبل در برنامه‌ات وجود دارند؛ مورد تکراری ثبت نکردم.");
