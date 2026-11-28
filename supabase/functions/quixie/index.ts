@@ -46,7 +46,6 @@ Deno.serve(async (req: Request) => {
         model: "gemini-3.1-flash-lite-preview",
         messages,
         temperature: 0.2,
-        max_tokens: 500,
         max_tokens: 2200,
         response_format: {
           type: "json_schema",
