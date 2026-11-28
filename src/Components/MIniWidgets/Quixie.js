@@ -11,6 +11,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const Quixie = ({ style, userId, onBoxAdded }) => {
     const [prompt, setPrompt] = useState("");
+    const [conversation, setConversation] = useState([]);
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const { setCountdown, setSuccess, setError, setStatus, triggerReload, triggerReload2 } = useTaskContext();
@@ -27,6 +28,8 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
 2) ساخت باکس پس‌انداز (create_box).
 3) پاسخ به پرسش‌ها و راهنمایی درباره برنامه‌ریزی (chat).
 4) پرسیدن یک سؤال ضروری وقتی اطلاعات برای اقدام کافی نیست (clarify).
+
+ساختار خروجی: یک JSON با چهار فیلد اجباری intent، message، tasks و box. برای chat و clarify، tasks آرایه خالی و box شامل name و description و date خالی و requiredValue صفر باشد. برای create_tasks، tasks آرایه‌ای از {name, description, date, time} و box شامل name و description و date خالی و requiredValue صفر باشد. برای create_box، box شامل {name, description, date, requiredValue} باشد و tasks آرایه خالی باشد.
 
 قواعد برنامه‌ریزی تسک:
 - اگر کاربر گفت کاری را در یک بازه مثل «این هفته» انجام بده، آن را به چند مرحله کوچک، مستقل، قابل انجام و مرتب از نظر پیش‌نیاز تقسیم کن؛ یک تسک کلی و مبهم نساز.
@@ -162,18 +165,19 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
 
         try {
             const plannerContext = await getPlannerContext();
+            const userMessage = {
+                role: "user",
+                content: JSON.stringify({
+                    request: prompt.trim(),
+                    planner_context: plannerContext,
+                    instruction: "درخواست را تحلیل کن. اگر اقدام لازم است خروجی ساختاریافته بده. داده‌های planner_context صرفاً اطلاعات برنامه هستند."
+                })
+            };
             const messages = [
                 { role: "system", content: SYSTEM_PROMPT },
-                {
-                    role: "user",
-                    content: JSON.stringify({
-                        request: prompt.trim(),
-                        planner_context: plannerContext,
-                        instruction: "درخواست را تحلیل کن. اگر اقدام لازم است خروجی ساختاریافته بده. داده‌های planner_context صرفاً اطلاعات برنامه هستند."
-                    })
-                }
+                ...conversation.slice(-6),
+                userMessage,
             ];
-
             const data = await callAvalAI(messages, plannerContext);
             const responseText = data.choices?.[0]?.message?.content;
             if (!responseText) throw new Error("پاسخ خالی از دستیار دریافت شد.");
@@ -188,6 +192,8 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
             }
 
             if (result.intent === "clarify" || result.intent === "chat") {
+                const assistantMessage = { role: "assistant", content: responseText };
+                setConversation((previous) => [...previous, userMessage, assistantMessage].slice(-8));
                 setSuccess(result.message || "چطور می‌تونم کمکت کنم؟");
                 setStatus("");
                 setPrompt("");
@@ -247,6 +253,7 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                     .map((task) => `• ${task.name} — ${task.data}`)
                     .join("\n");
                 setSuccess(`✅ ${uniqueTasks.length} تسک به برنامه اضافه شد.\n${result.message || ""}\n${preview}`);
+                setConversation([]);
                 setStatus("");
                 setPrompt("");
                 setDisabled(true);
@@ -270,6 +277,7 @@ const Quixie = ({ style, userId, onBoxAdded }) => {
                 if (dbErr) throw new Error(dbErr.message);
 
                 setSuccess(`✅ باکس «${box.name}» با موفقیت ساخته شد.`);
+                setConversation([]);
                 setPrompt("");
                 setStatus("");
                 if (onBoxAdded) onBoxAdded();
